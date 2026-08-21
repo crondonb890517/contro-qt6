@@ -128,6 +128,7 @@ Contract PocketBaseClient::parseContract(const QJsonObject &json)
     contract.fechaInicio = json["fechaInicio"].toString();
     contract.fechaFin = json["fechaFin"].toString();
     contract.cliente = json["cliente"].toString();
+    contract.archivo = json["archivo"].toString();
     contract.created = json["created"].toString();
     contract.updated = json["updated"].toString();
     return contract;

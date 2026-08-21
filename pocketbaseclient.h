@@ -19,6 +19,7 @@ struct Contract {
     QString fechaInicio;
     QString fechaFin;
     QString cliente;
+    QString archivo;
     QString created;
     QString updated;
 };
