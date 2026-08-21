@@ -87,12 +87,23 @@ void PocketBaseClient::createContract(const QJsonObject &contractData, const QSt
         
         m_currentMultiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
         
-        // Parte JSON con los datos del contrato
-        QJsonDocument doc(contractData);
-        QHttpPart jsonPart;
-        jsonPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
-        jsonPart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json"));
-        jsonPart.setBody(doc.toJson());
+        // Enviar cada campo individualmente (PocketBase requiere campos separados)
+        QStringList keys = contractData.keys();
+        for (const QString &key : keys) {
+            QHttpPart fieldPart;
+            QString contentDisposition = QString("form-data; name=\"%1\"").arg(key);
+            fieldPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(contentDisposition));
+            
+            QJsonValue value = contractData[key];
+            if (value.isString()) {
+                fieldPart.setBody(value.toString().toUtf8());
+            } else if (value.isDouble()) {
+                fieldPart.setBody(QString::number(value.toDouble()).toUtf8());
+            } else {
+                fieldPart.setBody(value.toVariant().toString().toUtf8());
+            }
+            m_currentMultiPart->append(fieldPart);
+        }
         
         // Parte del archivo
         QHttpPart filePart;
@@ -102,7 +113,6 @@ void PocketBaseClient::createContract(const QJsonObject &contractData, const QSt
         filePart.setBodyDevice(file);
         file->setParent(m_currentMultiPart);
         
-        m_currentMultiPart->append(jsonPart);
         m_currentMultiPart->append(filePart);
         
         QNetworkRequest request(url);
@@ -143,12 +153,23 @@ void PocketBaseClient::updateContract(const QString &id, const QJsonObject &cont
         
         m_currentMultiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
         
-        // Parte JSON con los datos del contrato
-        QJsonDocument doc(contractData);
-        QHttpPart jsonPart;
-        jsonPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
-        jsonPart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json"));
-        jsonPart.setBody(doc.toJson());
+        // Enviar cada campo individualmente (PocketBase requiere campos separados)
+        QStringList keys = contractData.keys();
+        for (const QString &key : keys) {
+            QHttpPart fieldPart;
+            QString contentDisposition = QString("form-data; name=\"%1\"").arg(key);
+            fieldPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(contentDisposition));
+            
+            QJsonValue value = contractData[key];
+            if (value.isString()) {
+                fieldPart.setBody(value.toString().toUtf8());
+            } else if (value.isDouble()) {
+                fieldPart.setBody(QString::number(value.toDouble()).toUtf8());
+            } else {
+                fieldPart.setBody(value.toVariant().toString().toUtf8());
+            }
+            m_currentMultiPart->append(fieldPart);
+        }
         
         // Parte del archivo
         QHttpPart filePart;
@@ -158,7 +179,6 @@ void PocketBaseClient::updateContract(const QString &id, const QJsonObject &cont
         filePart.setBodyDevice(file);
         file->setParent(m_currentMultiPart);
         
-        m_currentMultiPart->append(jsonPart);
         m_currentMultiPart->append(filePart);
         
         QNetworkRequest request(url);
@@ -166,7 +186,7 @@ void PocketBaseClient::updateContract(const QString &id, const QJsonObject &cont
             request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
         }
         
-        // Usar PUT en lugar de PATCH para evitar problemas con multipart
+        // Usar PUT para actualizaciones con multipart
         m_currentReply = m_networkManager->put(request, m_currentMultiPart);
         m_currentMultiPart->setParent(m_currentReply);
     } else {
