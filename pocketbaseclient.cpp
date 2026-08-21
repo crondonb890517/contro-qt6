@@ -4,6 +4,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDebug>
+#include <QFile>
+#include <QFileInfo>
 
 PocketBaseClient::PocketBaseClient(const QString &baseUrl, const QString &collection, QObject *parent)
     : QObject(parent)
