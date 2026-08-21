@@ -218,7 +218,8 @@ void MainWindow::on_actionNuevo_Contrato_triggered()
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject contractData = dialog.getContractData();
-        m_pocketBase->createContract(contractData);
+        QString filePath = dialog.archivoPath();
+        m_pocketBase->createContract(contractData, filePath);
     }
 }
 
@@ -248,7 +249,8 @@ void MainWindow::on_actionEditar_Contrato_triggered()
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject updatedData = dialog.getContractData();
-        m_pocketBase->updateContract(contract.id, updatedData);
+        QString filePath = dialog.archivoPath();
+        m_pocketBase->updateContract(contract.id, updatedData, filePath);
     }
 }
 
