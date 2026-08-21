@@ -186,8 +186,8 @@ void PocketBaseClient::updateContract(const QString &id, const QJsonObject &cont
             request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
         }
         
-        // Usar PUT para actualizaciones con multipart
-        m_currentReply = m_networkManager->put(request, m_currentMultiPart);
+        // Usar PATCH para actualizaciones con multipart/form-data
+        m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", m_currentMultiPart);
         m_currentMultiPart->setParent(m_currentReply);
     } else {
         // Sin archivo, usar JSON normal con PATCH
