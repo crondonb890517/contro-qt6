@@ -5,6 +5,12 @@
 #include <QInputDialog>
 #include <QSettings>
 #include <QFileDialog>
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -115,19 +121,51 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
 void MainWindow::showLoginDialog()
 {
     bool ok;
-    QString email = QInputDialog::getText(this, "Login PocketBase", 
-                                          "Email:", QLineEdit::Normal, "", &ok);
-    if (!ok || email.isEmpty()) {
-        return;
+    // Crear un QDialog personalizado con ambos campos en una sola ventana
+    QDialog *loginDialog = new QDialog(this);
+    loginDialog->setWindowTitle("Login PocketBase");
+    loginDialog->setMinimumWidth(300);
+    
+    QVBoxLayout *layout = new QVBoxLayout(loginDialog);
+    
+    QLabel *emailLabel = new QLabel("Email:", loginDialog);
+    QLineEdit *emailEdit = new QLineEdit(loginDialog);
+    emailEdit->setPlaceholderText("usuario@ejemplo.com");
+    
+    QLabel *passwordLabel = new QLabel("Contraseña:", loginDialog);
+    QLineEdit *passwordEdit = new QLineEdit(loginDialog);
+    passwordEdit->setPlaceholderText("Contraseña");
+    passwordEdit->setEchoMode(QLineEdit::Password);
+    
+    QPushButton *okButton = new QPushButton("Aceptar", loginDialog);
+    QPushButton *cancelButton = new QPushButton("Cancelar", loginDialog);
+    
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+    
+    layout->addWidget(emailLabel);
+    layout->addWidget(emailEdit);
+    layout->addWidget(passwordLabel);
+    layout->addWidget(passwordEdit);
+    layout->addLayout(buttonLayout);
+    
+    connect(okButton, &QPushButton::clicked, loginDialog, &QDialog::accept);
+    connect(cancelButton, &QPushButton::clicked, loginDialog, &QDialog::reject);
+    
+    if (loginDialog->exec() == QDialog::Accepted) {
+        QString email = emailEdit->text();
+        QString password = passwordEdit->text();
+        
+        if (!email.isEmpty() && !password.isEmpty()) {
+            m_pocketBase->login(email, password);
+        } else {
+            QMessageBox::warning(this, "Advertencia", "Email y contraseña son requeridos");
+        }
     }
     
-    QString password = QInputDialog::getText(this, "Login PocketBase", 
-                                             "Password:", QLineEdit::Password, "", &ok);
-    if (!ok || password.isEmpty()) {
-        return;
-    }
-    
-    m_pocketBase->login(email, password);
+    delete loginDialog;
 }
 
 void MainWindow::showMessage(const QString &title, const QString &message, bool success)
