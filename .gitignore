@@ -1,45 +1,47 @@
 ```
-# Compiled files
+# Compiled and build artifacts
 *.o
 *.obj
-*.exe
-*.dll
-*.so
 *.a
+*.so
+*.dll
+*.exe
 *.out
-
-# Build artifacts
 build/
 dist/
 
 # Dependencies
+node_modules/
 venv/
 .venv/
-node_modules/
 __pycache__/
-*.egg-info/
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
 
 # Logs and temp files
 *.log
 *.tmp
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
+*.swp
 
 # Environment
 .env
 .env.local
 *.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# Qt specific
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.pri.user
+*.pri.user.*
+moc_*
+qrc_*.cpp
+ui_*.h
 ```

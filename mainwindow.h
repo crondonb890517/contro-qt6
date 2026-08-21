@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QList>
 #include "pocketbaseclient.h"
+#include "sessionmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -27,6 +28,7 @@ private slots:
     void on_actionEliminar_Contrato_triggered();
     void on_actionActualizar_triggered();
     void on_actionAcerca_de_triggered();
+    void on_actionCerrar_Sesion_triggered();
     void on_tableWidgetContratos_cellDoubleClicked(int row, int column);
     void on_lineEditBuscar_textChanged(const QString &text);
     
@@ -39,10 +41,18 @@ private slots:
     void onContractUpdated(const Contract &contract);
     void onContractDeleted(const QString &id);
     void onOperationError(const QString &error);
+    
+    // Slots de SessionManager
+    void onSessionStarted();
+    void onSessionEnded();
+    void onSessionExpired();
+    void onSessionSaveError(const QString &error);
+    void onSessionLoadError(const QString &error);
 
 private:
     Ui::MainWindow *ui;
     PocketBaseClient *m_pocketBase;
+    SessionManager *m_sessionManager;
     QList<Contract> m_contracts;
     int m_currentRow;
     
@@ -51,5 +61,6 @@ private:
     void populateTable(const QList<Contract> &contracts);
     void showLoginDialog();
     void showMessage(const QString &title, const QString &message, bool success = true);
+    void checkExistingSession();
 };
 #endif // MAINWINDOW_H

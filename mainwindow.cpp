@@ -16,9 +16,21 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_pocketBase(nullptr)
+    , m_sessionManager(nullptr)
     , m_currentRow(-1)
 {
     ui->setupUi(this);
+    
+    // Inicializar SessionManager
+    m_sessionManager = new SessionManager(this);
+    m_sessionManager->setServiceName("ControQT6");
+    
+    // Conectar señales de SessionManager
+    connect(m_sessionManager, &SessionManager::sessionStarted, this, &MainWindow::onSessionStarted);
+    connect(m_sessionManager, &SessionManager::sessionEnded, this, &MainWindow::onSessionEnded);
+    connect(m_sessionManager, &SessionManager::sessionExpired, this, &MainWindow::onSessionExpired);
+    connect(m_sessionManager, &SessionManager::sessionSaveError, this, &MainWindow::onSessionSaveError);
+    connect(m_sessionManager, &SessionManager::sessionLoadError, this, &MainWindow::onSessionLoadError);
     
     // Configurar PocketBase client
     // URL por defecto de PocketBase local
@@ -37,20 +49,26 @@ MainWindow::MainWindow(QWidget *parent)
     
     setupUI();
     
-    // Cargar configuración guardada
-    QSettings settings("ControQT6", "Settings");
-    QString savedToken = settings.value("authToken").toString();
-    if (!savedToken.isEmpty()) {
-        m_pocketBase->setAuthToken(savedToken);
-        loadContracts();
-    } else {
-        showLoginDialog();
-    }
+    // Verificar sesión existente
+    checkExistingSession();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::checkExistingSession()
+{
+    ui->statusbar->showMessage("Verificando sesión...");
+    
+    // Intentar cargar sesión guardada
+    if (m_sessionManager->loadSession()) {
+        // La carga es asíncrona, esperamos las señales
+        ui->statusbar->showMessage("Cargando sesión guardada...");
+    } else {
+        showLoginDialog();
+    }
 }
 
 void MainWindow::setupUI()
@@ -251,6 +269,28 @@ void MainWindow::on_actionAcerca_de_triggered()
                        "<p>© 2024</p>");
 }
 
+void MainWindow::on_actionCerrar_Sesion_triggered()
+{
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        this, "Confirmar Cerrar Sesión",
+        "¿Está seguro de cerrar la sesión actual?",
+        QMessageBox::Yes | QMessageBox::No);
+    
+    if (reply == QMessageBox::Yes) {
+        // Eliminar sesión guardada del llavero
+        m_sessionManager->deleteSession();
+        
+        // Limpiar estado local
+        m_sessionManager->clearSession();
+        m_pocketBase->setAuthToken(QString());
+        
+        ui->statusbar->showMessage("Sesión cerrada");
+        
+        // Mostrar login nuevamente
+        showLoginDialog();
+    }
+}
+
 void MainWindow::on_tableWidgetContratos_cellDoubleClicked(int row, int column)
 {
     Q_UNUSED(column);
@@ -278,12 +318,14 @@ void MainWindow::on_lineEditBuscar_textChanged(const QString &text)
 // Slots de PocketBase
 void MainWindow::onLoginSuccess(const QString &token, const QString &userId)
 {
-    Q_UNUSED(userId);
     ui->statusbar->showMessage("Autenticado correctamente");
     
-    // Guardar token
-    QSettings settings("ControQT6", "Settings");
-    settings.setValue("authToken", token);
+    // Guardar sesión usando SessionManager
+    m_sessionManager->setToken(token, userId);
+    m_pocketBase->setAuthToken(token);
+    
+    // Guardar sesión de forma segura
+    m_sessionManager->saveSession();
     
     loadContracts();
 }
@@ -328,4 +370,43 @@ void MainWindow::onOperationError(const QString &error)
 {
     showMessage("Error", error, false);
     ui->statusbar->showMessage("Error en la operación");
+}
+
+// Slots de SessionManager
+void MainWindow::onSessionStarted()
+{
+    qDebug() << "MainWindow: Sesión iniciada correctamente";
+    // El token ya fue establecido en onLoginSuccess
+    if (m_sessionManager->isAuthenticated() && !m_pocketBase->authToken().isEmpty()) {
+        loadContracts();
+    }
+}
+
+void MainWindow::onSessionEnded()
+{
+    qDebug() << "MainWindow: Sesión terminada";
+    ui->statusbar->showMessage("Sesión cerrada");
+    m_pocketBase->setAuthToken(QString());
+}
+
+void MainWindow::onSessionExpired()
+{
+    qWarning() << "MainWindow: Sesión expirada";
+    showMessage("Sesión Expirada", "Tu sesión ha expirado. Por favor inicia sesión nuevamente.", false);
+    m_sessionManager->clearSession();
+    m_pocketBase->setAuthToken(QString());
+    showLoginDialog();
+}
+
+void MainWindow::onSessionSaveError(const QString &error)
+{
+    qWarning() << "MainWindow: Error al guardar sesión:" << error;
+    showMessage("Advertencia", "No se pudo guardar la sesión de forma segura: " + error, false);
+}
+
+void MainWindow::onSessionLoadError(const QString &error)
+{
+    qWarning() << "MainWindow: Error al cargar sesión:" << error;
+    // Si no hay sesión guardada o hay error, mostrar login
+    showLoginDialog();
 }
