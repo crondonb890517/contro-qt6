@@ -33,7 +33,7 @@ QString PocketBaseClient::authToken() const
 
 void PocketBaseClient::login(const QString &email, const QString &password)
 {
-    QUrl url(m_baseUrl + "/api/collections/_superusers/auth-with-password");
+    QUrl url(m_baseUrl + "/api/collections/users/auth-with-password");
     
     QJsonObject authData;
     authData["identity"] = email;

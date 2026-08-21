@@ -2,32 +2,22 @@
 # Compiled files
 *.o
 *.obj
+*.exe
+*.dll
+*.so
+*.a
 *.out
 
 # Build artifacts
 build/
 dist/
 
-# Qt specific
-*.pro.user
-*.pro.user.*
-*.qrc
-moc_*
-qrc_*
-ui_*
-
 # Dependencies
-node_modules/
-.venv/
 venv/
+.venv/
+node_modules/
 __pycache__/
 *.egg-info/
-.Python
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
 
 # Editors
 .vscode/
@@ -35,24 +25,21 @@ __pycache__/
 *.swp
 *.swo
 
-# Environment
-.env
-.env.local
-*.env.*
+# Logs and temp files
+*.log
+*.tmp
 
-# OS generated files
+# System files
 .DS_Store
 Thumbs.db
 
-# Coverage reports
+# Coverage
 coverage/
 htmlcov/
 .coverage
 
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
+# Environment
+.env
+.env.local
+*.env.*
 ```
