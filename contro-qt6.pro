@@ -12,12 +12,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     pocketbaseclient.cpp \
-    contractdialog.cpp
+    contractdialog.cpp \
+    sessionmanager.cpp
 
 HEADERS += \
     mainwindow.h \
     pocketbaseclient.h \
-    contractdialog.h
+    contractdialog.h \
+    sessionmanager.h
 
 FORMS += \
     mainwindow.ui \
