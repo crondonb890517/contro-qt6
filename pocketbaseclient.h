@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QString>
 #include <QList>
+#include <QHttpMultiPart>
 
 struct Contract {
     QString id;
@@ -19,6 +20,7 @@ struct Contract {
     QString fechaInicio;
     QString fechaFin;
     QString cliente;
+    QString archivo;
     QString created;
     QString updated;
 };
@@ -36,8 +38,8 @@ public:
 
     void login(const QString &email, const QString &password);
     void fetchContracts();
-    void createContract(const QJsonObject &contractData);
-    void updateContract(const QString &id, const QJsonObject &contractData);
+    void createContract(const QJsonObject &contractData, const QString &filePath = QString());
+    void updateContract(const QString &id, const QJsonObject &contractData, const QString &filePath = QString());
     void deleteContract(const QString &id);
 
 signals:
@@ -64,6 +66,7 @@ private:
     QString m_currentUserId;
     QNetworkAccessManager *m_networkManager;
     QNetworkReply *m_currentReply;
+    QHttpMultiPart *m_currentMultiPart;
 
     Contract parseContract(const QJsonObject &json);
 };

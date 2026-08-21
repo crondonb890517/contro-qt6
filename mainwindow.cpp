@@ -76,9 +76,9 @@ void MainWindow::setupUI()
     setWindowTitle("Sistema de Gestión de Contratos - Contro QT6");
     
     // Configurar tabla de contratos
-    ui->tableWidgetContratos->setColumnCount(7);
+    ui->tableWidgetContratos->setColumnCount(8);
     ui->tableWidgetContratos->setHorizontalHeaderLabels({
-        "ID", "Nombre", "Estado", "Valor", "Fecha Inicio", "Fecha Fin", "Cliente"
+        "ID", "Nombre", "Estado", "Valor", "Fecha Inicio", "Fecha Fin", "Cliente", "Archivo"
     });
     ui->tableWidgetContratos->horizontalHeader()->setStretchLastSection(true);
     ui->tableWidgetContratos->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -115,6 +115,16 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
         QTableWidgetItem *itemFechaFin = new QTableWidgetItem(c.fechaFin);
         QTableWidgetItem *itemCliente = new QTableWidgetItem(c.cliente);
         
+        // Mostrar nombre del archivo si existe
+        QString archivoDisplay;
+        if (!c.archivo.isEmpty()) {
+            QFileInfo fileInfo(c.archivo);
+            archivoDisplay = fileInfo.fileName();
+        } else {
+            archivoDisplay = "Sin archivo";
+        }
+        QTableWidgetItem *itemArchivo = new QTableWidgetItem(archivoDisplay);
+        
         // Color según estado
         if (c.estado == "Activo" || c.estado == "Firmado") {
             itemEstado->setBackground(QColor(144, 238, 144)); // Verde claro
@@ -124,6 +134,11 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
             itemEstado->setBackground(QColor(211, 211, 211)); // Gris
         }
         
+        // Icono para archivo adjunto
+        if (!c.archivo.isEmpty()) {
+            itemArchivo->setIcon(QIcon::fromTheme("text-x-generic"));
+        }
+        
         ui->tableWidgetContratos->setItem(i, 0, new QTableWidgetItem(c.id));
         ui->tableWidgetContratos->setItem(i, 1, itemNombre);
         ui->tableWidgetContratos->setItem(i, 2, itemEstado);
@@ -131,6 +146,7 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
         ui->tableWidgetContratos->setItem(i, 4, itemFechaInicio);
         ui->tableWidgetContratos->setItem(i, 5, itemFechaFin);
         ui->tableWidgetContratos->setItem(i, 6, itemCliente);
+        ui->tableWidgetContratos->setItem(i, 7, itemArchivo);
     }
     
     ui->statusbar->showMessage(QString("%1 contratos cargados").arg(contracts.size()));
@@ -202,7 +218,8 @@ void MainWindow::on_actionNuevo_Contrato_triggered()
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject contractData = dialog.getContractData();
-        m_pocketBase->createContract(contractData);
+        QString filePath = dialog.archivoPath();
+        m_pocketBase->createContract(contractData, filePath);
     }
 }
 
@@ -224,6 +241,7 @@ void MainWindow::on_actionEditar_Contrato_triggered()
     data["fechaInicio"] = contract.fechaInicio;
     data["fechaFin"] = contract.fechaFin;
     data["cliente"] = contract.cliente;
+    data["archivo"] = contract.archivo;
     
     ContractDialog dialog(this);
     dialog.setEditMode(true);
@@ -231,7 +249,8 @@ void MainWindow::on_actionEditar_Contrato_triggered()
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject updatedData = dialog.getContractData();
-        m_pocketBase->updateContract(contract.id, updatedData);
+        QString filePath = dialog.archivoPath();
+        m_pocketBase->updateContract(contract.id, updatedData, filePath);
     }
 }
 

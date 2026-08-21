@@ -11,6 +11,7 @@ PocketBaseClient::PocketBaseClient(const QString &baseUrl, const QString &collec
     , m_collection(collection)
     , m_networkManager(new QNetworkAccessManager(this))
     , m_currentReply(nullptr)
+    , m_currentMultiPart(nullptr)
 {
 }
 
@@ -18,6 +19,9 @@ PocketBaseClient::~PocketBaseClient()
 {
     if (m_currentReply) {
         m_currentReply->deleteLater();
+    }
+    if (m_currentMultiPart) {
+        m_currentMultiPart->deleteLater();
     }
 }
 
@@ -66,38 +70,117 @@ void PocketBaseClient::fetchContracts()
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onFetchFinished);
 }
 
-void PocketBaseClient::createContract(const QJsonObject &contractData)
+void PocketBaseClient::createContract(const QJsonObject &contractData, const QString &filePath)
 {
     QUrl url(m_baseUrl + "/api/collections/" + m_collection + "/records");
     
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    
-    if (!m_authToken.isEmpty()) {
-        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    if (!filePath.isEmpty()) {
+        // Subir archivo usando multipart/form-data
+        QFile *file = new QFile(filePath);
+        if (!file->open(QIODevice::ReadOnly)) {
+            emit operationError("No se pudo abrir el archivo: " + filePath);
+            delete file;
+            return;
+        }
+        
+        m_currentMultiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+        
+        // Parte JSON con los datos del contrato
+        QJsonDocument doc(contractData);
+        QHttpPart jsonPart;
+        jsonPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
+        jsonPart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json"));
+        jsonPart.setBody(doc.toJson());
+        
+        // Parte del archivo
+        QHttpPart filePart;
+        QFileInfo fileInfo(filePath);
+        QString contentDisposition = QString("form-data; name=\"archivo\"; filename=\"%1\"").arg(fileInfo.fileName());
+        filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(contentDisposition));
+        filePart.setBodyDevice(file);
+        file->setParent(m_currentMultiPart);
+        
+        m_currentMultiPart->append(jsonPart);
+        m_currentMultiPart->append(filePart);
+        
+        QNetworkRequest request(url);
+        if (!m_authToken.isEmpty()) {
+            request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+        }
+        
+        m_currentReply = m_networkManager->post(request, m_currentMultiPart);
+        m_currentMultiPart->setParent(m_currentReply);
+    } else {
+        // Sin archivo, usar JSON normal
+        QNetworkRequest request(url);
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        
+        if (!m_authToken.isEmpty()) {
+            request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+        }
+        
+        QJsonDocument doc(contractData);
+        m_currentReply = m_networkManager->post(request, doc.toJson());
     }
-    
-    QJsonDocument doc(contractData);
-    m_currentReply = m_networkManager->post(request, doc.toJson());
     
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onCreateFinished);
 }
 
-void PocketBaseClient::updateContract(const QString &id, const QJsonObject &contractData)
+void PocketBaseClient::updateContract(const QString &id, const QJsonObject &contractData, const QString &filePath)
 {
     QUrl url(m_baseUrl + "/api/collections/" + m_collection + "/records/" + id);
     
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    
-    if (!m_authToken.isEmpty()) {
-        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    if (!filePath.isEmpty()) {
+        // Subir archivo usando multipart/form-data
+        QFile *file = new QFile(filePath);
+        if (!file->open(QIODevice::ReadOnly)) {
+            emit operationError("No se pudo abrir el archivo: " + filePath);
+            delete file;
+            return;
+        }
+        
+        m_currentMultiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+        
+        // Parte JSON con los datos del contrato
+        QJsonDocument doc(contractData);
+        QHttpPart jsonPart;
+        jsonPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
+        jsonPart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json"));
+        jsonPart.setBody(doc.toJson());
+        
+        // Parte del archivo
+        QHttpPart filePart;
+        QFileInfo fileInfo(filePath);
+        QString contentDisposition = QString("form-data; name=\"archivo\"; filename=\"%1\"").arg(fileInfo.fileName());
+        filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(contentDisposition));
+        filePart.setBodyDevice(file);
+        file->setParent(m_currentMultiPart);
+        
+        m_currentMultiPart->append(jsonPart);
+        m_currentMultiPart->append(filePart);
+        
+        QNetworkRequest request(url);
+        if (!m_authToken.isEmpty()) {
+            request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+        }
+        
+        // Usar PATCH con multipart
+        m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", m_currentMultiPart);
+        m_currentMultiPart->setParent(m_currentReply);
+    } else {
+        // Sin archivo, usar JSON normal
+        QNetworkRequest request(url);
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        
+        if (!m_authToken.isEmpty()) {
+            request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+        }
+        
+        QJsonDocument doc(contractData);
+        
+        // Qt6 no tiene patch(), usamos send() con CustomOperation
+        m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", doc.toJson());
     }
-    
-    QJsonDocument doc(contractData);
-    
-    // Qt6 no tiene patch(), usamos send() con CustomOperation
-    m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", doc.toJson());
     
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onUpdateFinished);
 }
@@ -128,6 +211,7 @@ Contract PocketBaseClient::parseContract(const QJsonObject &json)
     contract.fechaInicio = json["fechaInicio"].toString();
     contract.fechaFin = json["fechaFin"].toString();
     contract.cliente = json["cliente"].toString();
+    contract.archivo = json["archivo"].toString();
     contract.created = json["created"].toString();
     contract.updated = json["updated"].toString();
     return contract;
