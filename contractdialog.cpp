@@ -122,12 +122,9 @@ void ContractDialog::on_pushButtonExaminar_clicked()
         QFileInfo fileInfo(filePath);
         QString fileSize = QString::number(fileInfo.size() / 1024.0, 'f', 2) + " KB";
         
-        QMessageBox::information(
-            this,
-            tr("Archivo Seleccionado"),
-            tr("Archivo: %1\nTamaño: %2\nTipo: %3").arg(fileInfo.fileName()).arg(fileSize).arg(mimeType.name())
-        );
-        
         setArchivoPath(filePath);
+        
+        // Actualizar visualmente el campo de texto inmediatamente
+        ui->lineEditArchivo->setText(fileInfo.fileName());
     }
 }

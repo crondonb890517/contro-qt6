@@ -131,7 +131,7 @@ void PocketBaseClient::updateContract(const QString &id, const QJsonObject &cont
     QUrl url(m_baseUrl + "/api/collections/" + m_collection + "/records/" + id);
     
     if (!filePath.isEmpty()) {
-        // Subir archivo usando multipart/form-data
+        // Subir archivo usando multipart/form-data para actualización
         QFile *file = new QFile(filePath);
         if (!file->open(QIODevice::ReadOnly)) {
             emit operationError("No se pudo abrir el archivo: " + filePath);
@@ -164,11 +164,11 @@ void PocketBaseClient::updateContract(const QString &id, const QJsonObject &cont
             request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
         }
         
-        // Usar PATCH con multipart
-        m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", m_currentMultiPart);
+        // Usar PUT en lugar de PATCH para evitar problemas con multipart
+        m_currentReply = m_networkManager->put(request, m_currentMultiPart);
         m_currentMultiPart->setParent(m_currentReply);
     } else {
-        // Sin archivo, usar JSON normal
+        // Sin archivo, usar JSON normal con PATCH
         QNetworkRequest request(url);
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
         
@@ -178,7 +178,7 @@ void PocketBaseClient::updateContract(const QString &id, const QJsonObject &cont
         
         QJsonDocument doc(contractData);
         
-        // Qt6 no tiene patch(), usamos send() con CustomOperation
+        // Usar PATCH para actualizaciones parciales
         m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", doc.toJson());
     }
     
@@ -280,8 +280,28 @@ void PocketBaseClient::onCreateFinished()
             Contract contract = parseContract(jsonObj);
             emit contractCreated(contract);
         } else {
+            // Obtener más detalles del error
             QString error = m_currentReply->errorString();
-            emit operationError(error);
+            int statusCode = m_currentReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            QByteArray errorBody = m_currentReply->readAll();
+            
+            qWarning() << "Error en creación - Status:" << statusCode << "Error:" << error;
+            qWarning() << "Respuesta de error:" << errorBody;
+            
+            // Intentar parsear el mensaje de error de PocketBase
+            QString errorMsg = error;
+            if (!errorBody.isEmpty()) {
+                QJsonParseError parseError;
+                QJsonDocument errorDoc = QJsonDocument::fromJson(errorBody, &parseError);
+                if (parseError.error == QJsonParseError::NoError && errorDoc.isObject()) {
+                    QJsonObject errorObj = errorDoc.object();
+                    if (errorObj.contains("message")) {
+                        errorMsg = errorObj["message"].toString();
+                    }
+                }
+            }
+            
+            emit operationError("Error al crear: " + errorMsg);
         }
         
         m_currentReply->deleteLater();
@@ -300,8 +320,28 @@ void PocketBaseClient::onUpdateFinished()
             Contract contract = parseContract(jsonObj);
             emit contractUpdated(contract);
         } else {
+            // Obtener más detalles del error
             QString error = m_currentReply->errorString();
-            emit operationError(error);
+            int statusCode = m_currentReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            QByteArray errorBody = m_currentReply->readAll();
+            
+            qWarning() << "Error en actualización - Status:" << statusCode << "Error:" << error;
+            qWarning() << "Respuesta de error:" << errorBody;
+            
+            // Intentar parsear el mensaje de error de PocketBase
+            QString errorMsg = error;
+            if (!errorBody.isEmpty()) {
+                QJsonParseError parseError;
+                QJsonDocument errorDoc = QJsonDocument::fromJson(errorBody, &parseError);
+                if (parseError.error == QJsonParseError::NoError && errorDoc.isObject()) {
+                    QJsonObject errorObj = errorDoc.object();
+                    if (errorObj.contains("message")) {
+                        errorMsg = errorObj["message"].toString();
+                    }
+                }
+            }
+            
+            emit operationError("Error al actualizar: " + errorMsg);
         }
         
         m_currentReply->deleteLater();
