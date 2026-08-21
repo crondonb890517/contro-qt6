@@ -18,8 +18,10 @@ MVP de un sistema de gestión de contratos desarrollado con Qt6 y PocketBase com
 
 ### Dependencias
 ```bash
-sudo apt-get install qt6-base-dev qt6-tools-dev libqt6networkauth6-dev qmake6
+sudo apt-get install qt6-base-dev qt6-tools-dev libqt6networkauth6-dev qmake6 libqt6keychain-dev
 ```
+
+**Nota**: La biblioteca `libqt6keychain-dev` es requerida para la gestión segura de credenciales y persistencia de sesión.
 
 ### Backend - PocketBase
 
