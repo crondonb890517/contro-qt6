@@ -13,33 +13,13 @@
 
 struct Entidad {
     QString id;
-    QString nombre;
     QString nombreComercial;
     QString codigoEntidad;
-    QString nit;
-    QString telefono;
-    QString correo;
-    QString direccion;
-    QString municipio;
-    QString provincia;
-    QString codigoPostal;
+    QString nitEntidad;
+    int telefonoEntidad;
+    QString correoEntidad;
+    QString direccionEntidad;
     QString tipoEntidad;
-    QString sector;
-    QString organoSuperior;
-    QString representanteLegal;
-    QString cargoRepresentante;
-    QString contactoNombre;
-    QString contactoCargo;
-    QString contactoTelefono;
-    QString contactoCorreo;
-    QString estado;
-    QString fechaConstitucion;
-    double capitalSocial;
-    QString moneda;
-    QString paisOrigen;
-    QString sitioWeb;
-    QString observaciones;
-    QString logo;
 };
 
 struct Contract {
