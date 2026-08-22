@@ -8,24 +8,54 @@
 *.a
 *.out
 
+# Qt/C++ specific
+*.moc
+*.ui
+*.qrc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
 # Dependencies
 venv/
 .venv/
 __pycache__/
-.mypy_cache/
-.pytest_cache/
-node_modules/
+.pipenv/
+.tox/
+
+# Build directories
+build/
+dist/
+target/
+cmake-build-*/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
+*.swo
+
+# Environment
+.env
+.env.local
+*.env.*
 
 # Editors
 .vscode/
 .idea/
+*.swp
+*~
 
-# System files
+# OS
 .DS_Store
 Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# MyPy
+.mypy_cache/
+.pytest_cache/
 ```

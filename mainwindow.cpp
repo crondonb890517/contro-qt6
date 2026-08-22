@@ -113,7 +113,15 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
         QTableWidgetItem *itemValor = new QTableWidgetItem(QString("$ %1").arg(c.valor, 0, 'f', 2));
         QTableWidgetItem *itemFechaInicio = new QTableWidgetItem(c.fechaInicio);
         QTableWidgetItem *itemFechaFin = new QTableWidgetItem(c.fechaFin);
-        QTableWidgetItem *itemCliente = new QTableWidgetItem(c.cliente);
+        
+        // Mostrar nombre comercial de la entidad si está expandida
+        QString clienteDisplay;
+        if (!c.entidadCliente.id.isEmpty()) {
+            clienteDisplay = c.entidadCliente.nombreComercial;
+        } else {
+            clienteDisplay = c.cliente; // Mostrar ID si no hay datos expandidos
+        }
+        QTableWidgetItem *itemCliente = new QTableWidgetItem(clienteDisplay);
         
         // Mostrar nombre del archivo si existe
         QString archivoDisplay;
@@ -215,6 +223,10 @@ void MainWindow::on_actionNuevo_Contrato_triggered()
 {
     ContractDialog dialog(this);
     dialog.setEditMode(false);
+    dialog.setPocketBaseClient(m_pocketBase);
+    
+    // Conectar la señal de entidades cargadas
+    connect(m_pocketBase, &PocketBaseClient::entidadesFetched, &dialog, &ContractDialog::loadEntidades);
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject contractData = dialog.getContractData();
@@ -245,7 +257,11 @@ void MainWindow::on_actionEditar_Contrato_triggered()
     
     ContractDialog dialog(this);
     dialog.setEditMode(true);
+    dialog.setPocketBaseClient(m_pocketBase);
     dialog.setContractData(data);
+    
+    // Conectar la señal de entidades cargadas
+    connect(m_pocketBase, &PocketBaseClient::entidadesFetched, &dialog, &ContractDialog::loadEntidades);
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject updatedData = dialog.getContractData();
