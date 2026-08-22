@@ -11,6 +11,37 @@
 #include <QList>
 #include <QHttpMultiPart>
 
+struct Entidad {
+    QString id;
+    QString nombre;
+    QString nombreComercial;
+    QString codigoEntidad;
+    QString nit;
+    QString telefono;
+    QString correo;
+    QString direccion;
+    QString municipio;
+    QString provincia;
+    QString codigoPostal;
+    QString tipoEntidad;
+    QString sector;
+    QString organoSuperior;
+    QString representanteLegal;
+    QString cargoRepresentante;
+    QString contactoNombre;
+    QString contactoCargo;
+    QString contactoTelefono;
+    QString contactoCorreo;
+    QString estado;
+    QString fechaConstitucion;
+    double capitalSocial;
+    QString moneda;
+    QString paisOrigen;
+    QString sitioWeb;
+    QString observaciones;
+    QString logo;
+};
+
 struct Contract {
     QString id;
     QString nombre;
@@ -19,7 +50,8 @@ struct Contract {
     double valor;
     QString fechaInicio;
     QString fechaFin;
-    QString cliente;
+    QString cliente;  // ID de la entidad relacionada
+    Entidad entidadCliente;  // Datos expandidos de la entidad
     QString archivo;
     QString created;
     QString updated;
@@ -37,6 +69,7 @@ public:
     QString authToken() const;
 
     void login(const QString &email, const QString &password);
+    void fetchEntidades();
     void fetchContracts();
     void createContract(const QJsonObject &contractData, const QString &filePath = QString());
     void updateContract(const QString &id, const QJsonObject &contractData, const QString &filePath = QString());
@@ -45,6 +78,7 @@ public:
 signals:
     void loginSuccess(const QString &token, const QString &userId);
     void loginError(const QString &error);
+    void entidadesFetched(const QList<Entidad> &entidades);
     void contractsFetched(const QList<Contract> &contracts);
     void fetchError(const QString &error);
     void contractCreated(const Contract &contract);
@@ -55,6 +89,7 @@ signals:
 private slots:
     void onLoginFinished();
     void onFetchFinished();
+    void onFetchEntidadesFinished();
     void onCreateFinished();
     void onUpdateFinished();
     void onDeleteFinished();
@@ -69,6 +104,7 @@ private:
     QHttpMultiPart *m_currentMultiPart;
 
     Contract parseContract(const QJsonObject &json);
+    Entidad parseEntidad(const QJsonObject &json);
 };
 
 #endif // POCKETBASECLIENT_H
