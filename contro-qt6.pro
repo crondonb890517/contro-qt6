@@ -18,17 +18,20 @@ SOURCES += \
     mainwindow.cpp \
     pocketbaseclient.cpp \
     contractdialog.cpp \
-    sessionmanager.cpp
+    sessionmanager.cpp \
+    entidaddialog.cpp
 
 HEADERS += \
     mainwindow.h \
     pocketbaseclient.h \
     contractdialog.h \
-    sessionmanager.h
+    sessionmanager.h \
+    entidaddialog.h
 
 FORMS += \
     mainwindow.ui \
-    contractdialog.ui
+    contractdialog.ui \
+    entidaddialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

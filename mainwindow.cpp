@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "contractdialog.h"
+#include "entidaddialog.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QSettings>
@@ -46,6 +47,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_pocketBase, &PocketBaseClient::contractUpdated, this, &MainWindow::onContractUpdated);
     connect(m_pocketBase, &PocketBaseClient::contractDeleted, this, &MainWindow::onContractDeleted);
     connect(m_pocketBase, &PocketBaseClient::operationError, this, &MainWindow::onOperationError);
+    connect(m_pocketBase, &PocketBaseClient::entidadesFetched, this, &MainWindow::onEntidadesFetched);
+    connect(m_pocketBase, &PocketBaseClient::entidadCreated, this, &MainWindow::onEntidadCreated);
+    connect(m_pocketBase, &PocketBaseClient::entidadUpdated, this, &MainWindow::onEntidadUpdated);
+    connect(m_pocketBase, &PocketBaseClient::entidadDeleted, this, &MainWindow::onEntidadDeleted);
     
     setupUI();
     
