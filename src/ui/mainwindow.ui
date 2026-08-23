@@ -155,6 +155,7 @@
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuContratos"/>
+   <addaction name="menuEntidades"/>
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
