@@ -25,9 +25,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void showCollection(int index);
-    void on_actionContratos_triggered();
-    void on_actionEntidades_triggered();
+    void on_actionVer_Contratos_triggered();
+    void on_actionVer_Entidades_triggered();
     void on_actionNuevo_Contrato_triggered();
     void on_actionEditar_Contrato_triggered();
     void on_actionEliminar_Contrato_triggered();
@@ -75,5 +74,7 @@ private:
     void showLoginDialog();
     void showMessage(const QString &title, const QString &message, bool success = true);
     void checkExistingSession();
+    void showContratos();
+    void showEntidades();
 };
 #endif // MAINWINDOW_H
