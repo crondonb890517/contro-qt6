@@ -222,38 +222,4 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButtonCancelar</sender>
-   <signal>clicked()</signal>
-   <receiver>EntidadDialog</receiver>
-   <slot>on_pushButtonCancelar_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>450</x>
-     <y>470</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>300</x>
-     <y>250</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonGuardar</sender>
-   <signal>clicked()</signal>
-   <receiver>EntidadDialog</receiver>
-   <slot>on_pushButtonGuardar_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>530</x>
-     <y>470</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>300</x>
-     <y>250</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>
