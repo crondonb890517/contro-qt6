@@ -152,3 +152,156 @@ FormConfig FormConfigFactory::createEntidadFormConfig()
     
     return config;
 }
+
+GridConfig FormConfigFactory::createContratosConfig()
+{
+    GridConfig config;
+    config.collectionName = "contratos";
+    config.displayName = "Contratos";
+    config.searchFields = {"nombre", "descripcion", "estado", "cliente"};
+    config.doubleClickToEdit = true;
+    
+    // Columna ID (oculta)
+    ColumnConfig colId;
+    colId.field = "id";
+    colId.title = "ID";
+    colId.width = 0;
+    colId.visible = false;
+    colId.isId = true;
+    config.columns.append(colId);
+    
+    // Columna Nombre
+    ColumnConfig colNombre;
+    colNombre.field = "nombre";
+    colNombre.title = "Nombre";
+    colNombre.width = 250;
+    colNombre.visible = true;
+    config.columns.append(colNombre);
+    
+    // Columna Descripción
+    ColumnConfig colDescripcion;
+    colDescripcion.field = "descripcion";
+    colDescripcion.title = "Descripción";
+    colDescripcion.width = 300;
+    colDescripcion.visible = true;
+    config.columns.append(colDescripcion);
+    
+    // Columna Estado
+    ColumnConfig colEstado;
+    colEstado.field = "estado";
+    colEstado.title = "Estado";
+    colEstado.width = 120;
+    colEstado.visible = true;
+    colEstado.backgroundColor = QColor("#e8f5e9"); // Verde claro por defecto
+    config.columns.append(colEstado);
+    
+    // Columna Valor
+    ColumnConfig colValor;
+    colValor.field = "valor";
+    colValor.title = "Valor";
+    colValor.width = 100;
+    colValor.visible = true;
+    config.columns.append(colValor);
+    
+    // Columna Fecha Inicio
+    ColumnConfig colFechaInicio;
+    colFechaInicio.field = "fechaInicio";
+    colFechaInicio.title = "Fecha Inicio";
+    colFechaInicio.width = 100;
+    colFechaInicio.visible = true;
+    config.columns.append(colFechaInicio);
+    
+    // Columna Fecha Fin
+    ColumnConfig colFechaFin;
+    colFechaFin.field = "fechaFin";
+    colFechaFin.title = "Fecha Fin";
+    colFechaFin.width = 100;
+    colFechaFin.visible = true;
+    config.columns.append(colFechaFin);
+    
+    // Columna Cliente
+    ColumnConfig colCliente;
+    colCliente.field = "cliente";
+    colCliente.title = "Cliente";
+    colCliente.width = 150;
+    colCliente.visible = true;
+    config.columns.append(colCliente);
+    
+    return config;
+}
+
+GridConfig FormConfigFactory::createEntidadesConfig()
+{
+    GridConfig config;
+    config.collectionName = "entidades";
+    config.displayName = "Entidades";
+    config.searchFields = {"nombre_comercial_entidad", "codigo_entidad", "nit_entidad", "correo_entidad"};
+    config.doubleClickToEdit = true;
+    
+    // Columna ID (oculta)
+    ColumnConfig colId;
+    colId.field = "id";
+    colId.title = "ID";
+    colId.width = 0;
+    colId.visible = false;
+    colId.isId = true;
+    config.columns.append(colId);
+    
+    // Columna Nombre Comercial
+    ColumnConfig colNombre;
+    colNombre.field = "nombre_comercial_entidad";
+    colNombre.title = "Nombre Comercial";
+    colNombre.width = 250;
+    colNombre.visible = true;
+    config.columns.append(colNombre);
+    
+    // Columna Código
+    ColumnConfig colCodigo;
+    colCodigo.field = "codigo_entidad";
+    colCodigo.title = "Código";
+    colCodigo.width = 100;
+    colCodigo.visible = true;
+    config.columns.append(colCodigo);
+    
+    // Columna NIT
+    ColumnConfig colNit;
+    colNit.field = "nit_entidad";
+    colNit.title = "NIT";
+    colNit.width = 120;
+    colNit.visible = true;
+    config.columns.append(colNit);
+    
+    // Columna Teléfono
+    ColumnConfig colTelefono;
+    colTelefono.field = "telefono_entidad";
+    colTelefono.title = "Teléfono";
+    colTelefono.width = 100;
+    colTelefono.visible = true;
+    config.columns.append(colTelefono);
+    
+    // Columna Correo
+    ColumnConfig colCorreo;
+    colCorreo.field = "correo_entidad";
+    colCorreo.title = "Correo";
+    colCorreo.width = 200;
+    colCorreo.visible = true;
+    config.columns.append(colCorreo);
+    
+    // Columna Dirección
+    ColumnConfig colDireccion;
+    colDireccion.field = "direccion_entidad";
+    colDireccion.title = "Dirección";
+    colDireccion.width = 200;
+    colDireccion.visible = true;
+    config.columns.append(colDireccion);
+    
+    // Columna Tipo
+    ColumnConfig colTipo;
+    colTipo.field = "tipo_entidad";
+    colTipo.title = "Tipo";
+    colTipo.width = 150;
+    colTipo.visible = true;
+    config.columns.append(colTipo);
+    
+    return config;
+}

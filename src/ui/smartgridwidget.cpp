@@ -256,6 +256,13 @@ QColor SmartGridWidget::getBackgroundColor(const QJsonObject &item, const Column
     return colConfig.backgroundColor;
 }
 
+void SmartGridWidget::setData(const QList<QJsonObject> &data)
+{
+    m_allData = data;
+    m_filteredData = data;
+    populateTable(m_filteredData);
+}
+
 void SmartGridWidget::filterData(const QString &searchText)
 {
     if (searchText.isEmpty()) {

@@ -23,6 +23,7 @@ public:
     void setConfig(const GridConfig &config);
     void setPocketBaseClient(PocketBaseClient *client);
     void loadData();
+    void setData(const QList<QJsonObject> &data);
     void filterData(const QString &searchText);
     
     QList<QJsonObject> getCurrentData() const;

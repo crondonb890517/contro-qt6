@@ -91,9 +91,11 @@ void MainWindow::setupUI()
 void MainWindow::setupSmartGrids()
 {
     // Configurar SmartGrid para Contratos
-    auto contratosConfig = FormConfigFactory::createContratosConfig();
-    m_contratosWidget = new SmartCollectionWidget("Contratos", "contratos", this);
-    m_contratosWidget->setGridConfig(contratosConfig);
+    auto gridConfig = FormConfigFactory::createContratosConfig();
+    auto formConfig = FormConfigFactory::createContractFormConfig();
+    m_contratosWidget = new SmartCollectionWidget(this);
+    m_contratosWidget->setGridConfig(gridConfig);
+    m_contratosWidget->setFormConfig(formConfig);
     m_contratosWidget->setPocketBaseClient(m_pocketBase);
     
     // Conectar acciones CRUD
@@ -110,9 +112,11 @@ void MainWindow::setupSmartGrids()
     });
     
     // Configurar SmartGrid para Entidades
-    auto entidadesConfig = FormConfigFactory::createEntidadesConfig();
-    m_entidadesWidget = new SmartCollectionWidget("Entidades", "entidades", this);
-    m_entidadesWidget->setGridConfig(entidadesConfig);
+    auto entidadesGridConfig = FormConfigFactory::createEntidadesConfig();
+    auto entidadesFormConfig = FormConfigFactory::createEntidadFormConfig();
+    m_entidadesWidget = new SmartCollectionWidget(this);
+    m_entidadesWidget->setGridConfig(entidadesGridConfig);
+    m_entidadesWidget->setFormConfig(entidadesFormConfig);
     m_entidadesWidget->setPocketBaseClient(m_pocketBase);
     
     // Conectar acciones CRUD
@@ -152,7 +156,20 @@ void MainWindow::loadEntidades()
 void MainWindow::onEntidadesFetched(const QList<Entidad> &entidades)
 {
     if (m_entidadesWidget) {
-        m_entidadesWidget->setData(entidades);
+        QList<QJsonObject> jsonData;
+        for (const Entidad &e : entidades) {
+            QJsonObject obj;
+            obj["id"] = e.id;
+            obj["nombre_comercial_entidad"] = e.nombreComercial;
+            obj["codigo_entidad"] = e.codigoEntidad;
+            obj["nit_entidad"] = e.nitEntidad;
+            obj["telefono_entidad"] = QString::number(e.telefonoEntidad);
+            obj["correo_entidad"] = e.correoEntidad;
+            obj["direccion_entidad"] = e.direccionEntidad;
+            obj["tipo_entidad"] = e.tipoEntidad;
+            jsonData.append(obj);
+        }
+        m_entidadesWidget->setData(jsonData);
     }
     ui->statusbar->showMessage(QString("%1 entidades cargadas").arg(entidades.size()));
 }
@@ -243,9 +260,23 @@ void MainWindow::on_actionEditar_Contrato_triggered()
     // Buscar el contrato en los datos actuales
     Contract contract;
     bool found = false;
-    for (const auto &c : m_contratosWidget->getCurrentData()) {
-        if (c.id == id) {
-            contract = c;
+    for (const auto &jsonObj : m_contratosWidget->getCurrentData()) {
+        if (jsonObj["id"].toString() == id) {
+            // Convertir QJsonObject a Contract
+            contract.id = jsonObj["id"].toString();
+            contract.nombre = jsonObj["nombre"].toString();
+            contract.descripcion = jsonObj["descripcion"].toString();
+            contract.estado = jsonObj["estado"].toString();
+            contract.valor = jsonObj["valor"].toDouble();
+            contract.fechaInicio = jsonObj["fechaInicio"].toString();
+            contract.fechaFin = jsonObj["fechaFin"].toString();
+            contract.cliente = jsonObj["cliente"].toString();
+            contract.archivo = jsonObj["archivo"].toString();
+            
+            QJsonObject entidadJson = jsonObj["entidadCliente"].toObject();
+            contract.entidadCliente.id = entidadJson["id"].toString();
+            contract.entidadCliente.nombreComercial = entidadJson["nombreComercial"].toString();
+            
             found = true;
             break;
         }
@@ -291,9 +322,9 @@ void MainWindow::on_actionEliminar_Contrato_triggered()
     
     // Buscar el contrato en los datos actuales
     QString nombre;
-    for (const auto &c : m_contratosWidget->getCurrentData()) {
-        if (c.id == id) {
-            nombre = c.nombre;
+    for (const auto &jsonObj : m_contratosWidget->getCurrentData()) {
+        if (jsonObj["id"].toString() == id) {
+            nombre = jsonObj["nombre"].toString();
             break;
         }
     }
@@ -452,7 +483,27 @@ void MainWindow::onLoginError(const QString &error)
 void MainWindow::onContractsFetched(const QList<Contract> &contracts)
 {
     if (m_contratosWidget) {
-        m_contratosWidget->setData(contracts);
+        QList<QJsonObject> jsonData;
+        for (const Contract &c : contracts) {
+            QJsonObject obj;
+            obj["id"] = c.id;
+            obj["nombre"] = c.nombre;
+            obj["descripcion"] = c.descripcion;
+            obj["estado"] = c.estado;
+            obj["valor"] = c.valor;
+            obj["fechaInicio"] = c.fechaInicio;
+            obj["fechaFin"] = c.fechaFin;
+            obj["cliente"] = c.cliente;
+            obj["archivo"] = c.archivo;
+            
+            QJsonObject entidadObj;
+            entidadObj["id"] = c.entidadCliente.id;
+            entidadObj["nombreComercial"] = c.entidadCliente.nombreComercial;
+            obj["entidadCliente"] = entidadObj;
+            
+            jsonData.append(obj);
+        }
+        m_contratosWidget->setData(jsonData);
     }
     ui->statusbar->showMessage(QString("%1 contratos cargados").arg(contracts.size()));
 }
