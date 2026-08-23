@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EntidadDialog</class>
+ <widget class="QDialog" name="EntidadDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Nueva Entidad</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelNombreComercial">
+       <property name="text">
+        <string>Nombre Comercial:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lineEditNombreComercial">
+       <property name="placeholderText">
+        <string>Nombre comercial de la entidad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelCodigoEntidad">
+       <property name="text">
+        <string>Código Entidad:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEditCodigoEntidad">
+       <property name="placeholderText">
+        <string>Código ONEI</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelNIT">
+       <property name="text">
+        <string>NIT:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEditNIT">
+       <property name="placeholderText">
+        <string>Número de Identificación Tributaria</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelTelefono">
+       <property name="text">
+        <string>Teléfono:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEditTelefono">
+       <property name="placeholderText">
+        <string>Número telefónico</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="labelCorreo">
+       <property name="text">
+        <string>Correo:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="lineEditCorreo">
+       <property name="placeholderText">
+        <string>correo@ejemplo.com</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="labelDireccion">
+       <property name="text">
+        <string>Dirección:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QPlainTextEdit" name="plainTextEditDireccion">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="placeholderText">
+        <string>Dirección física de la entidad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="labelTipoEntidad">
+       <property name="text">
+        <string>Tipo Entidad:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="comboBoxTipoEntidad">
+       <item>
+        <property name="text">
+         <string>Empresa Estatal Socialista</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Empresa no Estatal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TCP (Trabajador por Cuenta Propia)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>MIPYME (Micro Pequeña y Mediana Empresa)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CNA (Cooperativa No Agropecuaria)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CPA (Cooperativa de Producción Agropecuaria)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>UISG (Unidad de Servicios Globales)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Representación de Empresa Extranjera</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Organismo de la Administración Central del Estado</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Entidad con Tratamiento Especial</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonCancelar">
+       <property name="text">
+        <string>Cancelar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonGuardar">
+       <property name="text">
+        <string>Guardar</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButtonCancelar</sender>
+   <signal>clicked()</signal>
+   <receiver>EntidadDialog</receiver>
+   <slot>on_pushButtonCancelar_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>450</x>
+     <y>470</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>300</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonGuardar</sender>
+   <signal>clicked()</signal>
+   <receiver>EntidadDialog</receiver>
+   <slot>on_pushButtonGuardar_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>530</x>
+     <y>470</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>300</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

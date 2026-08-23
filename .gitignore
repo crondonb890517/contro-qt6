@@ -17,17 +17,15 @@ qrc_*.cpp
 ui_*.h
 
 # Dependencies
+*.pyc
+__pycache__/
+*.egg-info/
+node_modules/
 venv/
 .venv/
-__pycache__/
-.pipenv/
-.tox/
-
-# Build directories
-build/
-dist/
-target/
-cmake-build-*/
+.env
+.env.local
+*.env.*
 
 # Logs and temp files
 *.log
@@ -35,27 +33,48 @@ cmake-build-*/
 *.swp
 *.swo
 
-# Environment
-.env
-.env.local
-*.env.*
-
 # Editors
 .vscode/
 .idea/
 *.swp
 *~
 
-# OS
+# Build systems
+build/
+dist/
+target/
+.gradle/
+.mypy_cache/
+.pytest_cache/
+coverage/
+htmlcov/
+*.coverage
+
+# System files
 .DS_Store
 Thumbs.db
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# MyPy
-.mypy_cache/
-.pytest_cache/
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 ```

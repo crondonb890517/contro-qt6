@@ -72,6 +72,55 @@ void PocketBaseClient::fetchEntidades()
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onFetchEntidadesFinished);
 }
 
+void PocketBaseClient::createEntidad(const QJsonObject &entidadData)
+{
+    QUrl url(m_baseUrl + "/api/collections/entidades/records");
+    
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    
+    if (!m_authToken.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    }
+    
+    QJsonDocument doc(entidadData);
+    m_currentReply = m_networkManager->post(request, doc.toJson());
+    
+    connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onCreateEntidadFinished);
+}
+
+void PocketBaseClient::updateEntidad(const QString &id, const QJsonObject &entidadData)
+{
+    QUrl url(m_baseUrl + "/api/collections/entidades/records/" + id);
+    
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    
+    if (!m_authToken.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    }
+    
+    QJsonDocument doc(entidadData);
+    m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", doc.toJson());
+    
+    connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onUpdateEntidadFinished);
+}
+
+void PocketBaseClient::deleteEntidad(const QString &id)
+{
+    QUrl url(m_baseUrl + "/api/collections/entidades/records/" + id);
+    
+    QNetworkRequest request(url);
+    
+    if (!m_authToken.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    }
+    
+    m_currentReply = m_networkManager->deleteResource(request);
+    
+    connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onDeleteEntidadFinished);
+}
+
 void PocketBaseClient::fetchContracts()
 {
     QUrl url(m_baseUrl + "/api/collections/" + m_collection + "/records");
@@ -361,6 +410,61 @@ void PocketBaseClient::onFetchEntidadesFinished()
         } else {
             QString error = m_currentReply->errorString();
             emit fetchError(error);
+        }
+        
+        m_currentReply->deleteLater();
+        m_currentReply = nullptr;
+    }
+}
+
+void PocketBaseClient::onCreateEntidadFinished()
+{
+    if (m_currentReply) {
+        if (m_currentReply->error() == QNetworkReply::NoError) {
+            QByteArray responseData = m_currentReply->readAll();
+            QJsonDocument doc = QJsonDocument::fromJson(responseData);
+            QJsonObject jsonObj = doc.object();
+            
+            Entidad entidad = parseEntidad(jsonObj);
+            emit entidadCreated(entidad);
+        } else {
+            QString error = m_currentReply->errorString();
+            emit operationError("Error al crear entidad: " + error);
+        }
+        
+        m_currentReply->deleteLater();
+        m_currentReply = nullptr;
+    }
+}
+
+void PocketBaseClient::onUpdateEntidadFinished()
+{
+    if (m_currentReply) {
+        if (m_currentReply->error() == QNetworkReply::NoError) {
+            QByteArray responseData = m_currentReply->readAll();
+            QJsonDocument doc = QJsonDocument::fromJson(responseData);
+            QJsonObject jsonObj = doc.object();
+            
+            Entidad entidad = parseEntidad(jsonObj);
+            emit entidadUpdated(entidad);
+        } else {
+            QString error = m_currentReply->errorString();
+            emit operationError("Error al actualizar entidad: " + error);
+        }
+        
+        m_currentReply->deleteLater();
+        m_currentReply = nullptr;
+    }
+}
+
+void PocketBaseClient::onDeleteEntidadFinished()
+{
+    if (m_currentReply) {
+        if (m_currentReply->error() == QNetworkReply::NoError) {
+            emit entidadDeleted(m_currentReply->url().path().split("/").last());
+        } else {
+            QString error = m_currentReply->errorString();
+            emit operationError("Error al eliminar entidad: " + error);
         }
         
         m_currentReply->deleteLater();

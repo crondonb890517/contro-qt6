@@ -16,21 +16,63 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Buscar:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEditBuscar"/>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QTableWidget" name="tableWidgetContratos"/>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabContratos">
+       <attribute name="title">
+        <string>Contratos</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Buscar:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditBuscar"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidgetContratos"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabEntidades">
+       <attribute name="title">
+        <string>Entidades</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="labelBuscarEntidad">
+            <property name="text">
+             <string>Buscar:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditBuscarEntidad">
+            <property name="placeholderText">
+             <string>Buscar entidades...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidgetEntidades"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -62,6 +104,14 @@
     <addaction name="actionNuevo_Contrato"/>
     <addaction name="actionEditar_Contrato"/>
     <addaction name="actionEliminar_Contrato"/>
+   </widget>
+   <widget class="QMenu" name="menuEntidades">
+    <property name="title">
+     <string>Entidades</string>
+    </property>
+    <addaction name="actionNueva_Entidad"/>
+    <addaction name="actionEditar_Entidad"/>
+    <addaction name="actionEliminar_Entidad"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -141,6 +191,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionNueva_Entidad">
+   <property name="text">
+    <string>Nueva Entidad</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionEditar_Entidad">
+   <property name="text">
+    <string>Editar Entidad</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionEliminar_Entidad">
+   <property name="text">
+    <string>Eliminar Entidad</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Del</string>
    </property>
   </action>
  </widget>
