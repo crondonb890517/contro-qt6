@@ -574,3 +574,19 @@ void MainWindow::on_pushButtonEliminarContrato_clicked()
 {
     on_actionEliminar_Contrato_triggered();
 }
+
+// Slots para botones de la UI de Entidades
+void MainWindow::on_pushButtonNuevaEntidad_clicked()
+{
+    on_actionNueva_Entidad_triggered();
+}
+
+void MainWindow::on_pushButtonEditarEntidad_clicked()
+{
+    on_actionEditar_Entidad_triggered();
+}
+
+void MainWindow::on_pushButtonEliminarEntidad_clicked()
+{
+    on_actionEliminar_Entidad_triggered();
+}
