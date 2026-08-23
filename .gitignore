@@ -1,1 +1,29 @@
-Nothing should be ignored since the changes only include source code files (.cpp, .h, .ui) without any build artifacts, dependencies, or temporary files.
+```
+# Qt/MOC generated files
+*.moc
+*.moc.cpp
+*.ui.h
+*.qrc
+moc_*
+qrc_*
+
+# Build directories
+build/
+release/
+debug/
+*.pro.user
+*.pro.user.*
+*.pri~
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+*.env.*
+```

@@ -104,14 +104,27 @@ make -j4
 
 ```
 /workspace/
-├── contro-qt6.pro          # Proyecto qmake
-├── main.cpp                # Punto de entrada
-├── mainwindow.h/cpp        # Ventana principal
-├── mainwindow.ui           # UI de ventana principal
-├── pocketbaseclient.h/cpp  # Cliente API PocketBase
-├── contractdialog.h/cpp    # Diálogo de creación/edición
-├── contractdialog.ui       # UI del diálogo
-└── README.md               # Este archivo
+├── src/                      # Código fuente
+│   ├── main.cpp              # Punto de entrada
+│   ├── core/                 # Componentes principales
+│   │   ├── pocketbaseclient.h/cpp    # Cliente API PocketBase
+│   │   └── sessionmanager.h/cpp      # Gestor de sesiones
+│   ├── ui/                   # Interfaz de usuario
+│   │   ├── mainwindow.h/cpp          # Ventana principal
+│   │   ├── mainwindow.ui             # UI de ventana principal
+│   │   ├── contractdialog.h/cpp      # Diálogo de creación/edición
+│   │   ├── contractdialog.ui         # UI del diálogo
+│   │   ├── entidaddialog.h/cpp       # Diálogo de entidades
+│   │   └── entidaddialog.ui          # UI del diálogo
+│   └── models/               # Modelos de datos (futuro)
+├── include/                  # Cabeceras públicas (futuro)
+├── resources/                # Recursos (imágenes, iconos, etc.)
+├── tests/                    # Pruebas unitarias (futuro)
+├── docs/                     # Documentación
+│   └── entidad_schema.sql    # Schema de entidad
+├── contro-qt6.pro            # Proyecto qmake
+├── README.md                 # Este archivo
+└── LICENSE                   # Licencia
 ```
 
 ## API PocketBase

@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include <QList>
-#include "pocketbaseclient.h"
-#include "sessionmanager.h"
+#include "core/pocketbaseclient.h"
+#include "core/sessionmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
