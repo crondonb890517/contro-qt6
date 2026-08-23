@@ -16,16 +16,10 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>-1</number>
       </property>
-      <widget class="QWidget" name="layoutContratos" native="true">
-       <layout class="QVBoxLayout" name="verticalLayout_2"/>
-      </widget>
-      <widget class="QWidget" name="layoutEntidades" native="true">
-       <layout class="QVBoxLayout" name="verticalLayout_3"/>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -90,28 +84,34 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionContratos"/>
-   <addaction name="actionEntidades"/>
+   <addaction name="actionVer_Contratos"/>
+   <addaction name="actionVer_Entidades"/>
    <addaction name="separator"/>
    <addaction name="actionNuevo_Contrato"/>
    <addaction name="actionNueva_Entidad"/>
    <addaction name="separator"/>
    <addaction name="actionActualizar"/>
   </widget>
-  <action name="actionContratos">
+  <action name="actionVer_Contratos">
    <property name="text">
+    <string>Ver Contratos</string>
+   </property>
+   <property name="toolTip">
+    <string>Mostrar lista de contratos</string>
+   </property>
+   <property name="iconText">
     <string>Contratos</string>
    </property>
-   <property name="toolTip">
-    <string>Ver lista de contratos</string>
-   </property>
   </action>
-  <action name="actionEntidades">
+  <action name="actionVer_Entidades">
    <property name="text">
-    <string>Entidades</string>
+    <string>Ver Entidades</string>
    </property>
    <property name="toolTip">
-    <string>Ver lista de entidades</string>
+    <string>Mostrar lista de entidades</string>
+   </property>
+   <property name="iconText">
+    <string>Entidades</string>
    </property>
   </action>
   <action name="actionNuevo_Contrato">

@@ -132,23 +132,19 @@ void MainWindow::setupSmartGrids()
         on_actionEliminar_Entidad_triggered();
     });
     
-    // Añadir widgets al splitter usando los layouts internos
-    // layoutContratos y layoutEntidades son widgets nativos con layouts internos
-    auto contratosLayout = ui->layoutContratos->findChild<QVBoxLayout*>("verticalLayout_2");
-    auto entidadesLayout = ui->layoutEntidades->findChild<QVBoxLayout*>("verticalLayout_3");
+    // Añadir widgets al layout central
+    QWidget *centralWidget = new QWidget(this);
+    QVBoxLayout *layout = new QVBoxLayout(centralWidget);
+    layout->addWidget(m_contratosWidget);
+    layout->addWidget(m_entidadesWidget);
+    setCentralWidget(centralWidget);
     
-    if (!contratosLayout) {
-        contratosLayout = new QVBoxLayout(ui->layoutContratos);
-    }
-    if (!entidadesLayout) {
-        entidadesLayout = new QVBoxLayout(ui->layoutEntidades);
-    }
+    // Ocultar ambos widgets inicialmente
+    m_contratosWidget->hide();
+    m_entidadesWidget->hide();
     
-    contratosLayout->addWidget(m_contratosWidget);
-    entidadesLayout->addWidget(m_entidadesWidget);
-    
-    // Configurar proporción del splitter (60% contratos, 40% entidades)
-    ui->splitter->setSizes({800, 400});
+    // Mostrar contratos por defecto
+    showContratos();
 }
 
 void MainWindow::loadContracts()
@@ -469,14 +465,14 @@ void MainWindow::on_actionCerrar_Sesion_triggered()
     }
 }
 
-void MainWindow::on_actionContratos_triggered()
+void MainWindow::on_actionVer_Contratos_triggered()
 {
-    showCollection(0);
+    showContratos();
 }
 
-void MainWindow::on_actionEntidades_triggered()
+void MainWindow::on_actionVer_Entidades_triggered()
 {
-    showCollection(1);
+    showEntidades();
 }
 
 // Slots de PocketBase
@@ -619,15 +615,19 @@ void MainWindow::onSessionLoadError(const QString &error)
     showLoginDialog();
 }
 
-void MainWindow::showCollection(int index)
+void MainWindow::showContratos()
 {
-    // Show/hide widgets based on index
-    if (index == 0) {
-        ui->layoutContratos->setVisible(true);
-        ui->layoutEntidades->setVisible(false);
-    } else if (index == 1) {
-        ui->layoutContratos->setVisible(false);
-        ui->layoutEntidades->setVisible(true);
-    }
+    m_contratosWidget->show();
+    m_entidadesWidget->hide();
+    loadContracts();
+    ui->statusbar->showMessage("Visualizando contratos");
+}
+
+void MainWindow::showEntidades()
+{
+    m_contratosWidget->hide();
+    m_entidadesWidget->show();
+    loadEntidades();
+    ui->statusbar->showMessage("Visualizando entidades");
 }
 
