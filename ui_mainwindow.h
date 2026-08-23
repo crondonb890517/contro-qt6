@@ -151,8 +151,6 @@ public:
 
         retranslateUi(MainWindow);
         QObject::connect(actionSalir, &QAction::triggered, MainWindow, qOverload<>(&QMainWindow::close));
-        QObject::connect(actionContratos, &QAction::triggered, MainWindow, qOverload<>(&QMainWindow::on_actionContratos_triggered));
-        QObject::connect(actionEntidades, &QAction::triggered, MainWindow, qOverload<>(&QMainWindow::on_actionEntidades_triggered));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
