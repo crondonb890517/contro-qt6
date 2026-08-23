@@ -1,47 +1,29 @@
 ```
-# Compiled and build artifacts
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.a
-*.out
+# Qt/MOC generated files
+*.moc
+*.moc.cpp
+*.ui.h
+*.qrc
+moc_*
+qrc_*
 
-# Qt build artifacts
+# Build directories
+build/
+release/
+debug/
 *.pro.user
 *.pro.user.*
-*.qrc
-moc_*.cpp
-qrc_*.cpp
-ui_*.h
-build/
+*.pri~
 
-# Dependencies
-venv/
-.venv/
-node_modules/
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-
-# Editors
+# IDE
 .vscode/
 .idea/
+
+# Logs
+*.log
 
 # Environment
 .env
 .env.local
 *.env.*
-
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
-
-# System files
-.DS_Store
-Thumbs.db
 ```
