@@ -1,29 +1,22 @@
 ```
-# Qt/MOC generated files
-*.moc
-*.moc.cpp
-*.ui.h
-*.qrc
-moc_*
-qrc_*
+# Build artifacts
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.exe
+*.out
 
-# Build directories
-build/
-release/
-debug/
+# Qt specific
+*.moc
+*.ui
+*.qrc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# Dependencies
 *.pro.user
 *.pro.user.*
-*.pri~
-
-# IDE
-.vscode/
-.idea/
-
-# Logs
-*.log
-
-# Environment
-.env
-.env.local
-*.env.*
 ```

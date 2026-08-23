@@ -19,14 +19,24 @@ SOURCES += \
     src/core/pocketbaseclient.cpp \
     src/ui/contractdialog.cpp \
     src/core/sessionmanager.cpp \
-    src/ui/entidaddialog.cpp
+    src/ui/entidaddialog.cpp \
+    src/core/gridconfig.cpp \
+    src/ui/smartgridwidget.cpp \
+    src/ui/genericdialog.cpp \
+    src/ui/smartcollectionwidget.cpp \
+    src/ui/formconfigfactory.cpp
 
 HEADERS += \
     src/ui/mainwindow.h \
     src/core/pocketbaseclient.h \
     src/ui/contractdialog.h \
     src/core/sessionmanager.h \
-    src/ui/entidaddialog.h
+    src/ui/entidaddialog.h \
+    src/core/gridconfig.h \
+    src/ui/smartgridwidget.h \
+    src/ui/genericdialog.h \
+    src/ui/smartcollectionwidget.h \
+    src/ui/formconfigfactory.h
 
 FORMS += \
     src/ui/mainwindow.ui \
