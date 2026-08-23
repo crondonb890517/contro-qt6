@@ -260,7 +260,7 @@ void GenericDialog::setWidgetValue(QWidget *widget, const FieldConfig &fieldConf
     }
 }
 
-QVariant GenericDialog::getWidgetValue(QWidget *widget, const FieldConfig &fieldConfig)
+QVariant GenericDialog::getWidgetValue(QWidget *widget, const FieldConfig &fieldConfig) const
 {
     if (!widget) return QVariant();
     

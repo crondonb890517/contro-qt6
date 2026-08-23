@@ -6,10 +6,13 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QDateEdit>
+#include <QDateTimeEdit>
+#include <QSpinBox>
 #include <QDoubleSpinBox>
 #include <QTextEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QCheckBox>
 #include <QJsonObject>
 #include "core/gridconfig.h"
 #include "core/pocketbaseclient.h"
@@ -74,7 +77,7 @@ private:
     void createField(const FieldConfig &fieldConfig);
     QWidget* createWidgetForType(const FieldConfig &fieldConfig);
     void setWidgetValue(QWidget *widget, const FieldConfig &fieldConfig, const QVariant &value);
-    QVariant getWidgetValue(QWidget *widget, const FieldConfig &fieldConfig);
+    QVariant getWidgetValue(QWidget *widget, const FieldConfig &fieldConfig) const;
     bool validateForm();
     void showValidationMessage(const QString &fieldName);
 };

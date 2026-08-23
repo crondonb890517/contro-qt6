@@ -37,6 +37,7 @@ private slots:
     void onGridItemDoubleClicked(const QJsonObject &item);
     void onGridSelectionChanged();
     void onRefreshRequested();
+    void onButtonClicked();
 
 private:
     GridConfig m_gridConfig;
@@ -48,6 +49,7 @@ private:
     QPushButton *m_nuevoButton;
     QPushButton *m_editarButton;
     QPushButton *m_eliminarButton;
+    QMap<QPushButton*, QString> m_buttonSlots;
     
     QJsonObject m_currentItem;
     

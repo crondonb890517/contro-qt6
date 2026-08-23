@@ -75,8 +75,19 @@ void SmartCollectionWidget::setPocketBaseClient(PocketBaseClient *client)
 void SmartCollectionWidget::addActionButton(const QString &text, const char *slot)
 {
     QPushButton *button = new QPushButton(text);
-    connect(button, &QPushButton::clicked, this, slot);
+    // Almacenar el slot en un mapa para usarlo después
+    m_buttonSlots[button] = QString::fromUtf8(slot + 1); // Saltar el caracter ':' inicial
+    connect(button, &QPushButton::clicked, this, &SmartCollectionWidget::onButtonClicked);
     m_buttonLayout->addWidget(button);
+}
+
+void SmartCollectionWidget::onButtonClicked()
+{
+    QPushButton *button = qobject_cast<QPushButton*>(sender());
+    if (button && m_buttonSlots.contains(button)) {
+        QString slotName = m_buttonSlots[button];
+        QMetaObject::invokeMethod(this, slotName.toUtf8().constData(), Qt::AutoConnection);
+    }
 }
 
 void SmartCollectionWidget::hideDefaultButtons(bool hide)
