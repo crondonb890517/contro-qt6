@@ -459,6 +459,16 @@ void MainWindow::on_actionCerrar_Sesion_triggered()
     }
 }
 
+void MainWindow::on_actionContratos_triggered()
+{
+    showCollection(0);
+}
+
+void MainWindow::on_actionEntidades_triggered()
+{
+    showCollection(1);
+}
+
 // Slots de PocketBase
 void MainWindow::onLoginSuccess(const QString &token, const QString &userId)
 {
@@ -598,3 +608,9 @@ void MainWindow::onSessionLoadError(const QString &error)
     // Si no hay sesión guardada o hay error, mostrar login
     showLoginDialog();
 }
+
+void MainWindow::showCollection(int index)
+{
+    ui->tabWidget->setCurrentIndex(index);
+}
+
