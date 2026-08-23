@@ -132,9 +132,16 @@ void MainWindow::setupSmartGrids()
         on_actionEliminar_Entidad_triggered();
     });
     
-    // Añadir widgets al QStackedWidget
-    ui->stackedWidget->addWidget(m_contratosWidget);
-    ui->stackedWidget->addWidget(m_entidadesWidget);
+    // Añadir widgets al layout central
+    QWidget *centralWidget = new QWidget(this);
+    QVBoxLayout *layout = new QVBoxLayout(centralWidget);
+    layout->addWidget(m_contratosWidget);
+    layout->addWidget(m_entidadesWidget);
+    setCentralWidget(centralWidget);
+    
+    // Ocultar ambos widgets inicialmente
+    m_contratosWidget->hide();
+    m_entidadesWidget->hide();
     
     // Mostrar contratos por defecto
     showContratos();
@@ -610,14 +617,16 @@ void MainWindow::onSessionLoadError(const QString &error)
 
 void MainWindow::showContratos()
 {
-    ui->stackedWidget->setCurrentWidget(m_contratosWidget);
+    m_contratosWidget->show();
+    m_entidadesWidget->hide();
     loadContracts();
     ui->statusbar->showMessage("Visualizando contratos");
 }
 
 void MainWindow::showEntidades()
 {
-    ui->stackedWidget->setCurrentWidget(m_entidadesWidget);
+    m_contratosWidget->hide();
+    m_entidadesWidget->show();
     loadEntidades();
     ui->statusbar->showMessage("Visualizando entidades");
 }
