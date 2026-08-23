@@ -1,20 +1,20 @@
 ```
-# Qt/MOC generated files
-*.moc
-*.moc.cpp
-qrc_*.cpp
+# Compiled and build artifacts
+*.o
+*.obj
+*.out
+moc_*.cpp
 ui_*.h
 
 # Build directories
 build/
 dist/
-*.pro.user
 
 # Dependencies
+node_modules/
 venv/
 .venv/
 __pycache__/
-*.egg-info/
 
 # Logs and temp files
 *.log
@@ -29,22 +29,8 @@ __pycache__/
 # Editors
 .vscode/
 .idea/
-*.swo
-*.swn
 
-# OS
+# OS generated files
 .DS_Store
 Thumbs.db
-
-# Coverage
-.coverage
-coverage/
-htmlcov/
-
-# Python
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
 ```

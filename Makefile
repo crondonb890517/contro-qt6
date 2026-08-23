@@ -130,7 +130,6 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xml.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xml_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_Qt6Keychain.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_functions.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
@@ -227,7 +226,6 @@ Makefile: contro-qt6.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.c
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xml.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xml_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_Qt6Keychain.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_functions.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
@@ -299,7 +297,6 @@ Makefile: contro-qt6.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.c
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xml.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_xml_private.pri:
-/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_Qt6Keychain.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_functions.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf:
@@ -425,7 +422,6 @@ moc_genericdialog.cpp: src/ui/genericdialog.h \
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /workspace/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/workspace -I/usr/include/qt6keychain -I/workspace/src -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtNetwork -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/12 -I/usr/include/x86_64-linux-gnu/c++/12 -I/usr/include/c++/12/backward -I/usr/lib/gcc/x86_64-linux-gnu/12/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include src/ui/genericdialog.h -o moc_genericdialog.cpp
 
 moc_smartcollectionwidget.cpp: src/ui/smartcollectionwidget.h \
-		src/ui/smartgridwidget.h \
 		src/core/gridconfig.h \
 		src/core/pocketbaseclient.h \
 		src/ui/genericdialog.h \
@@ -474,7 +470,6 @@ mainwindow.o: src/ui/mainwindow.cpp src/ui/mainwindow.h \
 		src/ui/contractdialog.h \
 		src/ui/entidaddialog.h \
 		src/ui/smartcollectionwidget.h \
-		src/ui/smartgridwidget.h \
 		src/core/gridconfig.h \
 		src/ui/genericdialog.h \
 		src/ui/formconfigfactory.h
@@ -510,10 +505,10 @@ genericdialog.o: src/ui/genericdialog.cpp src/ui/genericdialog.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o genericdialog.o src/ui/genericdialog.cpp
 
 smartcollectionwidget.o: src/ui/smartcollectionwidget.cpp src/ui/smartcollectionwidget.h \
-		src/ui/smartgridwidget.h \
 		src/core/gridconfig.h \
 		src/core/pocketbaseclient.h \
-		src/ui/genericdialog.h
+		src/ui/genericdialog.h \
+		src/ui/smartgridwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o smartcollectionwidget.o src/ui/smartcollectionwidget.cpp
 
 formconfigfactory.o: src/ui/formconfigfactory.cpp src/ui/formconfigfactory.h \

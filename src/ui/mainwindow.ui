@@ -16,10 +16,16 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QStackedWidget" name="stackedWidget">
-      <property name="currentIndex">
-       <number>-1</number>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
+      <widget class="QWidget" name="layoutContratos" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout_2"/>
+      </widget>
+      <widget class="QWidget" name="layoutEntidades" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout_3"/>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -208,7 +214,7 @@
    <sender>actionContratos</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>showCollection(0)</slot>
+   <slot>on_actionContratos_triggered()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -224,7 +230,7 @@
    <sender>actionEntidades</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>showCollection(1)</slot>
+   <slot>on_actionEntidades_triggered()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

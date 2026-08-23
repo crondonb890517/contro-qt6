@@ -15,7 +15,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
@@ -40,7 +40,11 @@ public:
     QAction *actionEliminar_Entidad;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
-    QStackedWidget *stackedWidget;
+    QSplitter *splitter;
+    QWidget *layoutContratos;
+    QVBoxLayout *verticalLayout_2;
+    QWidget *layoutEntidades;
+    QVBoxLayout *verticalLayout_3;
     QMenuBar *menubar;
     QMenu *menuArchivo;
     QMenu *menuContratos;
@@ -82,10 +86,21 @@ public:
         centralwidget->setObjectName("centralwidget");
         verticalLayout = new QVBoxLayout(centralwidget);
         verticalLayout->setObjectName("verticalLayout");
-        stackedWidget = new QStackedWidget(centralwidget);
-        stackedWidget->setObjectName("stackedWidget");
+        splitter = new QSplitter(centralwidget);
+        splitter->setObjectName("splitter");
+        splitter->setOrientation(Qt::Horizontal);
+        layoutContratos = new QWidget(splitter);
+        layoutContratos->setObjectName("layoutContratos");
+        verticalLayout_2 = new QVBoxLayout(layoutContratos);
+        verticalLayout_2->setObjectName("verticalLayout_2");
+        splitter->addWidget(layoutContratos);
+        layoutEntidades = new QWidget(splitter);
+        layoutEntidades->setObjectName("layoutEntidades");
+        verticalLayout_3 = new QVBoxLayout(layoutEntidades);
+        verticalLayout_3->setObjectName("verticalLayout_3");
+        splitter->addWidget(layoutEntidades);
 
-        verticalLayout->addWidget(stackedWidget);
+        verticalLayout->addWidget(splitter);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -136,11 +151,8 @@ public:
 
         retranslateUi(MainWindow);
         QObject::connect(actionSalir, &QAction::triggered, MainWindow, qOverload<>(&QMainWindow::close));
-        QObject::connect(actionContratos, &QAction::triggered, MainWindow, &QMainWindow::showCollection);
-        QObject::connect(actionEntidades, &QAction::triggered, MainWindow, &QMainWindow::showCollection);
-
-        stackedWidget->setCurrentIndex(-1);
-
+        QObject::connect(actionContratos, &QAction::triggered, MainWindow, qOverload<>(&QMainWindow::on_actionContratos_triggered));
+        QObject::connect(actionEntidades, &QAction::triggered, MainWindow, qOverload<>(&QMainWindow::on_actionEntidades_triggered));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
