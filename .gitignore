@@ -8,6 +8,14 @@
 *.a
 *.out
 
+# Qt/C++ specific
+*.moc
+*.ui
+*.qrc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
 # Dependencies
 *.pyc
 __pycache__/
@@ -28,6 +36,8 @@ venv/
 # Editors
 .vscode/
 .idea/
+*.swp
+*~
 
 # Build systems
 build/
