@@ -35,6 +35,9 @@ private slots:
     void on_actionEliminar_Entidad_triggered();
     void on_tableWidgetContratos_cellDoubleClicked(int row, int column);
     void on_lineEditBuscar_textChanged(const QString &text);
+    void on_pushButtonNuevoContrato_clicked();
+    void on_pushButtonEditarContrato_clicked();
+    void on_pushButtonEliminarContrato_clicked();
     
     // Slots de PocketBase
     void onLoginSuccess(const QString &token, const QString &userId);
