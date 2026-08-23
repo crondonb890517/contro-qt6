@@ -14,24 +14,24 @@ DEPENDPATH += /usr/include/qt6keychain
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp \
-    pocketbaseclient.cpp \
-    contractdialog.cpp \
-    sessionmanager.cpp \
-    entidaddialog.cpp
+    src/main.cpp \
+    src/ui/mainwindow.cpp \
+    src/core/pocketbaseclient.cpp \
+    src/ui/contractdialog.cpp \
+    src/core/sessionmanager.cpp \
+    src/ui/entidaddialog.cpp
 
 HEADERS += \
-    mainwindow.h \
-    pocketbaseclient.h \
-    contractdialog.h \
-    sessionmanager.h \
-    entidaddialog.h
+    src/ui/mainwindow.h \
+    src/core/pocketbaseclient.h \
+    src/ui/contractdialog.h \
+    src/core/sessionmanager.h \
+    src/ui/entidaddialog.h
 
 FORMS += \
-    mainwindow.ui \
-    contractdialog.ui \
-    entidaddialog.ui
+    src/ui/mainwindow.ui \
+    src/ui/contractdialog.ui \
+    src/ui/entidaddialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

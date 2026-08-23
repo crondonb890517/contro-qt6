@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QString>
 #include <QList>
-#include "pocketbaseclient.h"
+#include "core/pocketbaseclient.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

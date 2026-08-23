@@ -1,1 +1,47 @@
-Nothing should be ignored since the changes only include source code files (.cpp, .h, .ui) without any build artifacts, dependencies, or temporary files.
+```
+# Compiled and build artifacts
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
+
+# Qt build artifacts
+*.pro.user
+*.pro.user.*
+*.qrc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+build/
+
+# Dependencies
+venv/
+.venv/
+node_modules/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Editors
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# System files
+.DS_Store
+Thumbs.db
+```
