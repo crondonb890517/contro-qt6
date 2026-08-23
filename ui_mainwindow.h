@@ -15,7 +15,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QSplitter>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
@@ -26,6 +26,8 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *actionContratos;
+    QAction *actionEntidades;
     QAction *actionNuevo_Contrato;
     QAction *actionEditar_Contrato;
     QAction *actionEliminar_Contrato;
@@ -38,11 +40,7 @@ public:
     QAction *actionEliminar_Entidad;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
-    QSplitter *splitter;
-    QWidget *widgetContratos;
-    QVBoxLayout *layoutContratos;
-    QWidget *widgetEntidades;
-    QVBoxLayout *layoutEntidades;
+    QStackedWidget *stackedWidget;
     QMenuBar *menubar;
     QMenu *menuArchivo;
     QMenu *menuContratos;
@@ -56,6 +54,10 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->resize(1200, 800);
+        actionContratos = new QAction(MainWindow);
+        actionContratos->setObjectName("actionContratos");
+        actionEntidades = new QAction(MainWindow);
+        actionEntidades->setObjectName("actionEntidades");
         actionNuevo_Contrato = new QAction(MainWindow);
         actionNuevo_Contrato->setObjectName("actionNuevo_Contrato");
         actionEditar_Contrato = new QAction(MainWindow);
@@ -80,22 +82,10 @@ public:
         centralwidget->setObjectName("centralwidget");
         verticalLayout = new QVBoxLayout(centralwidget);
         verticalLayout->setObjectName("verticalLayout");
-        splitter = new QSplitter(centralwidget);
-        splitter->setObjectName("splitter");
-        splitter->setOrientation(Qt::Horizontal);
-        splitter->setChildrenCollapsible(false);
-        widgetContratos = new QWidget(splitter);
-        widgetContratos->setObjectName("widgetContratos");
-        layoutContratos = new QVBoxLayout(widgetContratos);
-        layoutContratos->setObjectName("layoutContratos");
-        splitter->addWidget(widgetContratos);
-        widgetEntidades = new QWidget(splitter);
-        widgetEntidades->setObjectName("widgetEntidades");
-        layoutEntidades = new QVBoxLayout(widgetEntidades);
-        layoutEntidades->setObjectName("layoutEntidades");
-        splitter->addWidget(widgetEntidades);
+        stackedWidget = new QStackedWidget(centralwidget);
+        stackedWidget->setObjectName("stackedWidget");
 
-        verticalLayout->addWidget(splitter);
+        verticalLayout->addWidget(stackedWidget);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -136,6 +126,9 @@ public:
         menuEntidades->addAction(actionEditar_Entidad);
         menuEntidades->addAction(actionEliminar_Entidad);
         menuAyuda->addAction(actionAcerca_de);
+        toolBar->addAction(actionContratos);
+        toolBar->addAction(actionEntidades);
+        toolBar->addSeparator();
         toolBar->addAction(actionNuevo_Contrato);
         toolBar->addAction(actionNueva_Entidad);
         toolBar->addSeparator();
@@ -143,6 +136,11 @@ public:
 
         retranslateUi(MainWindow);
         QObject::connect(actionSalir, &QAction::triggered, MainWindow, qOverload<>(&QMainWindow::close));
+        QObject::connect(actionContratos, &QAction::triggered, MainWindow, &QMainWindow::showCollection);
+        QObject::connect(actionEntidades, &QAction::triggered, MainWindow, &QMainWindow::showCollection);
+
+        stackedWidget->setCurrentIndex(-1);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -150,6 +148,14 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Sistema de Gesti\303\263n de Contratos", nullptr));
+        actionContratos->setText(QCoreApplication::translate("MainWindow", "Contratos", nullptr));
+#if QT_CONFIG(tooltip)
+        actionContratos->setToolTip(QCoreApplication::translate("MainWindow", "Ver lista de contratos", nullptr));
+#endif // QT_CONFIG(tooltip)
+        actionEntidades->setText(QCoreApplication::translate("MainWindow", "Entidades", nullptr));
+#if QT_CONFIG(tooltip)
+        actionEntidades->setToolTip(QCoreApplication::translate("MainWindow", "Ver lista de entidades", nullptr));
+#endif // QT_CONFIG(tooltip)
         actionNuevo_Contrato->setText(QCoreApplication::translate("MainWindow", "Nuevo Contrato", nullptr));
 #if QT_CONFIG(shortcut)
         actionNuevo_Contrato->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+N", nullptr));

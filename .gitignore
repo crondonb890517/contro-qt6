@@ -1,1 +1,50 @@
-(src/ui/mainwindow.cpp is a source file, and there are no build artifacts, dependencies, or temp files in the changes)
+```
+# Qt/MOC generated files
+*.moc
+*.moc.cpp
+qrc_*.cpp
+ui_*.h
+
+# Build directories
+build/
+dist/
+*.pro.user
+
+# Dependencies
+venv/
+.venv/
+__pycache__/
+*.egg-info/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swo
+*.swn
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+.coverage
+coverage/
+htmlcov/
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+```
