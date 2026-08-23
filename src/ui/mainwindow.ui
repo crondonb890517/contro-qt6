@@ -99,6 +99,36 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonNuevaEntidad">
+            <property name="text">
+             <string>Nuevo</string>
+            </property>
+            <property name="icon">
+             <iconset theme="document-new"/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonEditarEntidad">
+            <property name="text">
+             <string>Editar</string>
+            </property>
+            <property name="icon">
+             <iconset theme="document-edit"/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonEliminarEntidad">
+            <property name="text">
+             <string>Eliminar</string>
+            </property>
+            <property name="icon">
+             <iconset theme="edit-delete"/>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
