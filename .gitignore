@@ -1,21 +1,27 @@
 ```
-# Compiled C++ files
+# Build artifacts
+contro-qt6
+*.h
 *.o
 *.obj
 *.a
 *.so
+*.dylib
 *.dll
 *.exe
 *.out
 
-# Qt/MOC generated files
-moc_*.cpp
-moc_*.h
-
-# Build directories
-build/
-dist/
-target/
+# Qt specific
+*.moc
+*.qm
+*.qrc
+*.pro.user
+*.pri
+*.prf
+Makefile*
+moc_*
+qrc_*
+ui_*.h
 
 # Dependencies
 node_modules/
@@ -23,28 +29,27 @@ venv/
 .venv/
 __pycache__/
 *.egg-info/
+.pytest_cache/
+.mypy_cache/
 
-# IDE/Editor files
-.vscode/
-.idea/
+# Logs and temp files
+*.log
+*.tmp
 *.swp
 *.swo
-*.tmp
-
-# Logs
-*.log
 
 # Environment
 .env
 .env.local
 *.env.*
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# System files
+# OS
 .DS_Store
 Thumbs.db
 ```

@@ -25,6 +25,7 @@ public:
     ~MainWindow();
 
 private slots:
+    void showCollection(int index);
     void on_actionContratos_triggered();
     void on_actionEntidades_triggered();
     void on_actionNuevo_Contrato_triggered();
@@ -69,7 +70,6 @@ private:
     
     void setupUI();
     void setupSmartGrids();
-    void showCollection(int index);
     void loadContracts();
     void loadEntidades();
     void showLoginDialog();
