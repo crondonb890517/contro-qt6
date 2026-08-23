@@ -611,6 +611,6 @@ void MainWindow::onSessionLoadError(const QString &error)
 
 void MainWindow::showCollection(int index)
 {
-    ui->tabWidget->setCurrentIndex(index);
+    ui->stackedWidget->setCurrentIndex(index);
 }
 
