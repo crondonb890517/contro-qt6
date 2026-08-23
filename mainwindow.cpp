@@ -558,3 +558,19 @@ void MainWindow::onSessionLoadError(const QString &error)
     // Si no hay sesión guardada o hay error, mostrar login
     showLoginDialog();
 }
+
+// Slots para botones de la UI de Contratos
+void MainWindow::on_pushButtonNuevoContrato_clicked()
+{
+    on_actionNuevo_Contrato_triggered();
+}
+
+void MainWindow::on_pushButtonEditarContrato_clicked()
+{
+    on_actionEditar_Contrato_triggered();
+}
+
+void MainWindow::on_pushButtonEliminarContrato_clicked()
+{
+    on_actionEliminar_Contrato_triggered();
+}

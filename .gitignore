@@ -1,7 +1,1 @@
-```
-# UI files
-*.ui
-
-# Build artifacts
-Makefile
-```
+Nothing should be ignored since the changes only include source code files (.cpp, .h, .ui) without any build artifacts, dependencies, or temporary files.
