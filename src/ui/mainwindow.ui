@@ -74,7 +74,53 @@
          </layout>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidgetContratos"/>
+         <widget class="QTableWidget" name="tableWidgetContratos">
+          <column>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Nombre</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Descripción</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Estado</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Valor</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Fecha Inicio</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Fecha Fin</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Entidad</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Archivo</string>
+           </property>
+          </column>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -269,21 +315,118 @@
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>actionSalir</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>511</x>
-     <y>383</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+   <connection>
+    <sender>actionSalir</sender>
+    <signal>triggered()</signal>
+    <receiver>MainWindow</receiver>
+    <slot>close()</slot>
+    <hints>
+     <hint type="sourcelabel">
+      <x>-1</x>
+      <y>-1</y>
+     </hint>
+     <hint type="destinationlabel">
+      <x>511</x>
+      <y>383</y>
+     </hint>
+    </hints>
+   </connection>
+   <connection>
+    <sender>pushButtonNuevoContrato</sender>
+    <signal>clicked()</signal>
+    <receiver>MainWindow</receiver>
+    <slot>on_pushButtonNuevoContrato_clicked()</slot>
+    <hints>
+     <hint type="sourcelabel">
+      <x>200</x>
+      <y>50</y>
+     </hint>
+     <hint type="destinationlabel">
+      <x>511</x>
+      <y>383</y>
+     </hint>
+    </hints>
+   </connection>
+   <connection>
+    <sender>pushButtonEditarContrato</sender>
+    <signal>clicked()</signal>
+    <receiver>MainWindow</receiver>
+    <slot>on_pushButtonEditarContrato_clicked()</slot>
+    <hints>
+     <hint type="sourcelabel">
+      <x>300</x>
+      <y>50</y>
+     </hint>
+     <hint type="destinationlabel">
+      <x>511</x>
+      <y>383</y>
+     </hint>
+    </hints>
+   </connection>
+   <connection>
+    <sender>pushButtonEliminarContrato</sender>
+    <signal>clicked()</signal>
+    <receiver>MainWindow</receiver>
+    <slot>on_pushButtonEliminarContrato_clicked()</slot>
+    <hints>
+     <hint type="sourcelabel">
+      <x>400</x>
+      <y>50</y>
+     </hint>
+     <hint type="destinationlabel">
+      <x>511</x>
+      <y>383</y>
+     </hint>
+    </hints>
+   </connection>
+   <connection>
+    <sender>pushButtonNuevaEntidad</sender>
+    <signal>clicked()</signal>
+    <receiver>MainWindow</receiver>
+    <slot>on_pushButtonNuevaEntidad_clicked()</slot>
+    <hints>
+     <hint type="sourcelabel">
+      <x>200</x>
+      <y>150</y>
+     </hint>
+     <hint type="destinationlabel">
+      <x>511</x>
+      <y>383</y>
+     </hint>
+    </hints>
+   </connection>
+   <connection>
+    <sender>pushButtonEditarEntidad</sender>
+    <signal>clicked()</signal>
+    <receiver>MainWindow</receiver>
+    <slot>on_pushButtonEditarEntidad_clicked()</slot>
+    <hints>
+     <hint type="sourcelabel">
+      <x>300</x>
+      <y>150</y>
+     </hint>
+     <hint type="destinationlabel">
+      <x>511</x>
+      <y>383</y>
+     </hint>
+    </hints>
+   </connection>
+   <connection>
+    <sender>pushButtonEliminarEntidad</sender>
+    <signal>clicked()</signal>
+    <receiver>MainWindow</receiver>
+    <slot>on_pushButtonEliminarEntidad_clicked()</slot>
+    <hints>
+     <hint type="sourcelabel">
+      <x>400</x>
+      <y>150</y>
+     </hint>
+     <hint type="destinationlabel">
+      <x>511</x>
+      <y>383</y>
+     </hint>
+    </hints>
+   </connection>
+  </connections>
+ </widget>
 </ui>

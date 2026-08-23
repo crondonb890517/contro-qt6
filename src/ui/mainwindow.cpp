@@ -81,9 +81,9 @@ void MainWindow::setupUI()
     setWindowTitle("Sistema de Gestión de Contratos - Contro QT6");
     
     // Configurar tabla de contratos
-    ui->tableWidgetContratos->setColumnCount(7);
+    ui->tableWidgetContratos->setColumnCount(8);
     ui->tableWidgetContratos->setHorizontalHeaderLabels({
-        "ID", "Nombre", "Estado", "Valor", "Fecha Inicio", "Fecha Fin", "Entidad"
+        "ID", "Nombre", "Descripción", "Estado", "Valor", "Fecha Inicio", "Fecha Fin", "Entidad"
     });
     ui->tableWidgetContratos->horizontalHeader()->setStretchLastSection(true);
     ui->tableWidgetContratos->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -126,6 +126,7 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
         ui->tableWidgetContratos->insertRow(i);
         
         QTableWidgetItem *itemNombre = new QTableWidgetItem(c.nombre);
+        QTableWidgetItem *itemDescripcion = new QTableWidgetItem(c.descripcion);
         QTableWidgetItem *itemEstado = new QTableWidgetItem(c.estado);
         QTableWidgetItem *itemValor = new QTableWidgetItem(QString("$ %1").arg(c.valor, 0, 'f', 2));
         QTableWidgetItem *itemFechaInicio = new QTableWidgetItem(c.fechaInicio);
@@ -151,11 +152,12 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
         
         ui->tableWidgetContratos->setItem(i, 0, new QTableWidgetItem(c.id));
         ui->tableWidgetContratos->setItem(i, 1, itemNombre);
-        ui->tableWidgetContratos->setItem(i, 2, itemEstado);
-        ui->tableWidgetContratos->setItem(i, 3, itemValor);
-        ui->tableWidgetContratos->setItem(i, 4, itemFechaInicio);
-        ui->tableWidgetContratos->setItem(i, 5, itemFechaFin);
-        ui->tableWidgetContratos->setItem(i, 6, itemEntidad);
+        ui->tableWidgetContratos->setItem(i, 2, itemDescripcion);
+        ui->tableWidgetContratos->setItem(i, 3, itemEstado);
+        ui->tableWidgetContratos->setItem(i, 4, itemValor);
+        ui->tableWidgetContratos->setItem(i, 5, itemFechaInicio);
+        ui->tableWidgetContratos->setItem(i, 6, itemFechaFin);
+        ui->tableWidgetContratos->setItem(i, 7, itemEntidad);
     }
     
     ui->statusbar->showMessage(QString("%1 contratos cargados").arg(contracts.size()));
