@@ -4,10 +4,11 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
-#include "ui/smartgridwidget.h"
-#include "ui/genericdialog.h"
 #include "core/gridconfig.h"
 #include "core/pocketbaseclient.h"
+#include "ui/genericdialog.h"
+
+class SmartGridWidget;
 
 class SmartCollectionWidget : public QWidget
 {

@@ -8,8 +8,8 @@
 
 #include <memory>
 #include "src/ui/smartcollectionwidget.h"
-#include <QtGui/qtextcursor.h>
 #include <QtNetwork/QSslError>
+#include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'smartcollectionwidget.h' doesn't include <QObject>."

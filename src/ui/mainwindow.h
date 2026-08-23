@@ -25,6 +25,8 @@ public:
     ~MainWindow();
 
 private slots:
+    void on_actionContratos_triggered();
+    void on_actionEntidades_triggered();
     void on_actionNuevo_Contrato_triggered();
     void on_actionEditar_Contrato_triggered();
     void on_actionEliminar_Contrato_triggered();
@@ -62,10 +64,12 @@ private:
     SessionManager *m_sessionManager;
     SmartCollectionWidget *m_contratosWidget;
     SmartCollectionWidget *m_entidadesWidget;
+    QWidget *m_emptyWidget;
     QList<Entidad> m_entidades;
     
     void setupUI();
     void setupSmartGrids();
+    void showCollection(int index);
     void loadContracts();
     void loadEntidades();
     void showLoginDialog();

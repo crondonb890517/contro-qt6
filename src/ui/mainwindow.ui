@@ -16,19 +16,10 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>-1</number>
       </property>
-      <property name="childrenCollapsible">
-       <bool>false</bool>
-      </property>
-      <widget class="QWidget" name="widgetContratos" native="true">
-       <layout class="QVBoxLayout" name="layoutContratos"/>
-      </widget>
-      <widget class="QWidget" name="widgetEntidades" native="true">
-       <layout class="QVBoxLayout" name="layoutEntidades"/>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -93,11 +84,30 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionContratos"/>
+   <addaction name="actionEntidades"/>
+   <addaction name="separator"/>
    <addaction name="actionNuevo_Contrato"/>
    <addaction name="actionNueva_Entidad"/>
    <addaction name="separator"/>
    <addaction name="actionActualizar"/>
   </widget>
+  <action name="actionContratos">
+   <property name="text">
+    <string>Contratos</string>
+   </property>
+   <property name="toolTip">
+    <string>Ver lista de contratos</string>
+   </property>
+  </action>
+  <action name="actionEntidades">
+   <property name="text">
+    <string>Entidades</string>
+   </property>
+   <property name="toolTip">
+    <string>Ver lista de entidades</string>
+   </property>
+  </action>
   <action name="actionNuevo_Contrato">
    <property name="text">
     <string>Nuevo Contrato</string>

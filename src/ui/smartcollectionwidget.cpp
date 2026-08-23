@@ -1,4 +1,6 @@
 #include "smartcollectionwidget.h"
+#include "smartgridwidget.h"
+#include "genericdialog.h"
 #include <QMessageBox>
 #include <QInputDialog>
 
