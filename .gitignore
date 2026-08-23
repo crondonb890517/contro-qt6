@@ -1,56 +1,7 @@
 ```
+# UI files
+*.ui
+
 # Build artifacts
-*.o
-*.obj
-*.a
-*.lib
-*.so
-*.dll
-*.dylib
-*.exe
-*.out
-
-# Qt specific
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qmlproject.user
-moc_*.cpp
-qrc_*.cpp
-ui_*.h
-Makefile*
-*.prl
-build/
-
-# Dependencies
-node_modules/
-venv/
-.venv/
-__pycache__/
-*.egg-info/
-.Python
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Logs
-*.log
-
-# Environment
-.env
-.env.local
-*.env.*
-
-# Coverage
-.coverage
-coverage/
-htmlcov/
-
-# OS files
-.DS_Store
-Thumbs.db
+Makefile
 ```
