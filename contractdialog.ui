@@ -144,9 +144,9 @@
       </widget>
      </item>
      <item row="6" column="1">
-      <widget class="QLineEdit" name="lineEditCliente">
+      <widget class="QComboBox" name="comboBoxCliente">
        <property name="placeholderText">
-        <string>Nombre del cliente</string>
+        <string>Seleccione una entidad</string>
        </property>
       </widget>
      </item>

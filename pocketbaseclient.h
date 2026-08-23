@@ -13,33 +13,13 @@
 
 struct Entidad {
     QString id;
-    QString nombre;
     QString nombreComercial;
     QString codigoEntidad;
-    QString nit;
-    QString telefono;
-    QString correo;
-    QString direccion;
-    QString municipio;
-    QString provincia;
-    QString codigoPostal;
+    QString nitEntidad;
+    int telefonoEntidad;
+    QString correoEntidad;
+    QString direccionEntidad;
     QString tipoEntidad;
-    QString sector;
-    QString organoSuperior;
-    QString representanteLegal;
-    QString cargoRepresentante;
-    QString contactoNombre;
-    QString contactoCargo;
-    QString contactoTelefono;
-    QString contactoCorreo;
-    QString estado;
-    QString fechaConstitucion;
-    double capitalSocial;
-    QString moneda;
-    QString paisOrigen;
-    QString sitioWeb;
-    QString observaciones;
-    QString logo;
 };
 
 struct Contract {
@@ -70,6 +50,9 @@ public:
 
     void login(const QString &email, const QString &password);
     void fetchEntidades();
+    void createEntidad(const QJsonObject &entidadData);
+    void updateEntidad(const QString &id, const QJsonObject &entidadData);
+    void deleteEntidad(const QString &id);
     void fetchContracts();
     void createContract(const QJsonObject &contractData, const QString &filePath = QString());
     void updateContract(const QString &id, const QJsonObject &contractData, const QString &filePath = QString());
@@ -79,6 +62,9 @@ signals:
     void loginSuccess(const QString &token, const QString &userId);
     void loginError(const QString &error);
     void entidadesFetched(const QList<Entidad> &entidades);
+    void entidadCreated(const Entidad &entidad);
+    void entidadUpdated(const Entidad &entidad);
+    void entidadDeleted(const QString &id);
     void contractsFetched(const QList<Contract> &contracts);
     void fetchError(const QString &error);
     void contractCreated(const Contract &contract);
@@ -90,6 +76,9 @@ private slots:
     void onLoginFinished();
     void onFetchFinished();
     void onFetchEntidadesFinished();
+    void onCreateEntidadFinished();
+    void onUpdateEntidadFinished();
+    void onDeleteEntidadFinished();
     void onCreateFinished();
     void onUpdateFinished();
     void onDeleteFinished();

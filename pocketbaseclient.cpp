@@ -57,8 +57,8 @@ void PocketBaseClient::login(const QString &email, const QString &password)
 
 void PocketBaseClient::fetchEntidades()
 {
-    QUrl url(m_baseUrl + "/api/collections/entidad/records");
-    url.setQuery("sort=nombre");
+    QUrl url(m_baseUrl + "/api/collections/entidades/records");
+    url.setQuery("sort=nombre_comercial_entidad");
     
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -70,6 +70,55 @@ void PocketBaseClient::fetchEntidades()
     m_currentReply = m_networkManager->get(request);
     
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onFetchEntidadesFinished);
+}
+
+void PocketBaseClient::createEntidad(const QJsonObject &entidadData)
+{
+    QUrl url(m_baseUrl + "/api/collections/entidades/records");
+    
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    
+    if (!m_authToken.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    }
+    
+    QJsonDocument doc(entidadData);
+    m_currentReply = m_networkManager->post(request, doc.toJson());
+    
+    connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onCreateEntidadFinished);
+}
+
+void PocketBaseClient::updateEntidad(const QString &id, const QJsonObject &entidadData)
+{
+    QUrl url(m_baseUrl + "/api/collections/entidades/records/" + id);
+    
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    
+    if (!m_authToken.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    }
+    
+    QJsonDocument doc(entidadData);
+    m_currentReply = m_networkManager->sendCustomRequest(request, "PATCH", doc.toJson());
+    
+    connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onUpdateEntidadFinished);
+}
+
+void PocketBaseClient::deleteEntidad(const QString &id)
+{
+    QUrl url(m_baseUrl + "/api/collections/entidades/records/" + id);
+    
+    QNetworkRequest request(url);
+    
+    if (!m_authToken.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    }
+    
+    m_currentReply = m_networkManager->deleteResource(request);
+    
+    connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onDeleteEntidadFinished);
 }
 
 void PocketBaseClient::fetchContracts()
@@ -258,33 +307,13 @@ Contract PocketBaseClient::parseContract(const QJsonObject &json)
         
         // Parsear datos de la entidad si existen
         contract.entidadCliente.id = clienteObj["id"].toString();
-        contract.entidadCliente.nombre = clienteObj["nombre"].toString();
-        contract.entidadCliente.nombreComercial = clienteObj["nombre_comercial"].toString();
+        contract.entidadCliente.nombreComercial = clienteObj["nombre_comercial_entidad"].toString();
         contract.entidadCliente.codigoEntidad = clienteObj["codigo_entidad"].toString();
-        contract.entidadCliente.nit = clienteObj["nit"].toString();
-        contract.entidadCliente.telefono = clienteObj["telefono"].toString();
-        contract.entidadCliente.correo = clienteObj["correo"].toString();
-        contract.entidadCliente.direccion = clienteObj["direccion"].toString();
-        contract.entidadCliente.municipio = clienteObj["municipio"].toString();
-        contract.entidadCliente.provincia = clienteObj["provincia"].toString();
-        contract.entidadCliente.codigoPostal = clienteObj["codigo_postal"].toString();
+        contract.entidadCliente.nitEntidad = clienteObj["nit_entidad"].toString();
+        contract.entidadCliente.telefonoEntidad = clienteObj["telefono_entidad"].toInt();
+        contract.entidadCliente.correoEntidad = clienteObj["correo_entidad"].toString();
+        contract.entidadCliente.direccionEntidad = clienteObj["direccion_entidad"].toString();
         contract.entidadCliente.tipoEntidad = clienteObj["tipo_entidad"].toString();
-        contract.entidadCliente.sector = clienteObj["sector"].toString();
-        contract.entidadCliente.organoSuperior = clienteObj["organo_superior"].toString();
-        contract.entidadCliente.representanteLegal = clienteObj["representante_legal"].toString();
-        contract.entidadCliente.cargoRepresentante = clienteObj["cargo_representante"].toString();
-        contract.entidadCliente.contactoNombre = clienteObj["contacto_nombre"].toString();
-        contract.entidadCliente.contactoCargo = clienteObj["contacto_cargo"].toString();
-        contract.entidadCliente.contactoTelefono = clienteObj["contacto_telefono"].toString();
-        contract.entidadCliente.contactoCorreo = clienteObj["contacto_correo"].toString();
-        contract.entidadCliente.estado = clienteObj["estado"].toString();
-        contract.entidadCliente.fechaConstitucion = clienteObj["fecha_constitucion"].toString();
-        contract.entidadCliente.capitalSocial = clienteObj["capital_social"].toDouble();
-        contract.entidadCliente.moneda = clienteObj["moneda"].toString();
-        contract.entidadCliente.paisOrigen = clienteObj["pais_origen"].toString();
-        contract.entidadCliente.sitioWeb = clienteObj["sitio_web"].toString();
-        contract.entidadCliente.observaciones = clienteObj["observaciones"].toString();
-        contract.entidadCliente.logo = clienteObj["logo"].toString();
     } else {
         // El cliente es solo un ID (no expandido)
         contract.cliente = json["cliente"].toString();
@@ -300,33 +329,13 @@ Entidad PocketBaseClient::parseEntidad(const QJsonObject &json)
 {
     Entidad entidad;
     entidad.id = json["id"].toString();
-    entidad.nombre = json["nombre"].toString();
-    entidad.nombreComercial = json["nombre_comercial"].toString();
+    entidad.nombreComercial = json["nombre_comercial_entidad"].toString();
     entidad.codigoEntidad = json["codigo_entidad"].toString();
-    entidad.nit = json["nit"].toString();
-    entidad.telefono = json["telefono"].toString();
-    entidad.correo = json["correo"].toString();
-    entidad.direccion = json["direccion"].toString();
-    entidad.municipio = json["municipio"].toString();
-    entidad.provincia = json["provincia"].toString();
-    entidad.codigoPostal = json["codigo_postal"].toString();
+    entidad.nitEntidad = json["nit_entidad"].toString();
+    entidad.telefonoEntidad = json["telefono_entidad"].toInt();
+    entidad.correoEntidad = json["correo_entidad"].toString();
+    entidad.direccionEntidad = json["direccion_entidad"].toString();
     entidad.tipoEntidad = json["tipo_entidad"].toString();
-    entidad.sector = json["sector"].toString();
-    entidad.organoSuperior = json["organo_superior"].toString();
-    entidad.representanteLegal = json["representante_legal"].toString();
-    entidad.cargoRepresentante = json["cargo_representante"].toString();
-    entidad.contactoNombre = json["contacto_nombre"].toString();
-    entidad.contactoCargo = json["contacto_cargo"].toString();
-    entidad.contactoTelefono = json["contacto_telefono"].toString();
-    entidad.contactoCorreo = json["contacto_correo"].toString();
-    entidad.estado = json["estado"].toString();
-    entidad.fechaConstitucion = json["fecha_constitucion"].toString();
-    entidad.capitalSocial = json["capital_social"].toDouble();
-    entidad.moneda = json["moneda"].toString();
-    entidad.paisOrigen = json["pais_origen"].toString();
-    entidad.sitioWeb = json["sitio_web"].toString();
-    entidad.observaciones = json["observaciones"].toString();
-    entidad.logo = json["logo"].toString();
     return entidad;
 }
 
@@ -401,6 +410,61 @@ void PocketBaseClient::onFetchEntidadesFinished()
         } else {
             QString error = m_currentReply->errorString();
             emit fetchError(error);
+        }
+        
+        m_currentReply->deleteLater();
+        m_currentReply = nullptr;
+    }
+}
+
+void PocketBaseClient::onCreateEntidadFinished()
+{
+    if (m_currentReply) {
+        if (m_currentReply->error() == QNetworkReply::NoError) {
+            QByteArray responseData = m_currentReply->readAll();
+            QJsonDocument doc = QJsonDocument::fromJson(responseData);
+            QJsonObject jsonObj = doc.object();
+            
+            Entidad entidad = parseEntidad(jsonObj);
+            emit entidadCreated(entidad);
+        } else {
+            QString error = m_currentReply->errorString();
+            emit operationError("Error al crear entidad: " + error);
+        }
+        
+        m_currentReply->deleteLater();
+        m_currentReply = nullptr;
+    }
+}
+
+void PocketBaseClient::onUpdateEntidadFinished()
+{
+    if (m_currentReply) {
+        if (m_currentReply->error() == QNetworkReply::NoError) {
+            QByteArray responseData = m_currentReply->readAll();
+            QJsonDocument doc = QJsonDocument::fromJson(responseData);
+            QJsonObject jsonObj = doc.object();
+            
+            Entidad entidad = parseEntidad(jsonObj);
+            emit entidadUpdated(entidad);
+        } else {
+            QString error = m_currentReply->errorString();
+            emit operationError("Error al actualizar entidad: " + error);
+        }
+        
+        m_currentReply->deleteLater();
+        m_currentReply = nullptr;
+    }
+}
+
+void PocketBaseClient::onDeleteEntidadFinished()
+{
+    if (m_currentReply) {
+        if (m_currentReply->error() == QNetworkReply::NoError) {
+            emit entidadDeleted(m_currentReply->url().path().split("/").last());
+        } else {
+            QString error = m_currentReply->errorString();
+            emit operationError("Error al eliminar entidad: " + error);
         }
         
         m_currentReply->deleteLater();

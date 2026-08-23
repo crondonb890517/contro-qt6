@@ -12,6 +12,7 @@ ContractDialog::ContractDialog(QWidget *parent)
     , ui(new Ui::ContractDialog)
     , m_editMode(false)
     , m_archivoPath("")
+    , m_pocketBaseClient(nullptr)
 {
     ui->setupUi(this);
     
@@ -25,6 +26,10 @@ ContractDialog::ContractDialog(QWidget *parent)
     
     // Conectar el botón de examinar
     connect(ui->pushButtonExaminar, &QPushButton::clicked, this, &ContractDialog::on_pushButtonExaminar_clicked);
+    
+    // Conectar señal del comboBox de cliente
+    connect(ui->comboBoxCliente, QOverload<int>::of(&QComboBox::activated), 
+            this, &ContractDialog::onComboBoxClienteActivated);
 }
 
 ContractDialog::~ContractDialog()
@@ -40,7 +45,18 @@ void ContractDialog::setContractData(const QJsonObject &data)
     ui->doubleSpinBoxValor->setValue(data["valor"].toDouble());
     ui->dateEditFechaInicio->setDate(QDate::fromString(data["fechaInicio"].toString(), Qt::ISODate));
     ui->dateEditFechaFin->setDate(QDate::fromString(data["fechaFin"].toString(), Qt::ISODate));
-    ui->lineEditCliente->setText(data["cliente"].toString());
+    
+    // Cargar cliente desde la relación con entidad
+    QString clienteId = data["cliente"].toString();
+    if (!clienteId.isEmpty() && !m_entidades.isEmpty()) {
+        // Buscar la entidad por ID y seleccionarla en el comboBox
+        for (int i = 0; i < m_entidades.size(); ++i) {
+            if (m_entidades[i].id == clienteId) {
+                ui->comboBoxCliente->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
     
     // Cargar archivo si existe
     if (data.contains("archivo") && !data["archivo"].toString().isEmpty()) {
@@ -57,7 +73,12 @@ QJsonObject ContractDialog::getContractData() const
     data["valor"] = ui->doubleSpinBoxValor->value();
     data["fechaInicio"] = ui->dateEditFechaInicio->date().toString(Qt::ISODate);
     data["fechaFin"] = ui->dateEditFechaFin->date().toString(Qt::ISODate);
-    data["cliente"] = ui->lineEditCliente->text();
+    
+    // Obtener ID de la entidad seleccionada
+    int index = ui->comboBoxCliente->currentIndex();
+    if (index >= 0 && index < m_entidades.size()) {
+        data["cliente"] = m_entidades[index].id;
+    }
     
     // Agregar ruta del archivo si existe
     if (!m_archivoPath.isEmpty()) {
@@ -91,6 +112,35 @@ void ContractDialog::setArchivoPath(const QString &path)
 QString ContractDialog::archivoPath() const
 {
     return m_archivoPath;
+}
+
+void ContractDialog::loadEntidades(const QList<Entidad> &entidades)
+{
+    m_entidades = entidades;
+    ui->comboBoxCliente->clear();
+    
+    // Llenar el comboBox con las entidades
+    for (const Entidad &ent : entidades) {
+        // Mostrar nombre comercial y NIT para identificación
+        QString displayText = QString("%1 (NIT: %2)").arg(ent.nombreComercial, ent.nitEntidad);
+        ui->comboBoxCliente->addItem(displayText);
+    }
+}
+
+void ContractDialog::setPocketBaseClient(PocketBaseClient *client)
+{
+    m_pocketBaseClient = client;
+    if (client) {
+        // Cargar entidades al inicializar
+        client->fetchEntidades();
+    }
+}
+
+void ContractDialog::onComboBoxClienteActivated(int index)
+{
+    Q_UNUSED(index);
+    // Esta señal se puede usar para mostrar información adicional de la entidad seleccionada
+    // si es necesario en el futuro
 }
 
 void ContractDialog::on_pushButtonExaminar_clicked()
