@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>1200</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,95 +16,18 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="currentIndex">
-       <number>0</number>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="tabContratos">
-       <attribute name="title">
-        <string>Contratos</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Buscar:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="lineEditBuscar">
-            <property name="placeholderText">
-             <string>Buscar contratos...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButtonNuevoContrato">
-            <property name="text">
-             <string>Nuevo</string>
-            </property>
-            <property name="icon">
-             <iconset theme="document-new"/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButtonEditarContrato">
-            <property name="text">
-             <string>Editar</string>
-            </property>
-            <property name="icon">
-             <iconset theme="document-edit"/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButtonEliminarContrato">
-            <property name="text">
-             <string>Eliminar</string>
-            </property>
-            <property name="icon">
-             <iconset theme="edit-delete"/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="tableWidgetContratos"/>
-        </item>
-       </layout>
+      <property name="childrenCollapsible">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="widgetContratos" native="true">
+       <layout class="QVBoxLayout" name="layoutContratos"/>
       </widget>
-      <widget class="QWidget" name="tabEntidades">
-       <attribute name="title">
-        <string>Entidades</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QLabel" name="labelBuscarEntidad">
-            <property name="text">
-             <string>Buscar:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="lineEditBuscarEntidad">
-            <property name="placeholderText">
-             <string>Buscar entidades...</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="tableWidgetEntidades"/>
-        </item>
-       </layout>
+      <widget class="QWidget" name="widgetEntidades" native="true">
+       <layout class="QVBoxLayout" name="layoutEntidades"/>
       </widget>
      </widget>
     </item>
@@ -115,7 +38,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1200</width>
      <height>30</height>
     </rect>
    </property>
@@ -124,6 +47,7 @@
      <string>Archivo</string>
     </property>
     <addaction name="actionNuevo_Contrato"/>
+    <addaction name="actionNueva_Entidad"/>
     <addaction name="separator"/>
     <addaction name="actionActualizar"/>
     <addaction name="separator"/>
@@ -155,6 +79,7 @@
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuContratos"/>
+   <addaction name="menuEntidades"/>
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -169,8 +94,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionNuevo_Contrato"/>
-   <addaction name="actionEditar_Contrato"/>
-   <addaction name="actionEliminar_Contrato"/>
+   <addaction name="actionNueva_Entidad"/>
    <addaction name="separator"/>
    <addaction name="actionActualizar"/>
   </widget>

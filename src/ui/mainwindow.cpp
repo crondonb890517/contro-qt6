@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "contractdialog.h"
 #include "entidaddialog.h"
+#include "smartcollectionwidget.h"
+#include "formconfigfactory.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QSettings>
@@ -18,7 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , m_pocketBase(nullptr)
     , m_sessionManager(nullptr)
-    , m_currentRow(-1)
+    , m_contratosWidget(nullptr)
+    , m_entidadesWidget(nullptr)
 {
     ui->setupUi(this);
     
@@ -53,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_pocketBase, &PocketBaseClient::entidadDeleted, this, &MainWindow::onEntidadDeleted);
     
     setupUI();
+    setupSmartGrids();
     
     // Verificar sesión existente
     checkExistingSession();
@@ -80,34 +84,56 @@ void MainWindow::setupUI()
 {
     setWindowTitle("Sistema de Gestión de Contratos - Contro QT6");
     
-    // Configurar tabla de contratos
-    ui->tableWidgetContratos->setColumnCount(7);
-    ui->tableWidgetContratos->setHorizontalHeaderLabels({
-        "ID", "Nombre", "Estado", "Valor", "Fecha Inicio", "Fecha Fin", "Entidad"
-    });
-    ui->tableWidgetContratos->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidgetContratos->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableWidgetContratos->setSelectionMode(QAbstractItemView::SingleSelection);
-    ui->tableWidgetContratos->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableWidgetContratos->hideColumn(0); // Ocultar columna ID
-    
-    // Configurar tabla de entidades
-    ui->tableWidgetEntidades->setColumnCount(8);
-    ui->tableWidgetEntidades->setHorizontalHeaderLabels({
-        "ID", "Nombre Comercial", "Código", "NIT", "Teléfono", "Correo", "Tipo", "Dirección"
-    });
-    ui->tableWidgetEntidades->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidgetEntidades->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableWidgetEntidades->setSelectionMode(QAbstractItemView::SingleSelection);
-    ui->tableWidgetEntidades->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableWidgetEntidades->hideColumn(0); // Ocultar columna ID
-    ui->tableWidgetEntidades->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    
-    // Barra de búsqueda
-    ui->lineEditBuscar->setPlaceholderText("Buscar contratos...");
-    
     // Estado inicial
     ui->statusbar->showMessage("Listo");
+}
+
+void MainWindow::setupSmartGrids()
+{
+    // Configurar SmartGrid para Contratos
+    auto contratosConfig = FormConfigFactory::createContratosConfig();
+    m_contratosWidget = new SmartCollectionWidget("Contratos", "contratos", this);
+    m_contratosWidget->setGridConfig(contratosConfig);
+    m_contratosWidget->setPocketBaseClient(m_pocketBase);
+    
+    // Conectar acciones CRUD
+    connect(m_contratosWidget, &SmartCollectionWidget::createRequested, [this]() {
+        on_actionNuevo_Contrato_triggered();
+    });
+    connect(m_contratosWidget, &SmartCollectionWidget::editRequested, [this](const QString &id) {
+        Q_UNUSED(id);
+        on_actionEditar_Contrato_triggered();
+    });
+    connect(m_contratosWidget, &SmartCollectionWidget::deleteRequested, [this](const QString &id) {
+        Q_UNUSED(id);
+        on_actionEliminar_Contrato_triggered();
+    });
+    
+    // Configurar SmartGrid para Entidades
+    auto entidadesConfig = FormConfigFactory::createEntidadesConfig();
+    m_entidadesWidget = new SmartCollectionWidget("Entidades", "entidades", this);
+    m_entidadesWidget->setGridConfig(entidadesConfig);
+    m_entidadesWidget->setPocketBaseClient(m_pocketBase);
+    
+    // Conectar acciones CRUD
+    connect(m_entidadesWidget, &SmartCollectionWidget::createRequested, [this]() {
+        on_actionNueva_Entidad_triggered();
+    });
+    connect(m_entidadesWidget, &SmartCollectionWidget::editRequested, [this](const QString &id) {
+        Q_UNUSED(id);
+        on_actionEditar_Entidad_triggered();
+    });
+    connect(m_entidadesWidget, &SmartCollectionWidget::deleteRequested, [this](const QString &id) {
+        Q_UNUSED(id);
+        on_actionEliminar_Entidad_triggered();
+    });
+    
+    // Añadir widgets al splitter
+    ui->layoutContratos->addWidget(m_contratosWidget);
+    ui->layoutEntidades->addWidget(m_entidadesWidget);
+    
+    // Configurar proporción del splitter (60% contratos, 40% entidades)
+    ui->splitter->setSizes({800, 400});
 }
 
 void MainWindow::loadContracts()
@@ -116,50 +142,6 @@ void MainWindow::loadContracts()
     m_pocketBase->fetchContracts();
 }
 
-void MainWindow::populateTable(const QList<Contract> &contracts)
-{
-    ui->tableWidgetContratos->setRowCount(0);
-    m_contracts = contracts;
-    
-    for (int i = 0; i < contracts.size(); ++i) {
-        const Contract &c = contracts[i];
-        ui->tableWidgetContratos->insertRow(i);
-        
-        QTableWidgetItem *itemNombre = new QTableWidgetItem(c.nombre);
-        QTableWidgetItem *itemEstado = new QTableWidgetItem(c.estado);
-        QTableWidgetItem *itemValor = new QTableWidgetItem(QString("$ %1").arg(c.valor, 0, 'f', 2));
-        QTableWidgetItem *itemFechaInicio = new QTableWidgetItem(c.fechaInicio);
-        QTableWidgetItem *itemFechaFin = new QTableWidgetItem(c.fechaFin);
-        
-        // Mostrar nombre comercial de la entidad si está expandida
-        QString entidadDisplay;
-        if (!c.entidadCliente.id.isEmpty()) {
-            entidadDisplay = c.entidadCliente.nombreComercial;
-        } else {
-            entidadDisplay = c.cliente; // Mostrar ID si no hay datos expandidos
-        }
-        QTableWidgetItem *itemEntidad = new QTableWidgetItem(entidadDisplay);
-        
-        // Color según estado
-        if (c.estado == "Activo" || c.estado == "Firmado") {
-            itemEstado->setBackground(QColor(144, 238, 144)); // Verde claro
-        } else if (c.estado == "En Revisión") {
-            itemEstado->setBackground(QColor(255, 255, 224)); // Amarillo claro
-        } else if (c.estado == "Finalizado" || c.estado == "Cancelado") {
-            itemEstado->setBackground(QColor(211, 211, 211)); // Gris
-        }
-        
-        ui->tableWidgetContratos->setItem(i, 0, new QTableWidgetItem(c.id));
-        ui->tableWidgetContratos->setItem(i, 1, itemNombre);
-        ui->tableWidgetContratos->setItem(i, 2, itemEstado);
-        ui->tableWidgetContratos->setItem(i, 3, itemValor);
-        ui->tableWidgetContratos->setItem(i, 4, itemFechaInicio);
-        ui->tableWidgetContratos->setItem(i, 5, itemFechaFin);
-        ui->tableWidgetContratos->setItem(i, 6, itemEntidad);
-    }
-    
-    ui->statusbar->showMessage(QString("%1 contratos cargados").arg(contracts.size()));
-}
 
 void MainWindow::loadEntidades()
 {
@@ -169,23 +151,9 @@ void MainWindow::loadEntidades()
 
 void MainWindow::onEntidadesFetched(const QList<Entidad> &entidades)
 {
-    m_entidades = entidades;
-    ui->tableWidgetEntidades->setRowCount(0);
-    
-    for (int i = 0; i < entidades.size(); ++i) {
-        const Entidad &e = entidades[i];
-        ui->tableWidgetEntidades->insertRow(i);
-        
-        ui->tableWidgetEntidades->setItem(i, 0, new QTableWidgetItem(e.id));
-        ui->tableWidgetEntidades->setItem(i, 1, new QTableWidgetItem(e.nombreComercial));
-        ui->tableWidgetEntidades->setItem(i, 2, new QTableWidgetItem(e.codigoEntidad));
-        ui->tableWidgetEntidades->setItem(i, 3, new QTableWidgetItem(e.nitEntidad));
-        ui->tableWidgetEntidades->setItem(i, 4, new QTableWidgetItem(QString::number(e.telefonoEntidad)));
-        ui->tableWidgetEntidades->setItem(i, 5, new QTableWidgetItem(e.correoEntidad));
-        ui->tableWidgetEntidades->setItem(i, 6, new QTableWidgetItem(e.tipoEntidad));
-        ui->tableWidgetEntidades->setItem(i, 7, new QTableWidgetItem(e.direccionEntidad));
+    if (m_entidadesWidget) {
+        m_entidadesWidget->setData(entidades);
     }
-    
     ui->statusbar->showMessage(QString("%1 entidades cargadas").arg(entidades.size()));
 }
 
@@ -266,13 +234,27 @@ void MainWindow::on_actionNuevo_Contrato_triggered()
 
 void MainWindow::on_actionEditar_Contrato_triggered()
 {
-    int row = ui->tableWidgetContratos->currentRow();
-    if (row < 0 || row >= m_contracts.size()) {
+    QString id = m_contratosWidget ? m_contratosWidget->getSelectedId() : QString();
+    if (id.isEmpty()) {
         showMessage("Advertencia", "Seleccione un contrato para editar", false);
         return;
     }
     
-    Contract contract = m_contracts[row];
+    // Buscar el contrato en los datos actuales
+    Contract contract;
+    bool found = false;
+    for (const auto &c : m_contratosWidget->getCurrentData()) {
+        if (c.id == id) {
+            contract = c;
+            found = true;
+            break;
+        }
+    }
+    
+    if (!found) {
+        showMessage("Error", "No se encontró el contrato seleccionado", false);
+        return;
+    }
     
     QJsonObject data;
     data["nombre"] = contract.nombre;
@@ -301,21 +283,28 @@ void MainWindow::on_actionEditar_Contrato_triggered()
 
 void MainWindow::on_actionEliminar_Contrato_triggered()
 {
-    int row = ui->tableWidgetContratos->currentRow();
-    if (row < 0 || row >= m_contracts.size()) {
+    QString id = m_contratosWidget ? m_contratosWidget->getSelectedId() : QString();
+    if (id.isEmpty()) {
         showMessage("Advertencia", "Seleccione un contrato para eliminar", false);
         return;
     }
     
-    Contract contract = m_contracts[row];
+    // Buscar el contrato en los datos actuales
+    QString nombre;
+    for (const auto &c : m_contratosWidget->getCurrentData()) {
+        if (c.id == id) {
+            nombre = c.nombre;
+            break;
+        }
+    }
     
     QMessageBox::StandardButton reply = QMessageBox::question(
         this, "Confirmar Eliminación",
-        QString("¿Está seguro de eliminar el contrato '%1'?").arg(contract.nombre),
+        QString("¿Está seguro de eliminar el contrato '%1'?").arg(nombre),
         QMessageBox::Yes | QMessageBox::No);
     
     if (reply == QMessageBox::Yes) {
-        m_pocketBase->deleteContract(contract.id);
+        m_pocketBase->deleteContract(id);
     }
 }
 
@@ -338,13 +327,27 @@ void MainWindow::on_actionNueva_Entidad_triggered()
 
 void MainWindow::on_actionEditar_Entidad_triggered()
 {
-    int row = ui->tableWidgetEntidades->currentRow();
-    if (row < 0 || row >= m_entidades.size()) {
+    QString id = m_entidadesWidget ? m_entidadesWidget->getSelectedId() : QString();
+    if (id.isEmpty()) {
         showMessage("Advertencia", "Seleccione una entidad para editar", false);
         return;
     }
     
-    Entidad entidad = m_entidades[row];
+    // Buscar la entidad en los datos actuales
+    Entidad entidad;
+    bool found = false;
+    for (const auto &e : m_entidades) {
+        if (e.id == id) {
+            entidad = e;
+            found = true;
+            break;
+        }
+    }
+    
+    if (!found) {
+        showMessage("Error", "No se encontró la entidad seleccionada", false);
+        return;
+    }
     
     QJsonObject data;
     data["id"] = entidad.id;
@@ -369,21 +372,28 @@ void MainWindow::on_actionEditar_Entidad_triggered()
 
 void MainWindow::on_actionEliminar_Entidad_triggered()
 {
-    int row = ui->tableWidgetEntidades->currentRow();
-    if (row < 0 || row >= m_entidades.size()) {
+    QString id = m_entidadesWidget ? m_entidadesWidget->getSelectedId() : QString();
+    if (id.isEmpty()) {
         showMessage("Advertencia", "Seleccione una entidad para eliminar", false);
         return;
     }
     
-    Entidad entidad = m_entidades[row];
+    // Buscar la entidad en los datos actuales
+    QString nombre;
+    for (const auto &e : m_entidades) {
+        if (e.id == id) {
+            nombre = e.nombreComercial;
+            break;
+        }
+    }
     
     QMessageBox::StandardButton reply = QMessageBox::question(
         this, "Confirmar Eliminación",
-        QString("¿Está seguro de eliminar la entidad '%1'?").arg(entidad.nombreComercial),
+        QString("¿Está seguro de eliminar la entidad '%1'?").arg(nombre),
         QMessageBox::Yes | QMessageBox::No);
     
     if (reply == QMessageBox::Yes) {
-        m_pocketBase->deleteEntidad(entidad.id);
+        m_pocketBase->deleteEntidad(id);
     }
 }
 
@@ -418,30 +428,6 @@ void MainWindow::on_actionCerrar_Sesion_triggered()
     }
 }
 
-void MainWindow::on_tableWidgetContratos_cellDoubleClicked(int row, int column)
-{
-    Q_UNUSED(column);
-    
-    if (row >= 0 && row < m_contracts.size()) {
-        on_actionEditar_Contrato_triggered();
-    }
-}
-
-void MainWindow::on_lineEditBuscar_textChanged(const QString &text)
-{
-    QList<Contract> filtered;
-    
-    for (const Contract &c : m_contracts) {
-        if (c.nombre.contains(text, Qt::CaseInsensitive) ||
-            c.cliente.contains(text, Qt::CaseInsensitive) ||
-            c.estado.contains(text, Qt::CaseInsensitive)) {
-            filtered.append(c);
-        }
-    }
-    
-    populateTable(filtered);
-}
-
 // Slots de PocketBase
 void MainWindow::onLoginSuccess(const QString &token, const QString &userId)
 {
@@ -465,7 +451,10 @@ void MainWindow::onLoginError(const QString &error)
 
 void MainWindow::onContractsFetched(const QList<Contract> &contracts)
 {
-    populateTable(contracts);
+    if (m_contratosWidget) {
+        m_contratosWidget->setData(contracts);
+    }
+    ui->statusbar->showMessage(QString("%1 contratos cargados").arg(contracts.size()));
 }
 
 void MainWindow::onFetchError(const QString &error)
@@ -557,20 +546,4 @@ void MainWindow::onSessionLoadError(const QString &error)
     qWarning() << "MainWindow: Error al cargar sesión:" << error;
     // Si no hay sesión guardada o hay error, mostrar login
     showLoginDialog();
-}
-
-// Slots para botones de la UI de Contratos
-void MainWindow::on_pushButtonNuevoContrato_clicked()
-{
-    on_actionNuevo_Contrato_triggered();
-}
-
-void MainWindow::on_pushButtonEditarContrato_clicked()
-{
-    on_actionEditar_Contrato_triggered();
-}
-
-void MainWindow::on_pushButtonEliminarContrato_clicked()
-{
-    on_actionEliminar_Contrato_triggered();
 }

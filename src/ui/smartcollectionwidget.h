@@ -21,14 +21,21 @@ public:
     void setFormConfig(const FormConfig &formConfig);
     void setPocketBaseClient(PocketBaseClient *client);
     
+    // Métodos para obtener datos y selección
+    QString getSelectedId() const;
+    QJsonObject getSelectedItem() const;
+    QList<QJsonObject> getCurrentData() const;
+    void setData(const QList<QJsonObject> &data);
+    
     // Botones de acción personalizables
     void addActionButton(const QString &text, const char *slot);
     void hideDefaultButtons(bool hide);
 
 signals:
-    void onCreateClicked(QJsonObject &data);
-    void onUpdateClicked(const QJsonObject &data);
-    void onDeleteClicked(const QString &id);
+    void createRequested();
+    void editRequested(const QString &id);
+    void deleteRequested(const QString &id);
+    void refreshRequested();
 
 private slots:
     void onNuevoClicked();
@@ -52,6 +59,7 @@ private:
     QMap<QPushButton*, QString> m_buttonSlots;
     
     QJsonObject m_currentItem;
+    QList<QJsonObject> m_currentData;
     
     void setupUI();
     void updateButtonStates();

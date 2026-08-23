@@ -72,6 +72,28 @@ void SmartCollectionWidget::setPocketBaseClient(PocketBaseClient *client)
     m_gridWidget->setPocketBaseClient(client);
 }
 
+QString SmartCollectionWidget::getSelectedId() const
+{
+    QJsonObject item = m_gridWidget->getSelectedItem();
+    return item["id"].toString();
+}
+
+QJsonObject SmartCollectionWidget::getSelectedItem() const
+{
+    return m_gridWidget->getSelectedItem();
+}
+
+QList<QJsonObject> SmartCollectionWidget::getCurrentData() const
+{
+    return m_currentData;
+}
+
+void SmartCollectionWidget::setData(const QList<QJsonObject> &data)
+{
+    m_currentData = data;
+    m_gridWidget->setData(data);
+}
+
 void SmartCollectionWidget::addActionButton(const QString &text, const char *slot)
 {
     QPushButton *button = new QPushButton(text);
@@ -99,54 +121,34 @@ void SmartCollectionWidget::hideDefaultButtons(bool hide)
 
 void SmartCollectionWidget::onNuevoClicked()
 {
-    GenericDialog dialog(this);
-    dialog.setConfig(m_formConfig);
-    dialog.setEditMode(false);
-    dialog.setPocketBaseClient(m_pocketBase);
-    
-    if (dialog.exec() == QDialog::Accepted) {
-        QJsonObject data = dialog.getData();
-        emit onCreateClicked(data);
-    }
+    emit createRequested();
 }
 
 void SmartCollectionWidget::onEditarClicked()
 {
-    QJsonObject currentItem = m_gridWidget->getSelectedItem();
-    
-    if (currentItem.isEmpty()) {
+    QString id = getSelectedId();
+    if (id.isEmpty()) {
         QMessageBox::warning(this, "Advertencia", "Seleccione un registro para editar");
         return;
     }
-    
-    GenericDialog dialog(this);
-    dialog.setConfig(m_formConfig);
-    dialog.setEditMode(true);
-    dialog.setData(currentItem);
-    dialog.setPocketBaseClient(m_pocketBase);
-    
-    if (dialog.exec() == QDialog::Accepted) {
-        QJsonObject updatedData = dialog.getData();
-        emit onUpdateClicked(updatedData);
-    }
+    emit editRequested(id);
 }
 
 void SmartCollectionWidget::onEliminarClicked()
 {
-    QJsonObject currentItem = m_gridWidget->getSelectedItem();
-    
-    if (currentItem.isEmpty()) {
+    QString id = getSelectedId();
+    if (id.isEmpty()) {
         QMessageBox::warning(this, "Advertencia", "Seleccione un registro para eliminar");
         return;
     }
     
-    QString id = currentItem["id"].toString();
     QString displayName = "";
+    QJsonObject item = getSelectedItem();
     
     // Intentar obtener un nombre para mostrar
     for (const ColumnConfig &col : m_gridConfig.columns) {
         if (!col.isId && col.visible) {
-            displayName = currentItem[col.field].toString();
+            displayName = item[col.field].toString();
             if (!displayName.isEmpty()) break;
         }
     }
@@ -157,7 +159,7 @@ void SmartCollectionWidget::onEliminarClicked()
         QMessageBox::Yes | QMessageBox::No);
     
     if (reply == QMessageBox::Yes) {
-        emit onDeleteClicked(id);
+        emit deleteRequested(id);
     }
 }
 
@@ -182,7 +184,7 @@ void SmartCollectionWidget::onRefreshRequested()
 
 void SmartCollectionWidget::updateButtonStates()
 {
-    bool hasSelection = !m_gridWidget->getSelectedItem().isEmpty();
+    bool hasSelection = !getSelectedId().isEmpty();
     m_editarButton->setEnabled(hasSelection);
     m_eliminarButton->setEnabled(hasSelection);
 }

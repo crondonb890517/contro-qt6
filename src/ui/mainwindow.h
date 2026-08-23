@@ -14,6 +14,7 @@ QT_END_NAMESPACE
 
 class ContractDialog;
 class EntidadDialog;
+class SmartCollectionWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -33,11 +34,6 @@ private slots:
     void on_actionNueva_Entidad_triggered();
     void on_actionEditar_Entidad_triggered();
     void on_actionEliminar_Entidad_triggered();
-    void on_tableWidgetContratos_cellDoubleClicked(int row, int column);
-    void on_lineEditBuscar_textChanged(const QString &text);
-    void on_pushButtonNuevoContrato_clicked();
-    void on_pushButtonEditarContrato_clicked();
-    void on_pushButtonEliminarContrato_clicked();
     
     // Slots de PocketBase
     void onLoginSuccess(const QString &token, const QString &userId);
@@ -64,14 +60,14 @@ private:
     Ui::MainWindow *ui;
     PocketBaseClient *m_pocketBase;
     SessionManager *m_sessionManager;
-    QList<Contract> m_contracts;
+    SmartCollectionWidget *m_contratosWidget;
+    SmartCollectionWidget *m_entidadesWidget;
     QList<Entidad> m_entidades;
-    int m_currentRow;
     
     void setupUI();
+    void setupSmartGrids();
     void loadContracts();
     void loadEntidades();
-    void populateTable(const QList<Contract> &contracts);
     void showLoginDialog();
     void showMessage(const QString &title, const QString &message, bool success = true);
     void checkExistingSession();
