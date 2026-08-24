@@ -456,7 +456,9 @@ void MainWindow::onLoginSuccess(const QString &token, const QString &userId)
     // Guardar sesión de forma segura
     m_sessionManager->saveSession();
     
+    // Cargar datos iniciales
     loadContracts();
+    loadEntidades();
 }
 
 void MainWindow::onLoginError(const QString &error)
@@ -528,7 +530,9 @@ void MainWindow::onSessionStarted()
     qDebug() << "MainWindow: Sesión iniciada correctamente";
     // El token ya fue establecido en onLoginSuccess
     if (m_sessionManager->isAuthenticated() && !m_pocketBase->authToken().isEmpty()) {
+        // Cargar datos iniciales cuando se restaura una sesión existente
         loadContracts();
+        loadEntidades();
     }
 }
 
