@@ -252,17 +252,23 @@ void MainWindow::showMessage(const QString &title, const QString &message, bool 
 
 void MainWindow::on_actionNuevo_Contrato_triggered()
 {
+    // Cargar entidades primero
+    loadEntidades();
+    
     ContractDialog dialog(this);
     dialog.setEditMode(false);
     dialog.setPocketBaseClient(m_pocketBase);
     
-    // Conectar la señal de entidades cargadas
-    connect(m_pocketBase, &PocketBaseClient::entidadesFetched, &dialog, &ContractDialog::loadEntidades);
+    // Conectar la señal de entidades cargadas SOLO para el dialog
+    auto conn = connect(m_pocketBase, &PocketBaseClient::entidadesFetched, &dialog, &ContractDialog::loadEntidades);
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject contractData = dialog.getContractData();
         QString filePath = dialog.archivoPath();
+        disconnect(conn); // Desconectar después de usar
         m_pocketBase->createContract(contractData, filePath);
+    } else {
+        disconnect(conn); // Desconectar si se cancela
     }
 }
 
@@ -273,6 +279,9 @@ void MainWindow::on_actionEditar_Contrato_triggered()
         showMessage("Advertencia", "Seleccione un contrato para editar", false);
         return;
     }
+    
+    // Cargar entidades primero
+    loadEntidades();
     
     Contract contract = m_contracts[row];
     
@@ -291,13 +300,16 @@ void MainWindow::on_actionEditar_Contrato_triggered()
     dialog.setPocketBaseClient(m_pocketBase);
     dialog.setContractData(data);
     
-    // Conectar la señal de entidades cargadas
-    connect(m_pocketBase, &PocketBaseClient::entidadesFetched, &dialog, &ContractDialog::loadEntidades);
+    // Conectar la señal de entidades cargadas SOLO para el dialog
+    auto conn = connect(m_pocketBase, &PocketBaseClient::entidadesFetched, &dialog, &ContractDialog::loadEntidades);
     
     if (dialog.exec() == QDialog::Accepted) {
         QJsonObject updatedData = dialog.getContractData();
         QString filePath = dialog.archivoPath();
+        disconnect(conn); // Desconectar después de usar
         m_pocketBase->updateContract(contract.id, updatedData, filePath);
+    } else {
+        disconnect(conn); // Desconectar si se cancela
     }
 }
 

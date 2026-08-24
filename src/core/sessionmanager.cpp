@@ -159,6 +159,9 @@ bool SessionManager::loadSession()
                 m_authenticated = true;
                 qDebug() << "SessionManager: Sesión cargada exitosamente";
                 
+                // Emitir señal de sesión iniciada
+                emit sessionStarted();
+                
                 // Verificar si el token está expirado
                 if (isTokenExpired()) {
                     qWarning() << "SessionManager: Token expirado, se requiere re-autenticación";
