@@ -528,11 +528,15 @@ void MainWindow::onEntidadDeleted(const QString &id)
 void MainWindow::onSessionStarted()
 {
     qDebug() << "MainWindow: Sesión iniciada correctamente";
-    // El token ya fue establecido en onLoginSuccess
-    if (m_sessionManager->isAuthenticated() && !m_pocketBase->authToken().isEmpty()) {
+    // Establecer el token en PocketBase cuando se restaura una sesión
+    QString token = m_sessionManager->token();
+    if (!token.isEmpty()) {
+        m_pocketBase->setAuthToken(token);
         // Cargar datos iniciales cuando se restaura una sesión existente
         loadContracts();
         loadEntidades();
+    } else {
+        qWarning() << "MainWindow: No hay token disponible en onSessionStarted";
     }
 }
 
