@@ -49,7 +49,7 @@ public:
     QString authToken() const;
 
     void login(const QString &email, const QString &password);
-    void fetchEntidades();
+    void fetchEntidades(int pagina = 1, int registrosPorPagina = 10);
     void createEntidad(const QJsonObject &entidadData);
     void updateEntidad(const QString &id, const QJsonObject &entidadData);
     void deleteEntidad(const QString &id);
@@ -61,7 +61,7 @@ public:
 signals:
     void loginSuccess(const QString &token, const QString &userId);
     void loginError(const QString &error);
-    void entidadesFetched(const QList<Entidad> &entidades);
+    void entidadesFetched(const QList<Entidad> &entidades, int totalRegistros, int paginaActual, int registrosPorPagina);
     void entidadCreated(const Entidad &entidad);
     void entidadUpdated(const Entidad &entidad);
     void entidadDeleted(const QString &id);

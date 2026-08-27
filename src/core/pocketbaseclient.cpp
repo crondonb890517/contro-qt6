@@ -55,10 +55,14 @@ void PocketBaseClient::login(const QString &email, const QString &password)
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onLoginFinished);
 }
 
-void PocketBaseClient::fetchEntidades()
+void PocketBaseClient::fetchEntidades(int pagina, int registrosPorPagina)
 {
     QUrl url(m_baseUrl + "/api/collections/entidades/records");
-    url.setQuery("sort=nombre_comercial_entidad");
+    QUrlQuery query;
+    query.addQueryItem("sort", "nombre_comercial_entidad");
+    query.addQueryItem("page", QString::number(pagina));
+    query.addQueryItem("perPage", QString::number(registrosPorPagina));
+    url.setQuery(query);
     
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -406,7 +410,12 @@ void PocketBaseClient::onFetchEntidadesFinished()
                 entidades.append(parseEntidad(value.toObject()));
             }
             
-            emit entidadesFetched(entidades);
+            // Obtener información de paginación de la respuesta
+            int totalRegistros = jsonObj["totalItems"].toInt(0);
+            int paginaActual = jsonObj["page"].toInt(1);
+            int registrosPorPagina = jsonObj["perPage"].toInt(10);
+            
+            emit entidadesFetched(entidades, totalRegistros, paginaActual, registrosPorPagina);
         } else {
             QString error = m_currentReply->errorString();
             emit fetchError(error);
