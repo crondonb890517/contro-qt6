@@ -1,7 +1,27 @@
 ```
-# Compiled and build artifacts
+# Qt/MOC generated files
+moc_*.cpp
+moc_*.h
+moc_*.o
+ui_*.h
+
+# Compiled object files
 *.o
 *.obj
+
+# Qt build artifacts
+.qmake.stash
+Makefile
+contro
+contro-qt6
+
+# Generated files
+*.pyc
+*.class
+*.so
+*.dll
+*.exe
+*.a
 *.out
 
 # Dependencies
@@ -11,32 +31,33 @@ venv/
 __pycache__/
 .mypy_cache/
 .pytest_cache/
-dist/
-build/
 target/
 .gradle/
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
+# Build directories
+build/
+dist/
+coverage/
+htmlcov/
 
-# Environment
-.env
-.env.local
-*.env.*
-
-# Editors
+# Editor/IDE files
 .vscode/
 .idea/
+*.swp
+*.swo
+*.tmp
 
 # System files
 .DS_Store
 Thumbs.db
+.env
+.env.local
+*.env.*
+
+# Logs
+*.log
 
 # Coverage
-coverage/
-htmlcov/
 .coverage
 
 # Compressed files
@@ -58,8 +79,4 @@ htmlcov/
 *.Z
 *.lz
 *.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
 ```
