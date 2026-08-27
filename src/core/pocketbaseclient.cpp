@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <QUrlQuery>
 
 PocketBaseClient::PocketBaseClient(const QString &baseUrl, const QString &collection, QObject *parent)
     : QObject(parent)
