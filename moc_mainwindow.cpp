@@ -28,7 +28,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_MainWindow_t {
-    uint offsetsAndSizes[118];
+    uint offsetsAndSizes[120];
     char stringdata0[11];
     char stringdata1[34];
     char stringdata2[1];
@@ -51,43 +51,44 @@ struct qt_meta_stringdata_MainWindow_t {
     char stringdata19[34];
     char stringdata20[35];
     char stringdata21[37];
-    char stringdata22[29];
-    char stringdata23[30];
-    char stringdata24[31];
-    char stringdata25[28];
-    char stringdata26[50];
-    char stringdata27[15];
-    char stringdata28[6];
-    char stringdata29[7];
-    char stringdata30[13];
-    char stringdata31[6];
-    char stringdata32[19];
-    char stringdata33[16];
-    char stringdata34[10];
-    char stringdata35[13];
-    char stringdata36[18];
-    char stringdata37[9];
+    char stringdata22[37];
+    char stringdata23[29];
+    char stringdata24[30];
+    char stringdata25[31];
+    char stringdata26[28];
+    char stringdata27[50];
+    char stringdata28[15];
+    char stringdata29[6];
+    char stringdata30[7];
+    char stringdata31[13];
+    char stringdata32[6];
+    char stringdata33[19];
+    char stringdata34[16];
+    char stringdata35[10];
+    char stringdata36[13];
+    char stringdata37[18];
     char stringdata38[9];
-    char stringdata39[18];
+    char stringdata39[9];
     char stringdata40[18];
-    char stringdata41[3];
-    char stringdata42[17];
-    char stringdata43[19];
-    char stringdata44[15];
-    char stringdata45[10];
-    char stringdata46[15];
-    char stringdata47[13];
-    char stringdata48[19];
-    char stringdata49[17];
-    char stringdata50[8];
+    char stringdata41[18];
+    char stringdata42[3];
+    char stringdata43[17];
+    char stringdata44[19];
+    char stringdata45[15];
+    char stringdata46[10];
+    char stringdata47[15];
+    char stringdata48[13];
+    char stringdata49[19];
+    char stringdata50[17];
     char stringdata51[8];
-    char stringdata52[17];
+    char stringdata52[8];
     char stringdata53[17];
     char stringdata54[17];
-    char stringdata55[15];
-    char stringdata56[17];
-    char stringdata57[19];
+    char stringdata55[17];
+    char stringdata56[15];
+    char stringdata57[17];
     char stringdata58[19];
+    char stringdata59[19];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_MainWindow_t::offsetsAndSizes) + ofs), len 
@@ -115,43 +116,44 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
         QT_MOC_LITERAL(510, 33),  // "on_pushButtonNuevaEntidad_cli..."
         QT_MOC_LITERAL(544, 34),  // "on_pushButtonEditarEntidad_cl..."
         QT_MOC_LITERAL(579, 36),  // "on_pushButtonEliminarEntidad_..."
-        QT_MOC_LITERAL(616, 28),  // "on_pushButtonPrimero_clicked"
-        QT_MOC_LITERAL(645, 29),  // "on_pushButtonAnterior_clicked"
-        QT_MOC_LITERAL(675, 30),  // "on_pushButtonSiguiente_clicked"
-        QT_MOC_LITERAL(706, 27),  // "on_pushButtonUltimo_clicked"
-        QT_MOC_LITERAL(734, 49),  // "on_comboBoxRegistrosPorPagina..."
-        QT_MOC_LITERAL(784, 14),  // "onLoginSuccess"
-        QT_MOC_LITERAL(799, 5),  // "token"
-        QT_MOC_LITERAL(805, 6),  // "userId"
-        QT_MOC_LITERAL(812, 12),  // "onLoginError"
-        QT_MOC_LITERAL(825, 5),  // "error"
-        QT_MOC_LITERAL(831, 18),  // "onContractsFetched"
-        QT_MOC_LITERAL(850, 15),  // "QList<Contract>"
-        QT_MOC_LITERAL(866, 9),  // "contracts"
-        QT_MOC_LITERAL(876, 12),  // "onFetchError"
-        QT_MOC_LITERAL(889, 17),  // "onContractCreated"
-        QT_MOC_LITERAL(907, 8),  // "Contract"
-        QT_MOC_LITERAL(916, 8),  // "contract"
-        QT_MOC_LITERAL(925, 17),  // "onContractUpdated"
-        QT_MOC_LITERAL(943, 17),  // "onContractDeleted"
-        QT_MOC_LITERAL(961, 2),  // "id"
-        QT_MOC_LITERAL(964, 16),  // "onOperationError"
-        QT_MOC_LITERAL(981, 18),  // "onEntidadesFetched"
-        QT_MOC_LITERAL(1000, 14),  // "QList<Entidad>"
-        QT_MOC_LITERAL(1015, 9),  // "entidades"
-        QT_MOC_LITERAL(1025, 14),  // "totalRegistros"
-        QT_MOC_LITERAL(1040, 12),  // "paginaActual"
-        QT_MOC_LITERAL(1053, 18),  // "registrosPorPagina"
-        QT_MOC_LITERAL(1072, 16),  // "onEntidadCreated"
-        QT_MOC_LITERAL(1089, 7),  // "Entidad"
-        QT_MOC_LITERAL(1097, 7),  // "entidad"
-        QT_MOC_LITERAL(1105, 16),  // "onEntidadUpdated"
-        QT_MOC_LITERAL(1122, 16),  // "onEntidadDeleted"
-        QT_MOC_LITERAL(1139, 16),  // "onSessionStarted"
-        QT_MOC_LITERAL(1156, 14),  // "onSessionEnded"
-        QT_MOC_LITERAL(1171, 16),  // "onSessionExpired"
-        QT_MOC_LITERAL(1188, 18),  // "onSessionSaveError"
-        QT_MOC_LITERAL(1207, 18)   // "onSessionLoadError"
+        QT_MOC_LITERAL(616, 36),  // "on_lineEditBuscarEntidad_text..."
+        QT_MOC_LITERAL(653, 28),  // "on_pushButtonPrimero_clicked"
+        QT_MOC_LITERAL(682, 29),  // "on_pushButtonAnterior_clicked"
+        QT_MOC_LITERAL(712, 30),  // "on_pushButtonSiguiente_clicked"
+        QT_MOC_LITERAL(743, 27),  // "on_pushButtonUltimo_clicked"
+        QT_MOC_LITERAL(771, 49),  // "on_comboBoxRegistrosPorPagina..."
+        QT_MOC_LITERAL(821, 14),  // "onLoginSuccess"
+        QT_MOC_LITERAL(836, 5),  // "token"
+        QT_MOC_LITERAL(842, 6),  // "userId"
+        QT_MOC_LITERAL(849, 12),  // "onLoginError"
+        QT_MOC_LITERAL(862, 5),  // "error"
+        QT_MOC_LITERAL(868, 18),  // "onContractsFetched"
+        QT_MOC_LITERAL(887, 15),  // "QList<Contract>"
+        QT_MOC_LITERAL(903, 9),  // "contracts"
+        QT_MOC_LITERAL(913, 12),  // "onFetchError"
+        QT_MOC_LITERAL(926, 17),  // "onContractCreated"
+        QT_MOC_LITERAL(944, 8),  // "Contract"
+        QT_MOC_LITERAL(953, 8),  // "contract"
+        QT_MOC_LITERAL(962, 17),  // "onContractUpdated"
+        QT_MOC_LITERAL(980, 17),  // "onContractDeleted"
+        QT_MOC_LITERAL(998, 2),  // "id"
+        QT_MOC_LITERAL(1001, 16),  // "onOperationError"
+        QT_MOC_LITERAL(1018, 18),  // "onEntidadesFetched"
+        QT_MOC_LITERAL(1037, 14),  // "QList<Entidad>"
+        QT_MOC_LITERAL(1052, 9),  // "entidades"
+        QT_MOC_LITERAL(1062, 14),  // "totalRegistros"
+        QT_MOC_LITERAL(1077, 12),  // "paginaActual"
+        QT_MOC_LITERAL(1090, 18),  // "registrosPorPagina"
+        QT_MOC_LITERAL(1109, 16),  // "onEntidadCreated"
+        QT_MOC_LITERAL(1126, 7),  // "Entidad"
+        QT_MOC_LITERAL(1134, 7),  // "entidad"
+        QT_MOC_LITERAL(1142, 16),  // "onEntidadUpdated"
+        QT_MOC_LITERAL(1159, 16),  // "onEntidadDeleted"
+        QT_MOC_LITERAL(1176, 16),  // "onSessionStarted"
+        QT_MOC_LITERAL(1193, 14),  // "onSessionEnded"
+        QT_MOC_LITERAL(1208, 16),  // "onSessionExpired"
+        QT_MOC_LITERAL(1225, 18),  // "onSessionSaveError"
+        QT_MOC_LITERAL(1244, 18)   // "onSessionLoadError"
     },
     "MainWindow",
     "on_actionNuevo_Contrato_triggered",
@@ -175,6 +177,7 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
     "on_pushButtonNuevaEntidad_clicked",
     "on_pushButtonEditarEntidad_clicked",
     "on_pushButtonEliminarEntidad_clicked",
+    "on_lineEditBuscarEntidad_textChanged",
     "on_pushButtonPrimero_clicked",
     "on_pushButtonAnterior_clicked",
     "on_pushButtonSiguiente_clicked",
@@ -222,7 +225,7 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-      39,   14, // methods
+      40,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -230,45 +233,46 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  248,    2, 0x08,    1 /* Private */,
-       3,    0,  249,    2, 0x08,    2 /* Private */,
-       4,    0,  250,    2, 0x08,    3 /* Private */,
-       5,    0,  251,    2, 0x08,    4 /* Private */,
-       6,    0,  252,    2, 0x08,    5 /* Private */,
-       7,    0,  253,    2, 0x08,    6 /* Private */,
-       8,    0,  254,    2, 0x08,    7 /* Private */,
-       9,    0,  255,    2, 0x08,    8 /* Private */,
-      10,    0,  256,    2, 0x08,    9 /* Private */,
-      11,    2,  257,    2, 0x08,   10 /* Private */,
-      14,    1,  262,    2, 0x08,   13 /* Private */,
-      16,    0,  265,    2, 0x08,   15 /* Private */,
-      17,    0,  266,    2, 0x08,   16 /* Private */,
-      18,    0,  267,    2, 0x08,   17 /* Private */,
-      19,    0,  268,    2, 0x08,   18 /* Private */,
-      20,    0,  269,    2, 0x08,   19 /* Private */,
-      21,    0,  270,    2, 0x08,   20 /* Private */,
-      22,    0,  271,    2, 0x08,   21 /* Private */,
-      23,    0,  272,    2, 0x08,   22 /* Private */,
-      24,    0,  273,    2, 0x08,   23 /* Private */,
-      25,    0,  274,    2, 0x08,   24 /* Private */,
-      26,    1,  275,    2, 0x08,   25 /* Private */,
-      27,    2,  278,    2, 0x08,   27 /* Private */,
-      30,    1,  283,    2, 0x08,   30 /* Private */,
-      32,    1,  286,    2, 0x08,   32 /* Private */,
-      35,    1,  289,    2, 0x08,   34 /* Private */,
-      36,    1,  292,    2, 0x08,   36 /* Private */,
-      39,    1,  295,    2, 0x08,   38 /* Private */,
-      40,    1,  298,    2, 0x08,   40 /* Private */,
-      42,    1,  301,    2, 0x08,   42 /* Private */,
-      43,    4,  304,    2, 0x08,   44 /* Private */,
-      49,    1,  313,    2, 0x08,   49 /* Private */,
-      52,    1,  316,    2, 0x08,   51 /* Private */,
-      53,    1,  319,    2, 0x08,   53 /* Private */,
-      54,    0,  322,    2, 0x08,   55 /* Private */,
-      55,    0,  323,    2, 0x08,   56 /* Private */,
-      56,    0,  324,    2, 0x08,   57 /* Private */,
-      57,    1,  325,    2, 0x08,   58 /* Private */,
-      58,    1,  328,    2, 0x08,   60 /* Private */,
+       1,    0,  254,    2, 0x08,    1 /* Private */,
+       3,    0,  255,    2, 0x08,    2 /* Private */,
+       4,    0,  256,    2, 0x08,    3 /* Private */,
+       5,    0,  257,    2, 0x08,    4 /* Private */,
+       6,    0,  258,    2, 0x08,    5 /* Private */,
+       7,    0,  259,    2, 0x08,    6 /* Private */,
+       8,    0,  260,    2, 0x08,    7 /* Private */,
+       9,    0,  261,    2, 0x08,    8 /* Private */,
+      10,    0,  262,    2, 0x08,    9 /* Private */,
+      11,    2,  263,    2, 0x08,   10 /* Private */,
+      14,    1,  268,    2, 0x08,   13 /* Private */,
+      16,    0,  271,    2, 0x08,   15 /* Private */,
+      17,    0,  272,    2, 0x08,   16 /* Private */,
+      18,    0,  273,    2, 0x08,   17 /* Private */,
+      19,    0,  274,    2, 0x08,   18 /* Private */,
+      20,    0,  275,    2, 0x08,   19 /* Private */,
+      21,    0,  276,    2, 0x08,   20 /* Private */,
+      22,    1,  277,    2, 0x08,   21 /* Private */,
+      23,    0,  280,    2, 0x08,   23 /* Private */,
+      24,    0,  281,    2, 0x08,   24 /* Private */,
+      25,    0,  282,    2, 0x08,   25 /* Private */,
+      26,    0,  283,    2, 0x08,   26 /* Private */,
+      27,    1,  284,    2, 0x08,   27 /* Private */,
+      28,    2,  287,    2, 0x08,   29 /* Private */,
+      31,    1,  292,    2, 0x08,   32 /* Private */,
+      33,    1,  295,    2, 0x08,   34 /* Private */,
+      36,    1,  298,    2, 0x08,   36 /* Private */,
+      37,    1,  301,    2, 0x08,   38 /* Private */,
+      40,    1,  304,    2, 0x08,   40 /* Private */,
+      41,    1,  307,    2, 0x08,   42 /* Private */,
+      43,    1,  310,    2, 0x08,   44 /* Private */,
+      44,    4,  313,    2, 0x08,   46 /* Private */,
+      50,    1,  322,    2, 0x08,   51 /* Private */,
+      53,    1,  325,    2, 0x08,   53 /* Private */,
+      54,    1,  328,    2, 0x08,   55 /* Private */,
+      55,    0,  331,    2, 0x08,   57 /* Private */,
+      56,    0,  332,    2, 0x08,   58 /* Private */,
+      57,    0,  333,    2, 0x08,   59 /* Private */,
+      58,    1,  334,    2, 0x08,   60 /* Private */,
+      59,    1,  337,    2, 0x08,   62 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -288,28 +292,29 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   15,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,   15,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,   28,   29,
-    QMetaType::Void, QMetaType::QString,   31,
-    QMetaType::Void, 0x80000000 | 33,   34,
-    QMetaType::Void, QMetaType::QString,   31,
-    QMetaType::Void, 0x80000000 | 37,   38,
-    QMetaType::Void, 0x80000000 | 37,   38,
-    QMetaType::Void, QMetaType::QString,   41,
-    QMetaType::Void, QMetaType::QString,   31,
-    QMetaType::Void, 0x80000000 | 44, QMetaType::Int, QMetaType::Int, QMetaType::Int,   45,   46,   47,   48,
-    QMetaType::Void, 0x80000000 | 50,   51,
-    QMetaType::Void, 0x80000000 | 50,   51,
-    QMetaType::Void, QMetaType::QString,   41,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,   29,   30,
+    QMetaType::Void, QMetaType::QString,   32,
+    QMetaType::Void, 0x80000000 | 34,   35,
+    QMetaType::Void, QMetaType::QString,   32,
+    QMetaType::Void, 0x80000000 | 38,   39,
+    QMetaType::Void, 0x80000000 | 38,   39,
+    QMetaType::Void, QMetaType::QString,   42,
+    QMetaType::Void, QMetaType::QString,   32,
+    QMetaType::Void, 0x80000000 | 45, QMetaType::Int, QMetaType::Int, QMetaType::Int,   46,   47,   48,   49,
+    QMetaType::Void, 0x80000000 | 51,   52,
+    QMetaType::Void, 0x80000000 | 51,   52,
+    QMetaType::Void, QMetaType::QString,   42,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   31,
-    QMetaType::Void, QMetaType::QString,   31,
+    QMetaType::Void, QMetaType::QString,   32,
+    QMetaType::Void, QMetaType::QString,   32,
 
        0        // eod
 };
@@ -360,6 +365,9 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_pushButtonEliminarEntidad_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_lineEditBuscarEntidad_textChanged'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
         // method 'on_pushButtonPrimero_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_pushButtonAnterior_clicked'
@@ -450,28 +458,29 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 14: _t->on_pushButtonNuevaEntidad_clicked(); break;
         case 15: _t->on_pushButtonEditarEntidad_clicked(); break;
         case 16: _t->on_pushButtonEliminarEntidad_clicked(); break;
-        case 17: _t->on_pushButtonPrimero_clicked(); break;
-        case 18: _t->on_pushButtonAnterior_clicked(); break;
-        case 19: _t->on_pushButtonSiguiente_clicked(); break;
-        case 20: _t->on_pushButtonUltimo_clicked(); break;
-        case 21: _t->on_comboBoxRegistrosPorPagina_currentIndexChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 22: _t->onLoginSuccess((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        case 23: _t->onLoginError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 24: _t->onContractsFetched((*reinterpret_cast< std::add_pointer_t<QList<Contract>>>(_a[1]))); break;
-        case 25: _t->onFetchError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 26: _t->onContractCreated((*reinterpret_cast< std::add_pointer_t<Contract>>(_a[1]))); break;
-        case 27: _t->onContractUpdated((*reinterpret_cast< std::add_pointer_t<Contract>>(_a[1]))); break;
-        case 28: _t->onContractDeleted((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 29: _t->onOperationError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 30: _t->onEntidadesFetched((*reinterpret_cast< std::add_pointer_t<QList<Entidad>>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[4]))); break;
-        case 31: _t->onEntidadCreated((*reinterpret_cast< std::add_pointer_t<Entidad>>(_a[1]))); break;
-        case 32: _t->onEntidadUpdated((*reinterpret_cast< std::add_pointer_t<Entidad>>(_a[1]))); break;
-        case 33: _t->onEntidadDeleted((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 34: _t->onSessionStarted(); break;
-        case 35: _t->onSessionEnded(); break;
-        case 36: _t->onSessionExpired(); break;
-        case 37: _t->onSessionSaveError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 38: _t->onSessionLoadError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 17: _t->on_lineEditBuscarEntidad_textChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 18: _t->on_pushButtonPrimero_clicked(); break;
+        case 19: _t->on_pushButtonAnterior_clicked(); break;
+        case 20: _t->on_pushButtonSiguiente_clicked(); break;
+        case 21: _t->on_pushButtonUltimo_clicked(); break;
+        case 22: _t->on_comboBoxRegistrosPorPagina_currentIndexChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 23: _t->onLoginSuccess((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 24: _t->onLoginError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 25: _t->onContractsFetched((*reinterpret_cast< std::add_pointer_t<QList<Contract>>>(_a[1]))); break;
+        case 26: _t->onFetchError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 27: _t->onContractCreated((*reinterpret_cast< std::add_pointer_t<Contract>>(_a[1]))); break;
+        case 28: _t->onContractUpdated((*reinterpret_cast< std::add_pointer_t<Contract>>(_a[1]))); break;
+        case 29: _t->onContractDeleted((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 30: _t->onOperationError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 31: _t->onEntidadesFetched((*reinterpret_cast< std::add_pointer_t<QList<Entidad>>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[4]))); break;
+        case 32: _t->onEntidadCreated((*reinterpret_cast< std::add_pointer_t<Entidad>>(_a[1]))); break;
+        case 33: _t->onEntidadUpdated((*reinterpret_cast< std::add_pointer_t<Entidad>>(_a[1]))); break;
+        case 34: _t->onEntidadDeleted((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 35: _t->onSessionStarted(); break;
+        case 36: _t->onSessionEnded(); break;
+        case 37: _t->onSessionExpired(); break;
+        case 38: _t->onSessionSaveError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 39: _t->onSessionLoadError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     }
@@ -496,13 +505,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 39)
+        if (_id < 40)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 39;
+        _id -= 40;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 39)
+        if (_id < 40)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 39;
+        _id -= 40;
     }
     return _id;
 }

@@ -41,6 +41,7 @@ private slots:
     void on_pushButtonNuevaEntidad_clicked();
     void on_pushButtonEditarEntidad_clicked();
     void on_pushButtonEliminarEntidad_clicked();
+    void on_lineEditBuscarEntidad_textChanged(const QString &text);
     
     // Slots de paginación de entidades
     void on_pushButtonPrimero_clicked();
@@ -83,6 +84,7 @@ private:
     int m_registrosPorPagina;
     int m_totalRegistros;
     int m_totalPaginas;
+    QString m_filtroEntidades;
     
     void setupUI();
     void loadContracts();

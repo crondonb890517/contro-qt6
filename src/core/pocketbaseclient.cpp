@@ -56,13 +56,21 @@ void PocketBaseClient::login(const QString &email, const QString &password)
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onLoginFinished);
 }
 
-void PocketBaseClient::fetchEntidades(int pagina, int registrosPorPagina)
+void PocketBaseClient::fetchEntidades(int pagina, int registrosPorPagina, const QString &filtro)
 {
     QUrl url(m_baseUrl + "/api/collections/entidades/records");
     QUrlQuery query;
     query.addQueryItem("sort", "nombre_comercial_entidad");
     query.addQueryItem("page", QString::number(pagina));
     query.addQueryItem("perPage", QString::number(registrosPorPagina));
+    
+    // Agregar filtro de búsqueda si no está vacío
+    if (!filtro.isEmpty()) {
+        // Buscar por nombre comercial o código de entidad
+        QString filter = "nombre_comercial_entidad ~ \"" + filtro + "\" || codigo_entidad ~ \"" + filtro + "\"";
+        query.addQueryItem("filter", filter);
+    }
+    
     url.setQuery(query);
     
     QNetworkRequest request(url);
