@@ -19,6 +19,10 @@ MainWindow::MainWindow(QWidget *parent)
     , m_pocketBase(nullptr)
     , m_sessionManager(nullptr)
     , m_currentRow(-1)
+    , m_paginaActual(1)
+    , m_registrosPorPagina(10)
+    , m_totalRegistros(0)
+    , m_totalPaginas(0)
 {
     ui->setupUi(this);
     
@@ -163,15 +167,26 @@ void MainWindow::populateTable(const QList<Contract> &contracts)
     ui->statusbar->showMessage(QString("%1 contratos cargados").arg(contracts.size()));
 }
 
-void MainWindow::loadEntidades()
+void MainWindow::loadEntidades(int pagina)
 {
     ui->statusbar->showMessage("Cargando entidades...");
-    m_pocketBase->fetchEntidades();
+    m_paginaActual = pagina;
+    m_pocketBase->fetchEntidades(pagina, m_registrosPorPagina);
 }
 
-void MainWindow::onEntidadesFetched(const QList<Entidad> &entidades)
+void MainWindow::onEntidadesFetched(const QList<Entidad> &entidades, int totalRegistros, int paginaActual, int registrosPorPagina)
 {
     m_entidades = entidades;
+    m_totalRegistros = totalRegistros;
+    m_paginaActual = paginaActual;
+    m_registrosPorPagina = registrosPorPagina;
+    m_totalPaginas = (totalRegistros + registrosPorPagina - 1) / registrosPorPagina;
+    
+    populateEntidadesTable(entidades, totalRegistros);
+}
+
+void MainWindow::populateEntidadesTable(const QList<Entidad> &entidades, int totalRegistros)
+{
     ui->tableWidgetEntidades->setRowCount(0);
     
     for (int i = 0; i < entidades.size(); ++i) {
@@ -188,7 +203,20 @@ void MainWindow::onEntidadesFetched(const QList<Entidad> &entidades)
         ui->tableWidgetEntidades->setItem(i, 7, new QTableWidgetItem(e.direccionEntidad));
     }
     
-    ui->statusbar->showMessage(QString("%1 entidades cargadas").arg(entidades.size()));
+    updatePaginationUI();
+    ui->labelTotalRegistros->setText(QString("Total: %1").arg(m_totalRegistros));
+    ui->statusbar->showMessage(QString("%1 entidades cargadas (página %2 de %3)").arg(entidades.size()).arg(m_paginaActual).arg(m_totalPaginas));
+}
+
+void MainWindow::updatePaginationUI()
+{
+    ui->labelPaginaActual->setText(QString("Página %1 de %2").arg(m_paginaActual).arg(m_totalPaginas > 0 ? m_totalPaginas : 1));
+    
+    // Habilitar/deshabilitar botones según el estado
+    ui->pushButtonPrimero->setEnabled(m_paginaActual > 1);
+    ui->pushButtonAnterior->setEnabled(m_paginaActual > 1);
+    ui->pushButtonSiguiente->setEnabled(m_paginaActual < m_totalPaginas);
+    ui->pushButtonUltimo->setEnabled(m_paginaActual < m_totalPaginas);
 }
 
 void MainWindow::showLoginDialog()
@@ -591,4 +619,40 @@ void MainWindow::on_pushButtonEditarEntidad_clicked()
 void MainWindow::on_pushButtonEliminarEntidad_clicked()
 {
     on_actionEliminar_Entidad_triggered();
+}
+
+// Slots de paginación de entidades
+void MainWindow::on_pushButtonPrimero_clicked()
+{
+    if (m_paginaActual > 1) {
+        loadEntidades(1);
+    }
+}
+
+void MainWindow::on_pushButtonAnterior_clicked()
+{
+    if (m_paginaActual > 1) {
+        loadEntidades(m_paginaActual - 1);
+    }
+}
+
+void MainWindow::on_pushButtonSiguiente_clicked()
+{
+    if (m_paginaActual < m_totalPaginas) {
+        loadEntidades(m_paginaActual + 1);
+    }
+}
+
+void MainWindow::on_pushButtonUltimo_clicked()
+{
+    if (m_paginaActual < m_totalPaginas) {
+        loadEntidades(m_totalPaginas);
+    }
+}
+
+void MainWindow::on_comboBoxRegistrosPorPagina_currentIndexChanged(const QString &text)
+{
+    m_registrosPorPagina = text.toInt();
+    m_paginaActual = 1; // Reiniciar a primera página al cambiar registros por página
+    loadEntidades(1);
 }

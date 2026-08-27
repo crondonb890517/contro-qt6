@@ -42,6 +42,13 @@ private slots:
     void on_pushButtonEditarEntidad_clicked();
     void on_pushButtonEliminarEntidad_clicked();
     
+    // Slots de paginación de entidades
+    void on_pushButtonPrimero_clicked();
+    void on_pushButtonAnterior_clicked();
+    void on_pushButtonSiguiente_clicked();
+    void on_pushButtonUltimo_clicked();
+    void on_comboBoxRegistrosPorPagina_currentIndexChanged(const QString &text);
+    
     // Slots de PocketBase
     void onLoginSuccess(const QString &token, const QString &userId);
     void onLoginError(const QString &error);
@@ -71,10 +78,18 @@ private:
     QList<Entidad> m_entidades;
     int m_currentRow;
     
+    // Variables de paginación para entidades
+    int m_paginaActual;
+    int m_registrosPorPagina;
+    int m_totalRegistros;
+    int m_totalPaginas;
+    
     void setupUI();
     void loadContracts();
-    void loadEntidades();
+    void loadEntidades(int pagina = 1);
     void populateTable(const QList<Contract> &contracts);
+    void populateEntidadesTable(const QList<Entidad> &entidades, int totalRegistros);
+    void updatePaginationUI();
     void showLoginDialog();
     void showMessage(const QString &title, const QString &message, bool success = true);
     void checkExistingSession();
