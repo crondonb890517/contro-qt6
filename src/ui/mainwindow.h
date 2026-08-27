@@ -58,7 +58,7 @@ private slots:
     void onContractUpdated(const Contract &contract);
     void onContractDeleted(const QString &id);
     void onOperationError(const QString &error);
-    void onEntidadesFetched(const QList<Entidad> &entidades);
+    void onEntidadesFetched(const QList<Entidad> &entidades, int totalRegistros, int paginaActual, int registrosPorPagina);
     void onEntidadCreated(const Entidad &entidad);
     void onEntidadUpdated(const Entidad &entidad);
     void onEntidadDeleted(const QString &id);
