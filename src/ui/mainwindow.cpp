@@ -171,7 +171,7 @@ void MainWindow::loadEntidades(int pagina)
 {
     ui->statusbar->showMessage("Cargando entidades...");
     m_paginaActual = pagina;
-    m_pocketBase->fetchEntidades(pagina, m_registrosPorPagina);
+    m_pocketBase->fetchEntidades(pagina, m_registrosPorPagina, m_filtroEntidades);
 }
 
 void MainWindow::onEntidadesFetched(const QList<Entidad> &entidades, int totalRegistros, int paginaActual, int registrosPorPagina)
@@ -654,5 +654,12 @@ void MainWindow::on_comboBoxRegistrosPorPagina_currentIndexChanged(const QString
 {
     m_registrosPorPagina = text.toInt();
     m_paginaActual = 1; // Reiniciar a primera página al cambiar registros por página
+    loadEntidades(1);
+}
+
+void MainWindow::on_lineEditBuscarEntidad_textChanged(const QString &text)
+{
+    m_filtroEntidades = text.trimmed();
+    m_paginaActual = 1; // Reiniciar a primera página al cambiar el filtro
     loadEntidades(1);
 }

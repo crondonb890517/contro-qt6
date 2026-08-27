@@ -1,1 +1,10 @@
-(empty)
+```
+# Compiled and build artifacts
+*.o
+*.obj
+*.out
+moc_*.cpp
+moc_*.h
+# Executables
+contro-qt6
+```
