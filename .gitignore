@@ -1,82 +1,15 @@
 ```
-# Qt/MOC generated files
-moc_*.cpp
-moc_*.h
-moc_*.o
-ui_*.h
-
-# Compiled object files
+# Build artifacts
+build/
 *.o
 *.obj
-
-# Qt build artifacts
-.qmake.stash
-Makefile
-contro
-contro-qt6
-
-# Generated files
-*.pyc
-*.class
-*.so
-*.dll
-*.exe
-*.a
 *.out
 
-# Dependencies
-node_modules/
-venv/
-.venv/
-__pycache__/
-.mypy_cache/
-.pytest_cache/
-target/
-.gradle/
-
-# Build directories
-build/
-dist/
-coverage/
-htmlcov/
-
-# Editor/IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# System files
-.DS_Store
-Thumbs.db
-.env
-.env.local
-*.env.*
-
-# Logs
-*.log
-
-# Coverage
-.coverage
-
-# Compressed files
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
+# Qt-specific
+.qmake.stash
+*.pro.user
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
 ```
