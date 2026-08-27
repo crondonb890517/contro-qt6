@@ -1,0 +1,40 @@
+name: CI/CD Qt6 Build
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          qt6-base-dev \
+          qt6-network-auth-dev \
+          libqt6keychain-dev \
+          build-essential \
+          cmake \
+          qmake6
+
+    - name: Configure project
+      run: |
+        qmake6 -spec linux-g++
+
+    - name: Build project
+      run: |
+        make -j$(nproc)
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: contro-qt6-binary
+        path: contro
