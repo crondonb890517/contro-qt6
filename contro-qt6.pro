@@ -43,3 +43,6 @@ INCLUDEPATH += $$PWD/src
 
 # Output binary name
 TARGET = contro
+
+# Build in separate directory (shadow build)
+CONFIG += shadow_build
