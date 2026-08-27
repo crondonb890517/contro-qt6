@@ -40,3 +40,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 # Include paths for core and ui directories
 INCLUDEPATH += $$PWD/src
+
+# Output binary name
+TARGET = contro
