@@ -580,6 +580,12 @@ void MainWindow::onSessionLoadError(const QString &error)
     showLoginDialog();
 }
 
+void MainWindow::onOperationError(const QString &error)
+{
+    QMessageBox::critical(this, tr("Error de Operación"), 
+                         tr("Se produjo un error en la operación:\n%1").arg(error));
+}
+
 // Slots para botones de la UI de Contratos
 void MainWindow::on_pushButtonNuevoContrato_clicked()
 {
