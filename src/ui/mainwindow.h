@@ -53,7 +53,7 @@ private slots:
     // Slots de PocketBase
     void onLoginSuccess(const QString &token, const QString &userId);
     void onLoginError(const QString &error);
-    void onContractsFetched(const QList<Contract> &contracts);
+    void onContractsFetched(const QList<Contract> &contracts, int totalRegistros, int paginaActual, int registrosPorPagina);
     void onFetchError(const QString &error);
     void onContractCreated(const Contract &contract);
     void onContractUpdated(const Contract &contract);
@@ -63,6 +63,13 @@ private slots:
     void onEntidadCreated(const Entidad &entidad);
     void onEntidadUpdated(const Entidad &entidad);
     void onEntidadDeleted(const QString &id);
+    
+    // Slots de paginación de contratos
+    void on_pushButtonPrimeroContrato_clicked();
+    void on_pushButtonAnteriorContrato_clicked();
+    void on_pushButtonSiguienteContrato_clicked();
+    void on_pushButtonUltimoContrato_clicked();
+    void on_comboBoxRegistrosPorPaginaContrato_currentIndexChanged(const QString &text);
     
     // Slots de SessionManager
     void onSessionStarted();
@@ -86,12 +93,20 @@ private:
     int m_totalPaginas;
     QString m_filtroEntidades;
     
+    // Variables de paginación para contratos
+    int m_paginaActualContratos;
+    int m_registrosPorPaginaContratos;
+    int m_totalRegistrosContratos;
+    int m_totalPaginasContratos;
+    QString m_filtroContratos;
+    
     void setupUI();
-    void loadContracts();
+    void loadContracts(int pagina = 1);
     void loadEntidades(int pagina = 1);
     void populateTable(const QList<Contract> &contracts);
     void populateEntidadesTable(const QList<Entidad> &entidades, int totalRegistros);
     void updatePaginationUI();
+    void updateContratosPaginationUI();
     void showLoginDialog();
     void showMessage(const QString &title, const QString &message, bool success = true);
     void checkExistingSession();
