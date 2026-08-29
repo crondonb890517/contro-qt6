@@ -477,11 +477,7 @@
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
- </widget>
- <resources>
-  <include location="../../resources/icons.qrc"/>
- </resources>
- <action name="actionNuevo_Contrato">
+  <action name="actionNuevo_Contrato">
    <property name="text">
     <string>Nuevo Contrato</string>
    </property>
@@ -609,7 +605,9 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources/icons.qrc"/>
+ </resources>
  <connections>
    <connection>
     <sender>actionSalir</sender>
