@@ -23,6 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     , m_registrosPorPagina(10)
     , m_totalRegistros(0)
     , m_totalPaginas(0)
+    , m_paginaActualContratos(1)
+    , m_registrosPorPaginaContratos(10)
+    , m_totalRegistrosContratos(0)
+    , m_totalPaginasContratos(0)
 {
     ui->setupUi(this);
     
@@ -114,10 +118,11 @@ void MainWindow::setupUI()
     ui->statusbar->showMessage("Listo");
 }
 
-void MainWindow::loadContracts()
+void MainWindow::loadContracts(int pagina)
 {
     ui->statusbar->showMessage("Cargando contratos...");
-    m_pocketBase->fetchContracts();
+    m_paginaActualContratos = pagina;
+    m_pocketBase->fetchContracts(pagina, m_registrosPorPaginaContratos, m_filtroContratos);
 }
 
 void MainWindow::populateTable(const QList<Contract> &contracts)
@@ -493,40 +498,22 @@ void MainWindow::onLoginError(const QString &error)
     ui->statusbar->showMessage("Error de autenticación");
 }
 
-void MainWindow::onContractsFetched(const QList<Contract> &contracts)
+void MainWindow::onContractsFetched(const QList<Contract> &contracts, int totalRegistros, int paginaActual, int registrosPorPagina)
 {
+    m_contracts = contracts;
+    m_totalRegistrosContratos = totalRegistros;
+    m_paginaActualContratos = paginaActual;
+    m_registrosPorPaginaContratos = registrosPorPagina;
+    m_totalPaginasContratos = (totalRegistros + registrosPorPagina - 1) / registrosPorPagina;
+    
     populateTable(contracts);
+    updateContratosPaginationUI();
 }
 
 void MainWindow::onFetchError(const QString &error)
 {
     showMessage("Error al Cargar", error, false);
     ui->statusbar->showMessage("Error al cargar contratos");
-}
-
-void MainWindow::onContractCreated(const Contract &contract)
-{
-    showMessage("Éxito", QString("Contrato '%1' creado correctamente").arg(contract.nombre));
-    loadContracts();
-}
-
-void MainWindow::onContractUpdated(const Contract &contract)
-{
-    showMessage("Éxito", QString("Contrato '%1' actualizado correctamente").arg(contract.nombre));
-    loadContracts();
-}
-
-void MainWindow::onContractDeleted(const QString &id)
-{
-    Q_UNUSED(id);
-    showMessage("Éxito", "Contrato eliminado correctamente");
-    loadContracts();
-}
-
-void MainWindow::onOperationError(const QString &error)
-{
-    showMessage("Error", error, false);
-    ui->statusbar->showMessage("Error en la operación");
 }
 
 void MainWindow::onEntidadCreated(const Entidad &entidad)
@@ -548,6 +535,25 @@ void MainWindow::onEntidadDeleted(const QString &id)
     Q_UNUSED(id);
     showMessage("Éxito", "Entidad eliminada correctamente");
     loadEntidades();
+}
+
+void MainWindow::onContractCreated(const Contract &contract)
+{
+    showMessage("Éxito", QString("Contrato '%1' creado correctamente").arg(contract.nombre));
+    loadContracts();
+}
+
+void MainWindow::onContractUpdated(const Contract &contract)
+{
+    showMessage("Éxito", QString("Contrato '%1' actualizado correctamente").arg(contract.nombre));
+    loadContracts();
+}
+
+void MainWindow::onContractDeleted(const QString &id)
+{
+    Q_UNUSED(id);
+    showMessage("Éxito", "Contrato eliminado correctamente");
+    loadContracts();
 }
 
 // Slots de SessionManager
@@ -662,4 +668,61 @@ void MainWindow::on_lineEditBuscarEntidad_textChanged(const QString &text)
     m_filtroEntidades = text.trimmed();
     m_paginaActual = 1; // Reiniciar a primera página al cambiar el filtro
     loadEntidades(1);
+}
+
+// Slots de paginación de contratos
+void MainWindow::on_pushButtonPrimeroContrato_clicked()
+{
+    if (m_paginaActualContratos > 1) {
+        loadContracts(1);
+    }
+}
+
+void MainWindow::on_pushButtonAnteriorContrato_clicked()
+{
+    if (m_paginaActualContratos > 1) {
+        loadContracts(m_paginaActualContratos - 1);
+    }
+}
+
+void MainWindow::on_pushButtonSiguienteContrato_clicked()
+{
+    if (m_paginaActualContratos < m_totalPaginasContratos) {
+        loadContracts(m_paginaActualContratos + 1);
+    }
+}
+
+void MainWindow::on_pushButtonUltimoContrato_clicked()
+{
+    if (m_paginaActualContratos < m_totalPaginasContratos) {
+        loadContracts(m_totalPaginasContratos);
+    }
+}
+
+void MainWindow::on_comboBoxRegistrosPorPaginaContrato_currentIndexChanged(const QString &text)
+{
+    m_registrosPorPaginaContratos = text.toInt();
+    m_paginaActualContratos = 1; // Reiniciar a primera página al cambiar registros por página
+    loadContracts(1);
+}
+
+void MainWindow::on_lineEditBuscar_textChanged(const QString &text)
+{
+    m_filtroContratos = text.trimmed();
+    m_paginaActualContratos = 1; // Reiniciar a primera página al cambiar el filtro
+    loadContracts(1);
+}
+
+void MainWindow::updateContratosPaginationUI()
+{
+    ui->labelPaginaActualContratos->setText(QString("Página %1 de %2").arg(m_paginaActualContratos).arg(m_totalPaginasContratos > 0 ? m_totalPaginasContratos : 1));
+    
+    // Habilitar/deshabilitar botones según el estado
+    ui->pushButtonPrimeroContrato->setEnabled(m_paginaActualContratos > 1);
+    ui->pushButtonAnteriorContrato->setEnabled(m_paginaActualContratos > 1);
+    ui->pushButtonSiguienteContrato->setEnabled(m_paginaActualContratos < m_totalPaginasContratos);
+    ui->pushButtonUltimoContrato->setEnabled(m_paginaActualContratos < m_totalPaginasContratos);
+    
+    ui->labelTotalRegistrosContratos->setText(QString("Total: %1").arg(m_totalRegistrosContratos));
+    ui->statusbar->showMessage(QString("%1 contratos cargados (página %2 de %3)").arg(m_contracts.size()).arg(m_paginaActualContratos).arg(m_totalPaginasContratos));
 }

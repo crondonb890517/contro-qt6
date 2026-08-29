@@ -134,10 +134,27 @@ void PocketBaseClient::deleteEntidad(const QString &id)
     connect(m_currentReply, &QNetworkReply::finished, this, &PocketBaseClient::onDeleteEntidadFinished);
 }
 
-void PocketBaseClient::fetchContracts()
+void PocketBaseClient::fetchContracts(int pagina, int registrosPorPagina, const QString &filtro)
 {
     QUrl url(m_baseUrl + "/api/collections/" + m_collection + "/records");
-    url.setQuery("expand=cliente&sort=-created");
+    
+    // Construir query parameters
+    QStringList queryParams;
+    queryParams.append("expand=cliente");
+    queryParams.append("sort=-created");
+    queryParams.append(QString("page=%1").arg(pagina));
+    queryParams.append(QString("perPage=%1").arg(registrosPorPagina));
+    
+    // Agregar filtro si existe
+    if (!filtro.isEmpty()) {
+        // PocketBase usa filter para búsquedas
+        // Ejemplo: nombre~"texto" || descripcion~"texto" || estado~"texto"
+        QString filter = QString("(nombre~\"%1\"||descripcion~\"%1\"||estado~\"%1\")")
+            .arg(filtro);
+        queryParams.append(QString("filter=%1").arg(filter));
+    }
+    
+    url.setQuery(queryParams.join("&"));
     
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -393,7 +410,12 @@ void PocketBaseClient::onFetchFinished()
                 contracts.append(parseContract(value.toObject()));
             }
             
-            emit contractsFetched(contracts);
+            // Obtener información de paginación de la respuesta
+            int totalRegistros = jsonObj["totalItems"].toInt(0);
+            int paginaActual = jsonObj["page"].toInt(1);
+            int registrosPorPagina = jsonObj["perPage"].toInt(10);
+            
+            emit contractsFetched(contracts, totalRegistros, paginaActual, registrosPorPagina);
         } else {
             QString error = m_currentReply->errorString();
             emit fetchError(error);

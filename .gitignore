@@ -5,11 +5,33 @@ build/
 *.obj
 *.out
 
-# Qt-specific
-.qmake.stash
-*.pro.user
-moc_*.cpp
-moc_*.h
-ui_*.h
-qrc_*.cpp
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# OS files
+.DS_Store
+Thumbs.db
 ```

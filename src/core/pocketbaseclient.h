@@ -53,7 +53,7 @@ public:
     void createEntidad(const QJsonObject &entidadData);
     void updateEntidad(const QString &id, const QJsonObject &entidadData);
     void deleteEntidad(const QString &id);
-    void fetchContracts();
+    void fetchContracts(int pagina = 1, int registrosPorPagina = 10, const QString &filtro = QString());
     void createContract(const QJsonObject &contractData, const QString &filePath = QString());
     void updateContract(const QString &id, const QJsonObject &contractData, const QString &filePath = QString());
     void deleteContract(const QString &id);
@@ -65,7 +65,7 @@ signals:
     void entidadCreated(const Entidad &entidad);
     void entidadUpdated(const Entidad &entidad);
     void entidadDeleted(const QString &id);
-    void contractsFetched(const QList<Contract> &contracts);
+    void contractsFetched(const QList<Contract> &contracts, int totalRegistros, int paginaActual, int registrosPorPagina);
     void fetchError(const QString &error);
     void contractCreated(const Contract &contract);
     void contractUpdated(const Contract &contract);

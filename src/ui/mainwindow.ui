@@ -122,6 +122,101 @@
           </column>
          </widget>
         </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayoutPaginacionContratos">
+          <item>
+           <spacer name="horizontalSpacerPaginacionContratos">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonPrimeroContrato">
+            <property name="text">
+             <string>|&lt;</string>
+            </property>
+            <property name="toolTip">
+             <string>Primera página</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonAnteriorContrato">
+            <property name="text">
+             <string>&lt;</string>
+            </property>
+            <property name="toolTip">
+             <string>Página anterior</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelPaginaActualContratos">
+            <property name="text">
+             <string>Página 1 de 1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSiguienteContrato">
+            <property name="text">
+             <string>&gt;</string>
+            </property>
+            <property name="toolTip">
+             <string>Siguiente página</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonUltimoContrato">
+            <property name="text">
+             <string>&gt;|</string>
+            </property>
+            <property name="toolTip">
+             <string>Última página</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBoxRegistrosPorPaginaContrato">
+            <item>
+             <property name="text">
+              <string>10</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>25</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>50</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>100</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelTotalRegistrosContratos">
+            <property name="text">
+             <string>Total: 0</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tabEntidades">
