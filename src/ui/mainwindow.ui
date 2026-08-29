@@ -47,7 +47,9 @@
              <string>Nuevo</string>
             </property>
             <property name="icon">
-             <iconset theme="document-new"/>
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/file-plus.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -57,7 +59,9 @@
              <string>Editar</string>
             </property>
             <property name="icon">
-             <iconset theme="document-edit"/>
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/file-edit.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -67,7 +71,9 @@
              <string>Eliminar</string>
             </property>
             <property name="icon">
-             <iconset theme="edit-delete"/>
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/trash-2.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -140,20 +146,30 @@
           <item>
            <widget class="QPushButton" name="pushButtonPrimeroContrato">
             <property name="text">
-             <string>|&lt;</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Primera página</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevrons-left.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButtonAnteriorContrato">
             <property name="text">
-             <string>&lt;</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Página anterior</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevron-left.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -167,20 +183,30 @@
           <item>
            <widget class="QPushButton" name="pushButtonSiguienteContrato">
             <property name="text">
-             <string>&gt;</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Siguiente página</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevron-right.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButtonUltimoContrato">
             <property name="text">
-             <string>&gt;|</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Última página</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevrons-right.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -246,7 +272,9 @@
              <string>Nuevo</string>
             </property>
             <property name="icon">
-             <iconset theme="document-new"/>
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/file-plus.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -256,7 +284,9 @@
              <string>Editar</string>
             </property>
             <property name="icon">
-             <iconset theme="document-edit"/>
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/file-edit.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -266,7 +296,9 @@
              <string>Eliminar</string>
             </property>
             <property name="icon">
-             <iconset theme="edit-delete"/>
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/trash-2.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -293,20 +325,30 @@
           <item>
            <widget class="QPushButton" name="pushButtonPrimero">
             <property name="text">
-             <string>|&lt;</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Primera página</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevrons-left.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButtonAnterior">
             <property name="text">
-             <string>&lt;</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Página anterior</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevron-left.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -320,20 +362,30 @@
           <item>
            <widget class="QPushButton" name="pushButtonSiguiente">
             <property name="text">
-             <string>&gt;</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Siguiente página</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevron-right.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButtonUltimo">
             <property name="text">
-             <string>&gt;|</string>
+             <string/>
             </property>
             <property name="toolTip">
              <string>Última página</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../resources/icons.qrc">
+              <normaloff>:/icons/chevrons-right.svg</normaloff>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -425,9 +477,17 @@
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <resources>
+   <include location="../../resources/icons.qrc"/>
+  </resources>
   <action name="actionNuevo_Contrato">
    <property name="text">
     <string>Nuevo Contrato</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/file-plus.svg</normaloff>
+    </iconset>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
@@ -437,6 +497,11 @@
    <property name="text">
     <string>Editar Contrato</string>
    </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/file-edit.svg</normaloff>
+    </iconset>
+   </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
    </property>
@@ -444,6 +509,11 @@
   <action name="actionEliminar_Contrato">
    <property name="text">
     <string>Eliminar Contrato</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/trash-2.svg</normaloff>
+    </iconset>
    </property>
    <property name="shortcut">
     <string>Del</string>
@@ -453,6 +523,11 @@
    <property name="text">
     <string>Actualizar</string>
    </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/refresh-cw.svg</normaloff>
+    </iconset>
+   </property>
    <property name="shortcut">
     <string>F5</string>
    </property>
@@ -460,6 +535,11 @@
   <action name="actionSalir">
    <property name="text">
     <string>Salir</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/x.svg</normaloff>
+    </iconset>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -469,10 +549,20 @@
    <property name="text">
     <string>Acerca de...</string>
    </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/help-circle.svg</normaloff>
+    </iconset>
+   </property>
   </action>
   <action name="actionCerrar_Sesion">
    <property name="text">
     <string>Cerrar Sesión</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/log-out.svg</normaloff>
+    </iconset>
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
@@ -482,6 +572,11 @@
    <property name="text">
     <string>Nueva Entidad</string>
    </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/building.svg</normaloff>
+    </iconset>
+   </property>
    <property name="shortcut">
     <string>Ctrl+T</string>
    </property>
@@ -490,6 +585,11 @@
    <property name="text">
     <string>Editar Entidad</string>
    </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/users.svg</normaloff>
+    </iconset>
+   </property>
    <property name="shortcut">
     <string>Ctrl+Y</string>
    </property>
@@ -497,6 +597,11 @@
   <action name="actionEliminar_Entidad">
    <property name="text">
     <string>Eliminar Entidad</string>
+   </property>
+   <property name="icon">
+    <iconset resource="../../resources/icons.qrc">
+     <normaloff>:/icons/trash-2.svg</normaloff>
+    </iconset>
    </property>
    <property name="shortcut">
     <string>Shift+Del</string>

@@ -1,0 +1,32 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/icons">
+        <!-- Iconos de acción -->
+        <file>icons/file-plus.svg</file>
+        <file>icons/file-edit.svg</file>
+        <file>icons/trash-2.svg</file>
+        <file>icons/check.svg</file>
+        <file>icons/x.svg</file>
+        <file>icons/plus.svg</file>
+        
+        <!-- Iconos de navegación/paginación -->
+        <file>icons/chevron-left.svg</file>
+        <file>icons/chevron-right.svg</file>
+        <file>icons/chevrons-left.svg</file>
+        <file>icons/chevrons-right.svg</file>
+        
+        <!-- Iconos de archivo y búsqueda -->
+        <file>icons/search.svg</file>
+        <file>icons/folder-open.svg</file>
+        <file>icons/file-text.svg</file>
+        
+        <!-- Iconos de entidad/usuario -->
+        <file>icons/users.svg</file>
+        <file>icons/building.svg</file>
+        
+        <!-- Iconos de sistema -->
+        <file>icons/refresh-cw.svg</file>
+        <file>icons/log-out.svg</file>
+        <file>icons/help-circle.svg</file>
+    </qresource>
+</RCC>
