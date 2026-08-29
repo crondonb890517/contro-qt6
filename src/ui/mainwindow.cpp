@@ -462,21 +462,6 @@ void MainWindow::on_tableWidgetContratos_cellDoubleClicked(int row, int column)
     }
 }
 
-void MainWindow::on_lineEditBuscar_textChanged(const QString &text)
-{
-    QList<Contract> filtered;
-    
-    for (const Contract &c : m_contracts) {
-        if (c.nombre.contains(text, Qt::CaseInsensitive) ||
-            c.cliente.contains(text, Qt::CaseInsensitive) ||
-            c.estado.contains(text, Qt::CaseInsensitive)) {
-            filtered.append(c);
-        }
-    }
-    
-    populateTable(filtered);
-}
-
 // Slots de PocketBase
 void MainWindow::onLoginSuccess(const QString &token, const QString &userId)
 {
