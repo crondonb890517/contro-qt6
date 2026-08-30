@@ -1,3 +1,53 @@
-# Icons directory - assuming these are source assets
-# If these are build-generated, uncomment the line below:
-# iconos/
+```
+# Build artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+# Qt/CMake specific
+build/
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+qmldir
+*.qmlc
+*.jsc
+
+# Dependencies
+node_modules/
+vendor/
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# OS generated files
+.DS_Store
+Thumbs.db
+```

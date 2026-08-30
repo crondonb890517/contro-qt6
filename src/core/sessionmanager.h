@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QDateTime>
-#include <qt6keychain/keychain.h>
+#include <QSettings>
 
 class PocketBaseClient;
 
