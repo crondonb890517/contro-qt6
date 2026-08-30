@@ -1,3 +1,39 @@
-# Icons directory - assuming these are source assets
-# If these are build-generated, uncomment the line below:
-# iconos/
+```
+# Qt/MOC generated files
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+.qmake.stash
+Makefile
+
+# Build artifacts
+build/
+dist/
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.exe
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+*.tmp
+
+# System files
+.DS_Store
+Thumbs.db
+```

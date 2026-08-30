@@ -19,6 +19,7 @@ set(SOURCES
     src/ui/contractdialog.cpp
     src/core/sessionmanager.cpp
     src/ui/entidaddialog.cpp
+    src/ui/logindialog.cpp
 )
 
 set(HEADERS
@@ -27,12 +28,14 @@ set(HEADERS
     src/ui/contractdialog.h
     src/core/sessionmanager.h
     src/ui/entidaddialog.h
+    src/ui/logindialog.h
 )
 
 set(FORMS
     src/ui/mainwindow.ui
     src/ui/contractdialog.ui
     src/ui/entidaddialog.ui
+    src/ui/logindialog.ui
 )
 
 qt6_wrap_cpp(MOC_SOURCES ${HEADERS})
@@ -45,7 +48,10 @@ add_executable(${PROJECT_NAME}
     ${UI_HEADERS}
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
