@@ -46,3 +46,6 @@ TARGET = contro
 
 # Build in separate directory (shadow build)
 CONFIG += shadow_build
+
+RESOURCES += \
+    resources/resources.qrc

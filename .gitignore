@@ -1,7 +1,3 @@
-```
-# Icons - these appear to be source files being actively modified
-# resources/icons/
-
-# No build artifacts, dependencies, or temp files detected in changes
-# Source files (SVG icons) should not be ignored as they're part of the project
-```
+# Icons directory - assuming these are source assets
+# If these are build-generated, uncomment the line below:
+# iconos/

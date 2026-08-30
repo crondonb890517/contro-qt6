@@ -49,11 +49,11 @@ public:
     QString authToken() const;
 
     void login(const QString &email, const QString &password);
-    void fetchEntidades(int pagina = 1, int registrosPorPagina = 10, const QString &filtro = QString());
+    void fetchEntidades(int pagina = 1, int registrosPorPagina = 20, const QString &filtro = QString());
     void createEntidad(const QJsonObject &entidadData);
     void updateEntidad(const QString &id, const QJsonObject &entidadData);
     void deleteEntidad(const QString &id);
-    void fetchContracts(int pagina = 1, int registrosPorPagina = 10, const QString &filtro = QString());
+    void fetchContracts(int pagina = 1, int registrosPorPagina = 20, const QString &filtro = QString());
     void createContract(const QJsonObject &contractData, const QString &filePath = QString());
     void updateContract(const QString &id, const QJsonObject &contractData, const QString &filePath = QString());
     void deleteContract(const QString &id);
