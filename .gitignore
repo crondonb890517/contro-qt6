@@ -1,40 +1,27 @@
 ```
+# Qt/MOC generated files
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+.qmake.stash
+Makefile
+
 # Build artifacts
+build/
+dist/
 *.o
 *.obj
 *.a
-*.lib
 *.so
 *.dll
-*.dylib
 *.exe
-*.out
-
-# Qt/CMake specific
-build/
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qbs.user.*
-qmldir
-*.qmlc
-*.jsc
 
 # Dependencies
 node_modules/
-vendor/
-
-# Logs and temp files
-*.log
-*.tmp
-*.temp
-*.bak
-*.swp
-
-# Environment
-.env
-.env.local
-*.env.*
+.venv/
+venv/
+__pycache__/
 
 # Editors
 .vscode/
@@ -42,12 +29,11 @@ vendor/
 *.swp
 *.swo
 
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
+# Logs and temp files
+*.log
+*.tmp
 
-# OS generated files
+# System files
 .DS_Store
 Thumbs.db
 ```
