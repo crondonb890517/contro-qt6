@@ -3,14 +3,10 @@
 #include <QApplication>
 #include "ui/logindialog.h"
 #include "core/sessionmanager.h"
-#include "core/pocketbaseclient.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    
-    // Configurar estilo de la aplicación para apariencia profesional
-    a.setStyle("Fusion");
     
     // Crear sesión inicial para verificar autenticación
     SessionManager sessionManager;

@@ -89,13 +89,10 @@ void LoginDialog::on_lineEditEmail_textChanged(const QString &text)
     
     // Actualizar estilo según validez
     if (text.isEmpty()) {
-        ui->lineEditEmail->setStyleSheet("");
         ui->labelEmailError->setText("");
     } else if (m_emailValid) {
-        ui->lineEditEmail->setStyleSheet("QLineEdit { border: 2px solid #2ecc71; }");
         ui->labelEmailError->setText("");
     } else {
-        ui->lineEditEmail->setStyleSheet("QLineEdit { border: 2px solid #e74c3c; }");
         ui->labelEmailError->setText("Formato de email inválido");
     }
     
@@ -108,13 +105,10 @@ void LoginDialog::on_lineEditPassword_textChanged(const QString &text)
     
     // Actualizar estilo según validez
     if (text.isEmpty()) {
-        ui->lineEditPassword->setStyleSheet("");
         ui->labelPasswordError->setText("");
     } else if (m_passwordValid) {
-        ui->lineEditPassword->setStyleSheet("QLineEdit { border: 2px solid #2ecc71; }");
         ui->labelPasswordError->setText("");
     } else {
-        ui->lineEditPassword->setStyleSheet("QLineEdit { border: 2px solid #e74c3c; }");
         ui->labelPasswordError->setText("La contraseña debe tener al menos 6 caracteres");
     }
     

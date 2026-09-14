@@ -119,5 +119,10 @@
         <file>../iconos/actions/zoom-original.png</file>
         <file>../iconos/actions/zoom-out.png</file>
         <file>../iconos/actions/contro-logo.png</file>
+        <file>../iconos/actions/carbon--password.png</file>
+        <file>../iconos/actions/ant-design--user-outlined.png</file>
+        <file>../iconos/actions/contro.jpg</file>
+        <file>../iconos/actions/carbon--close.png</file>
+        <file>../iconos/actions/carbon--unlocked.png</file>
     </qresource>
 </RCC>

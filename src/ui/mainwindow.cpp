@@ -186,7 +186,7 @@ void MainWindow::onEntidadesFetched(const QList<Entidad> &entidades, int totalRe
     m_paginaActual = paginaActual;
     m_registrosPorPagina = registrosPorPagina;
     m_totalPaginas = (totalRegistros + registrosPorPagina - 1) / registrosPorPagina;
-    
+
     populateEntidadesTable(entidades, totalRegistros);
 }
 
@@ -194,6 +194,8 @@ void MainWindow::populateEntidadesTable(const QList<Entidad> &entidades, int tot
 {
     ui->tableWidgetEntidades->setRowCount(0);
     
+    m_totalRegistros = totalRegistros;
+
     for (int i = 0; i < entidades.size(); ++i) {
         const Entidad &e = entidades[i];
         ui->tableWidgetEntidades->insertRow(i);
@@ -226,7 +228,6 @@ void MainWindow::updatePaginationUI()
 
 void MainWindow::showLoginDialog()
 {
-    bool ok;
     // Crear un QDialog personalizado con ambos campos en una sola ventana
     QDialog *loginDialog = new QDialog(this);
     loginDialog->setWindowTitle("Login PocketBase");
