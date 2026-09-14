@@ -19,19 +19,22 @@ SOURCES += \
     src/core/pocketbaseclient.cpp \
     src/ui/contractdialog.cpp \
     src/core/sessionmanager.cpp \
-    src/ui/entidaddialog.cpp
+    src/ui/entidaddialog.cpp \
+    src/ui/logindialog.cpp
 
 HEADERS += \
     src/ui/mainwindow.h \
     src/core/pocketbaseclient.h \
     src/ui/contractdialog.h \
     src/core/sessionmanager.h \
-    src/ui/entidaddialog.h
+    src/ui/entidaddialog.h \
+    src/ui/logindialog.h
 
 FORMS += \
     src/ui/mainwindow.ui \
     src/ui/contractdialog.ui \
-    src/ui/entidaddialog.ui
+    src/ui/entidaddialog.ui \
+    src/ui/logindialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

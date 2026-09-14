@@ -1,10 +1,7 @@
 #include "sessionmanager.h"
-#include <qt6keychain/keychain.h>
 #include <QSettings>
 #include <QDateTime>
 #include <QDebug>
-
-using namespace QKeychain;
 
 SessionManager::SessionManager(QObject *parent)
     : QObject(parent)
@@ -97,126 +94,52 @@ bool SessionManager::saveSession()
         return false;
     }
 
-    // Guardar token en el llavero del sistema (seguro)
-    auto *tokenJob = new QKeychain::WritePasswordJob(m_serviceName, this);
-    tokenJob->setKey(generateTokenKey());
-    tokenJob->setTextData(m_token);
-    
-    // Guardar userId en el llavero
-    auto *userIdJob = new QKeychain::WritePasswordJob(m_serviceName, this);
-    userIdJob->setKey(generateUserIdKey());
-    userIdJob->setTextData(m_userId);
-    
-    // Guardar username en settings normal (no sensible)
+    // Guardar token y userId en QSettings (en producción usar QKeychain si está disponible)
     QSettings settings(m_serviceName, "Session");
+    settings.setValue(generateTokenKey(), m_token);
+    settings.setValue(generateUserIdKey(), m_userId);
     settings.setValue(generateUsernameKey(), m_username);
     settings.setValue("loginTime", m_loginTime);
     
-    // Conectar señales para manejar errores
-    connect(tokenJob, &QKeychain::Job::finished, this, [this, tokenJob]() {
-        if (tokenJob->error()) {
-            qWarning() << "SessionManager: Error al guardar token:" << tokenJob->errorString();
-            emit sessionSaveError(tokenJob->errorString());
-        } else {
-            qDebug() << "SessionManager: Token guardado exitosamente";
-            emit sessionStarted();
-        }
-        tokenJob->deleteLater();
-    });
-    
-    connect(userIdJob, &QKeychain::Job::finished, this, [userIdJob]() {
-        if (userIdJob->error()) {
-            qWarning() << "SessionManager: Error al guardar userId:" << userIdJob->errorString();
-        }
-        userIdJob->deleteLater();
-    });
-    
-    tokenJob->start();
-    userIdJob->start();
+    qDebug() << "SessionManager: Token guardado exitosamente";
+    emit sessionStarted();
     
     return true;
 }
 
 bool SessionManager::loadSession()
 {
-    // Cargar username de settings normal
+    // Cargar todos los datos de QSettings
     QSettings settings(m_serviceName, "Session");
     m_username = settings.value(generateUsernameKey()).toString();
     m_loginTime = settings.value("loginTime").toDateTime();
+    m_token = settings.value(generateTokenKey()).toString();
+    m_userId = settings.value(generateUserIdKey()).toString();
     
-    // Cargar token del llavero
-    auto *tokenJob = new QKeychain::ReadPasswordJob(m_serviceName, this);
-    tokenJob->setKey(generateTokenKey());
-    
-    connect(tokenJob, &QKeychain::Job::finished, this, [this, tokenJob]() {
-        if (tokenJob->error()) {
-            qWarning() << "SessionManager: Error al cargar token:" << tokenJob->errorString();
-            emit sessionLoadError(tokenJob->errorString());
-            m_authenticated = false;
-        } else {
-            m_token = tokenJob->textData();
-            if (!m_token.isEmpty()) {
-                m_authenticated = true;
-                qDebug() << "SessionManager: Sesión cargada exitosamente";
-                
-                // Verificar si el token está expirado
-                if (isTokenExpired()) {
-                    qWarning() << "SessionManager: Token expirado, se requiere re-autenticación";
-                    emit sessionExpired();
-                }
-            }
+    if (!m_token.isEmpty()) {
+        m_authenticated = true;
+        qDebug() << "SessionManager: Sesión cargada exitosamente";
+        
+        // Verificar si el token está expirado
+        if (isTokenExpired()) {
+            qWarning() << "SessionManager: Token expirado, se requiere re-autenticación";
+            emit sessionExpired();
         }
-        tokenJob->deleteLater();
-    });
-    
-    // Cargar userId del llavero
-    auto *userIdJob = new QKeychain::ReadPasswordJob(m_serviceName, this);
-    userIdJob->setKey(generateUserIdKey());
-    
-    connect(userIdJob, &QKeychain::Job::finished, this, [this, userIdJob]() {
-        if (!userIdJob->error()) {
-            m_userId = userIdJob->textData();
-        }
-        userIdJob->deleteLater();
-    });
-    
-    tokenJob->start();
-    userIdJob->start();
+    } else {
+        m_authenticated = false;
+    }
     
     return true;
 }
 
 bool SessionManager::deleteSession()
 {
-    // Eliminar token del llavero
-    auto *tokenJob = new QKeychain::DeletePasswordJob(m_serviceName, this);
-    tokenJob->setKey(generateTokenKey());
-    
-    // Eliminar userId del llavero
-    auto *userIdJob = new QKeychain::DeletePasswordJob(m_serviceName, this);
-    userIdJob->setKey(generateUserIdKey());
-    
-    // Limpiar settings
+    // Eliminar todos los datos de QSettings
     QSettings settings(m_serviceName, "Session");
+    settings.remove(generateTokenKey());
+    settings.remove(generateUserIdKey());
     settings.remove(generateUsernameKey());
     settings.remove("loginTime");
-    
-    connect(tokenJob, &QKeychain::Job::finished, this, [tokenJob]() {
-        if (tokenJob->error()) {
-            qWarning() << "SessionManager: Error al eliminar token:" << tokenJob->errorString();
-        }
-        tokenJob->deleteLater();
-    });
-    
-    connect(userIdJob, &QKeychain::Job::finished, this, [userIdJob]() {
-        if (userIdJob->error()) {
-            qWarning() << "SessionManager: Error al eliminar userId:" << userIdJob->errorString();
-        }
-        userIdJob->deleteLater();
-    });
-    
-    tokenJob->start();
-    userIdJob->start();
     
     clearSession();
     
