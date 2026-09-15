@@ -1,5 +1,6 @@
 #include "pocketbaseclient.h"
 #include <QNetworkRequest>
+#include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -374,11 +375,48 @@ void PocketBaseClient::onLoginFinished()
     if (m_currentReply) {
         if (m_currentReply->error() == QNetworkReply::NoError) {
             QByteArray responseData = m_currentReply->readAll();
-            QJsonDocument doc = QJsonDocument::fromJson(responseData);
+            QJsonParseError parseError;
+            QJsonDocument doc = QJsonDocument::fromJson(responseData, &parseError);
+            
+            // Validar que el JSON sea válido
+            if (parseError.error != QJsonParseError::NoError) {
+                QString error = "Respuesta inválida del servidor: " + parseError.errorString();
+                emit loginError(error);
+                m_currentReply->deleteLater();
+                m_currentReply = nullptr;
+                return;
+            }
+            
             QJsonObject jsonObj = doc.object();
             
-            QString token = jsonObj["token"].toString();
+            // Validar que la respuesta tenga un token
+            if (!jsonObj.contains("token") || jsonObj["token"].toString().isEmpty()) {
+                QString error = "Autenticación fallida: El servidor no devolvió un token válido";
+                emit loginError(error);
+                m_currentReply->deleteLater();
+                m_currentReply = nullptr;
+                return;
+            }
+            
+            // Validar que la respuesta tenga un record con id
+            if (!jsonObj.contains("record") || !jsonObj["record"].isObject()) {
+                QString error = "Autenticación fallida: Datos de usuario inválidos";
+                emit loginError(error);
+                m_currentReply->deleteLater();
+                m_currentReply = nullptr;
+                return;
+            }
+            
             QJsonObject record = jsonObj["record"].toObject();
+            if (!record.contains("id") || record["id"].toString().isEmpty()) {
+                QString error = "Autenticación fallida: ID de usuario inválido";
+                emit loginError(error);
+                m_currentReply->deleteLater();
+                m_currentReply = nullptr;
+                return;
+            }
+            
+            QString token = jsonObj["token"].toString();
             QString userId = record["id"].toString();
             
             m_authToken = token;
@@ -386,8 +424,24 @@ void PocketBaseClient::onLoginFinished()
             
             emit loginSuccess(token, userId);
         } else {
-            QString error = m_currentReply->errorString();
-            emit loginError(error);
+            // Error de red o HTTP
+            QString errorStr = m_currentReply->errorString();
+            int httpCode = m_currentReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            
+            // Mensaje de error más específico según código HTTP
+            if (httpCode == 400) {
+                errorStr = "Credenciales inválidas. Verifique email y contraseña";
+            } else if (httpCode == 401) {
+                errorStr = "Usuario o contraseña incorrectos";
+            } else if (httpCode == 403) {
+                errorStr = "Acceso denegado. Verifique sus credenciales";
+            } else if (httpCode == 500) {
+                errorStr = "Error del servidor. Intente más tarde";
+            } else if (httpCode == 0) {
+                errorStr = "No se pudo conectar al servidor. Verifique que PocketBase esté ejecutándose en " + m_baseUrl;
+            }
+            
+            emit loginError(errorStr);
         }
         
         m_currentReply->deleteLater();

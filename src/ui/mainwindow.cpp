@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "contractdialog.h"
 #include "entidaddialog.h"
+#include "logindialog.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QSettings>
@@ -228,51 +229,46 @@ void MainWindow::updatePaginationUI()
 
 void MainWindow::showLoginDialog()
 {
-    // Crear un QDialog personalizado con ambos campos en una sola ventana
-    QDialog *loginDialog = new QDialog(this);
-    loginDialog->setWindowTitle("Login PocketBase");
-    loginDialog->setMinimumWidth(300);
+    LoginDialog dialog(this);
     
-    QVBoxLayout *layout = new QVBoxLayout(loginDialog);
+    // Cargar email recordado si existe
+    QSettings settings;
+    settings.beginGroup("ControQT6/Session");
+    QString savedEmail = settings.value("saved_email", QString()).toString();
+    bool rememberChecked = settings.value("remember_user", false).toBool();
+    settings.endGroup();
     
-    QLabel *emailLabel = new QLabel("Email:", loginDialog);
-    QLineEdit *emailEdit = new QLineEdit(loginDialog);
-    emailEdit->setPlaceholderText("usuario@ejemplo.com");
+    if (rememberChecked && !savedEmail.isEmpty()) {
+        dialog.setEmail(savedEmail);
+        dialog.setRememberUser(true);
+    }
     
-    QLabel *passwordLabel = new QLabel("Contraseña:", loginDialog);
-    QLineEdit *passwordEdit = new QLineEdit(loginDialog);
-    passwordEdit->setPlaceholderText("Contraseña");
-    passwordEdit->setEchoMode(QLineEdit::Password);
-    
-    QPushButton *okButton = new QPushButton("Aceptar", loginDialog);
-    QPushButton *cancelButton = new QPushButton("Cancelar", loginDialog);
-    
-    QHBoxLayout *buttonLayout = new QHBoxLayout();
-    buttonLayout->addStretch();
-    buttonLayout->addWidget(okButton);
-    buttonLayout->addWidget(cancelButton);
-    
-    layout->addWidget(emailLabel);
-    layout->addWidget(emailEdit);
-    layout->addWidget(passwordLabel);
-    layout->addWidget(passwordEdit);
-    layout->addLayout(buttonLayout);
-    
-    connect(okButton, &QPushButton::clicked, loginDialog, &QDialog::accept);
-    connect(cancelButton, &QPushButton::clicked, loginDialog, &QDialog::reject);
-    
-    if (loginDialog->exec() == QDialog::Accepted) {
-        QString email = emailEdit->text();
-        QString password = passwordEdit->text();
+    if (dialog.exec() == QDialog::Accepted) {
+        QString email = dialog.email();
+        QString password = dialog.password();
+        bool rememberUser = dialog.rememberUser();
         
         if (!email.isEmpty() && !password.isEmpty()) {
+            // Guardar email si el usuario lo solicitó
+            if (rememberUser) {
+                QSettings settings;
+                settings.beginGroup("ControQT6/Session");
+                settings.setValue("saved_email", email);
+                settings.setValue("remember_user", true);
+                settings.endGroup();
+            } else {
+                QSettings settings;
+                settings.beginGroup("ControQT6/Session");
+                settings.remove("saved_email");
+                settings.setValue("remember_user", false);
+                settings.endGroup();
+            }
+            
             m_pocketBase->login(email, password);
         } else {
             QMessageBox::warning(this, "Advertencia", "Email y contraseña son requeridos");
         }
     }
-    
-    delete loginDialog;
 }
 
 void MainWindow::showMessage(const QString &title, const QString &message, bool success)
