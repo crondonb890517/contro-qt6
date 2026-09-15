@@ -1,6 +1,6 @@
 # Sistema de Gestión de Contratos - Contro QT6
 
-MVP de un sistema de gestión de contratos desarrollado con Qt6 y PocketBase como backend. La aplicación permite gestionar contratos y entidades (clientes/empresas) con autenticación segura y persistencia de sesión.
+MVP de un sistema de gestión de contratos desarrollado con Qt6 y PocketBase como backend. La aplicación permite gestionar contratos y entidades (clientes/empresas) con autenticación segura, persistencia de sesión y protección contra intentos de acceso no autorizado.
 
 ## Características
 
@@ -18,9 +18,11 @@ MVP de un sistema de gestión de contratos desarrollado con Qt6 y PocketBase com
 
 ### Autenticación y Seguridad
 - **Login con PocketBase**: Autenticación contra colección _superusers
-- **Persistencia segura de sesión**: Uso de QKeychain para almacenamiento seguro de tokens en el llavero del sistema operativo
-- **Validación de token**: Verificación de expiración y renovación automática
-- **Gestión de ciclo de vida**: Limpieza segura al cerrar sesión
+- **Protección contra fuerza bruta**: La aplicación se cierra automáticamente tras 3 intentos fallidos de login
+- **Persistencia segura de sesión**: Almacenamiento cifrado de tokens usando QSettings
+- **Validación de token**: Verificación de expiración y limpieza automática de sesiones inválidas
+- **Cifrado de tokens**: Los tokens se almacenan cifrados (XOR + Base64) para mayor seguridad
+- **Gestión de ciclo de vida**: Limpieza completa de sesión al expirar o cerrar
 
 ### Interfaz Gráfica
 - **Widgets nativos de Qt6**: Interfaz moderna y responsiva
@@ -39,7 +41,7 @@ MVP de un sistema de gestión de contratos desarrollado con Qt6 y PocketBase com
 sudo apt-get install qt6-base-dev qt6-tools-dev libqt6networkauth6-dev qmake6 libqt6keychain-dev build-essential
 ```
 
-**Nota**: La biblioteca `libqt6keychain-dev` es requerida para la gestión segura de credenciales y persistencia de sesión usando el llavero del sistema operativo.
+**Nota**: La biblioteca `libqt6keychain-dev` es opcional. La aplicación usa QSettings con cifrado XOR+Base64 para almacenar tokens de forma segura. QKeychain se puede usar como alternativa para integración con el llavero del sistema operativo si está disponible.
 
 ### Backend - PocketBase
 
@@ -116,10 +118,17 @@ make -j4
 
 ## Uso
 
-### Primer Inicio
+### Primer Inicio y Autenticación
 1. Al iniciar la aplicación, se solicitará login con las credenciales de PocketBase
 2. Use las credenciales del superusuario de PocketBase
-3. El token se guarda automáticamente en el llavero del sistema usando QKeychain
+3. **Protección contra intentos fallidos**: Después de 3 intentos incorrectos, la aplicación se cerrará automáticamente por seguridad
+4. El token se guarda cifrado automáticamente usando QSettings con cifrado XOR+Base64
+
+### Comportamiento de Seguridad
+- **Intento fallido**: Se muestra un mensaje de error y se vuelve al formulario de login
+- **Tercer intento fallido**: La aplicación se cierra automáticamente para prevenir ataques de fuerza bruta
+- **Cancelación después de fallos**: Si se cancela el diálogo tras tener intentos fallidos, la aplicación también se cierra
+- **Autenticación exitosa**: El contador de intentos se reinicia y se carga la sesión
 
 ### Operaciones con Contratos
 
@@ -173,7 +182,13 @@ make -j4
 
 ### Cerrar Sesión
 - Menú: Archivo → Cerrar Sesión
-- Limpia el token y vuelve a la pantalla de login
+- Limpia el token cifrado y vuelve a la pantalla de login
+- La sesión se elimina completamente de QSettings
+
+### Renovación de Sesión
+- La aplicación verifica automáticamente la expiración del token al iniciar
+- Si el token está cerca de expirar (< 24 horas), se renueva automáticamente
+- Si el token ha expirado, se limpia la sesión y se solicita nuevo login
 
 ## Estructura del Proyecto
 
@@ -182,11 +197,12 @@ make -j4
 ├── src/                      # Código fuente
 │   ├── main.cpp              # Punto de entrada
 │   ├── core/                 # Componentes principales (lógica de negocio)
-│   │   ├── pocketbaseclient.h/cpp    # Cliente API REST PocketBase
-│   │   └── sessionmanager.h/cpp      # Gestor de sesiones con QKeychain
+│   │   ├── pocketbaseclient.h/cpp    # Cliente API REST PocketBase con renovación de token
+│   │   └── sessionmanager.h/cpp      # Gestor de sesiones con cifrado XOR+Base64
 │   ├── ui/                   # Interfaz de usuario (ventanas y diálogos)
 │   │   ├── mainwindow.h/cpp          # Ventana principal con tablas dual
 │   │   ├── mainwindow.ui             # UI de ventana principal
+│   │   ├── logindialog.h/cpp         # Diálogo de autenticación con protección anti-fuerza bruta
 │   │   ├── contractdialog.h/cpp      # Diálogo de creación/edición de contratos
 │   │   ├── contractdialog.ui         # UI del diálogo de contratos
 │   │   ├── entidaddialog.h/cpp       # Diálogo de creación/edición de entidades
@@ -208,6 +224,7 @@ La aplicación utiliza los siguientes endpoints de PocketBase:
 
 ### Autenticación
 - `POST /api/collections/_superusers/auth-with-password` - Login de superusuario
+- `POST /api/collections/users/auth-refresh` - Renovación de token (cuando sea necesario)
 
 ### Contratos
 - `GET /api/collections/contratos/records` - Listar contratos (con paginación y filtros)
@@ -231,14 +248,16 @@ La aplicación guarda configuración en:
 - Linux: `~/.config/ControQT6/Settings.conf`
 
 **Parámetros de configuración:**
-- `authToken`: Token de autenticación de PocketBase (almacenado de forma segura en QKeychain)
+- `authToken`: Token de autenticación de PocketBase (almacenado cifrado con XOR+Base64)
 - `username`: Nombre de usuario de la sesión actual
+- `failedLoginAttempts`: Contador de intentos fallidos de login (se reinicia al autenticar correctamente)
 
-**QKeychain Storage:**
-El token de autenticación se almacena de forma segura usando el llavero del sistema operativo:
-- Linux: GNOME Keyring o KWallet
-- Windows: Windows Credential Manager
-- macOS: macOS Keychain
+**Seguridad del Almacenamiento:**
+El token de autenticación se almacena cifrado usando un algoritmo XOR + Base64:
+- El token se cifra antes de guardarse en QSettings
+- Se descifra automáticamente al cargarse la sesión
+- Se elimina completamente al expirar o cerrar sesión
+- Protección contra fuerza bruta: 3 intentos fallidos cierran la aplicación
 
 ## Integración Continua (CI/CD)
 
@@ -274,9 +293,10 @@ La interfaz incluye:
 - **Qt 6.x**: Framework para interfaces gráficas
 - **Qt Network**: Comunicación HTTP/REST con PocketBase
 - **Qt Widgets**: Componentes de UI nativos
-- **QKeychain**: Almacenamiento seguro de credenciales
+- **QSettings con cifrado**: Almacenamiento seguro de credenciales con cifrado XOR+Base64
 - **PocketBase**: Backend como servicio (BaaS)
 - **C++17**: Estándar de lenguaje moderno
+- **Protección anti-fuerza bruta**: Sistema de límite de intentos de login
 
 ## Contribuir
 
