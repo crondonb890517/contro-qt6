@@ -480,6 +480,9 @@ void MainWindow::onLoginError(const QString &error)
 {
     showMessage("Error de Autenticación", error, false);
     ui->statusbar->showMessage("Error de autenticación");
+    
+    // Volver a mostrar el diálogo de login para reintentar
+    showLoginDialog();
 }
 
 void MainWindow::onContractsFetched(const QList<Contract> &contracts, int totalRegistros, int paginaActual, int registrosPorPagina)
