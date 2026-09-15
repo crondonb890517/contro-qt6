@@ -661,3 +661,53 @@ void PocketBaseClient::onDeleteFinished()
         m_currentReply = nullptr;
     }
 }
+
+// Método para renovar la autenticación usando el endpoint de PocketBase
+void PocketBaseClient::refreshAuth()
+{
+    // PocketBase permite renovar tokens mediante auth-refresh
+    // Si no hay token actual, no se puede renovar
+    if (m_authToken.isEmpty()) {
+        qWarning() << "PocketBaseClient: No hay token para renovar";
+        return;
+    }
+    
+    QUrl url(m_baseUrl + "/api/collections/users/auth-refresh");
+    
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Authorization", ("Bearer " + m_authToken).toUtf8());
+    
+    // Enviar solicitud POST vacía para refresh
+    QJsonObject emptyData;
+    QJsonDocument doc(emptyData);
+    
+    m_currentReply = m_networkManager->post(request, doc.toJson());
+    
+    connect(m_currentReply, &QNetworkReply::finished, this, [this]() {
+        if (m_currentReply) {
+            if (m_currentReply->error() == QNetworkReply::NoError) {
+                QByteArray responseData = m_currentReply->readAll();
+                QJsonParseError parseError;
+                QJsonDocument doc = QJsonDocument::fromJson(responseData, &parseError);
+                
+                if (parseError.error == QJsonParseError::NoError && doc.isObject()) {
+                    QJsonObject jsonObj = doc.object();
+                    if (jsonObj.contains("token") && !jsonObj["token"].toString().isEmpty()) {
+                        QString newToken = jsonObj["token"].toString();
+                        m_authToken = newToken;
+                        qDebug() << "PocketBaseClient: Token renovado exitosamente";
+                        emit loginSuccess(newToken, m_currentUserId);
+                    }
+                }
+            } else {
+                QString error = m_currentReply->errorString();
+                qWarning() << "PocketBaseClient: Error al renovar token:" << error;
+                emit operationError("Error al renovar sesión: " + error);
+            }
+            
+            m_currentReply->deleteLater();
+            m_currentReply = nullptr;
+        }
+    });
+}

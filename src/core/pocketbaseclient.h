@@ -48,7 +48,10 @@ public:
     void setAuthToken(const QString &token);
     QString authToken() const;
 
+    // Métodos de autenticación y sesión
     void login(const QString &email, const QString &password);
+    void refreshAuth();  // Renovar token de autenticación
+    
     void fetchEntidades(int pagina = 1, int registrosPorPagina = 15, const QString &filtro = QString());
     void createEntidad(const QJsonObject &entidadData);
     void updateEntidad(const QString &id, const QJsonObject &entidadData);

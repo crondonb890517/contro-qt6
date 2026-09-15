@@ -78,9 +78,11 @@ void MainWindow::checkExistingSession()
     
     // Intentar cargar sesión guardada
     if (m_sessionManager->loadSession()) {
-        // La carga es asíncrona, esperamos las señales
-        ui->statusbar->showMessage("Cargando sesión guardada...");
+        // La carga fue exitosa, onSessionStarted se encargará de establecer el token y cargar contratos
+        ui->statusbar->showMessage("Sesión cargada correctamente");
     } else {
+        // No hay sesión válida o está expirada
+        ui->statusbar->showMessage("No hay sesión activa");
         showLoginDialog();
     }
 }
@@ -542,8 +544,14 @@ void MainWindow::onContractDeleted(const QString &id)
 void MainWindow::onSessionStarted()
 {
     qDebug() << "MainWindow: Sesión iniciada correctamente";
-    // El token ya fue establecido en onLoginSuccess
-    if (m_sessionManager->isAuthenticated() && !m_pocketBase->authToken().isEmpty()) {
+    
+    // Establecer el token en PocketBase si viene de sesión guardada
+    if (m_sessionManager->isAuthenticated()) {
+        QString token = m_sessionManager->token();
+        if (!token.isEmpty() && m_pocketBase->authToken().isEmpty()) {
+            m_pocketBase->setAuthToken(token);
+            qDebug() << "MainWindow: Token establecido en PocketBase desde sesión guardada";
+        }
         loadContracts();
     }
 }
