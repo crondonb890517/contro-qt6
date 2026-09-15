@@ -1,15 +1,1 @@
-# Compressed files
-*.7z
-
-# Logs and temp files
-*.log
-*.tmp
-
-# Environment
-.env
-.env.local
-*.env.*
-
-# Editors
-.vscode/
-.idea/
+(src/ui/mainwindow.cpp is a source file, and there are no build artifacts, dependencies, or temp files in the changes)
