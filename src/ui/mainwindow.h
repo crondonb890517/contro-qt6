@@ -48,7 +48,7 @@ private slots:
     void on_pushButtonAnterior_clicked();
     void on_pushButtonSiguiente_clicked();
     void on_pushButtonUltimo_clicked();
-    void on_comboBoxRegistrosPorPagina_currentIndexChanged(const QString &text);
+    void on_comboBoxRegistrosPorPagina_currentIndexChanged(int index);
     
     // Slots de PocketBase
     void onLoginSuccess(const QString &token, const QString &userId);
@@ -69,7 +69,7 @@ private slots:
     void on_pushButtonAnteriorContrato_clicked();
     void on_pushButtonSiguienteContrato_clicked();
     void on_pushButtonUltimoContrato_clicked();
-    void on_comboBoxRegistrosPorPaginaContrato_currentIndexChanged(const QString &text);
+    void on_comboBoxRegistrosPorPaginaContrato_currentIndexChanged(int index);
     
     // Slots de SessionManager
     void onSessionStarted();

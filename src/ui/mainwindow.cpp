@@ -685,9 +685,10 @@ void MainWindow::on_pushButtonUltimo_clicked()
     }
 }
 
-void MainWindow::on_comboBoxRegistrosPorPagina_currentIndexChanged(const QString &text)
+void MainWindow::on_comboBoxRegistrosPorPagina_currentIndexChanged(int index)
 {
-    m_registrosPorPagina = text.toInt();
+    Q_UNUSED(index);
+    m_registrosPorPagina = ui->comboBoxRegistrosPorPagina->currentData().toInt();
     m_paginaActual = 1; // Reiniciar a primera página al cambiar registros por página
     loadEntidades(1);
 }
@@ -728,9 +729,10 @@ void MainWindow::on_pushButtonUltimoContrato_clicked()
     }
 }
 
-void MainWindow::on_comboBoxRegistrosPorPaginaContrato_currentIndexChanged(const QString &text)
+void MainWindow::on_comboBoxRegistrosPorPaginaContrato_currentIndexChanged(int index)
 {
-    m_registrosPorPaginaContratos = text.toInt();
+    Q_UNUSED(index);
+    m_registrosPorPaginaContratos = ui->comboBoxRegistrosPorPaginaContrato->currentData().toInt();
     m_paginaActualContratos = 1; // Reiniciar a primera página al cambiar registros por página
     loadContracts(1);
 }
