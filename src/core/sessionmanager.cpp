@@ -94,14 +94,14 @@ bool SessionManager::saveSession()
         return false;
     }
 
-    // Guardar token y userId en QSettings (en producción usar QKeychain si está disponible)
+    // Guardar token cifrado y userId en QSettings
     QSettings settings(m_serviceName, "Session");
-    settings.setValue(generateTokenKey(), m_token);
+    settings.setValue(generateTokenKey(), encryptToken(m_token));  // Token cifrado
     settings.setValue(generateUserIdKey(), m_userId);
     settings.setValue(generateUsernameKey(), m_username);
     settings.setValue("loginTime", m_loginTime);
     
-    qDebug() << "SessionManager: Token guardado exitosamente";
+    qDebug() << "SessionManager: Token guardado exitosamente (cifrado)";
     emit sessionStarted();
     
     return true;
@@ -113,7 +113,15 @@ bool SessionManager::loadSession()
     QSettings settings(m_serviceName, "Session");
     m_username = settings.value(generateUsernameKey()).toString();
     m_loginTime = settings.value("loginTime").toDateTime();
-    m_token = settings.value(generateTokenKey()).toString();
+    
+    // Cargar token cifrado y desencriptarlo
+    QString encryptedToken = settings.value(generateTokenKey()).toString();
+    if (!encryptedToken.isEmpty()) {
+        m_token = decryptToken(encryptedToken);
+    } else {
+        m_token.clear();
+    }
+    
     m_userId = settings.value(generateUserIdKey()).toString();
     
     if (!m_token.isEmpty()) {
@@ -122,14 +130,18 @@ bool SessionManager::loadSession()
         
         // Verificar si el token está expirado
         if (isTokenExpired()) {
-            qWarning() << "SessionManager: Token expirado, se requiere re-autenticación";
+            qWarning() << "SessionManager: Token expirado, limpiando sesión";
+            clearSession();
+            deleteSession();  // Eliminar de QSettings también
             emit sessionExpired();
+            return false;
         }
+        
+        return true;
     } else {
         m_authenticated = false;
+        return false;
     }
-    
-    return true;
 }
 
 bool SessionManager::deleteSession()
@@ -174,4 +186,41 @@ QString SessionManager::generateUserIdKey() const
 QString SessionManager::generateUsernameKey() const
 {
     return m_usernameKey;
+}
+
+// Implementación de cifrado XOR simple para tokens
+// NOTA: Esto es una medida básica de ofuscación. Para producción, usar QKeychain o cifrado AES
+QString SessionManager::encryptToken(const QString &token) const
+{
+    // Clave simple para XOR (en producción usar una clave más segura y almacenada en lugar seguro)
+    const QString key = "ControQT6_SecureKey_2024";
+    QString result;
+    result.reserve(token.length());
+    
+    for (int i = 0; i < token.length(); ++i) {
+        QChar encryptedChar = QChar(token[i].unicode() ^ key[i % key.length()].unicode());
+        result.append(encryptedChar);
+    }
+    
+    // Codificar en Base64 para almacenamiento seguro como texto
+    return result.toUtf8().toBase64();
+}
+
+QString SessionManager::decryptToken(const QString &encryptedToken) const
+{
+    // Decodificar desde Base64
+    QByteArray decoded = QByteArray::fromBase64(encryptedToken.toUtf8());
+    QString encoded = QString::fromUtf8(decoded);
+    
+    // Clave simple para XOR (debe ser la misma que en encryptToken)
+    const QString key = "ControQT6_SecureKey_2024";
+    QString result;
+    result.reserve(encoded.length());
+    
+    for (int i = 0; i < encoded.length(); ++i) {
+        QChar decryptedChar = QChar(encoded[i].unicode() ^ key[i % key.length()].unicode());
+        result.append(decryptedChar);
+    }
+    
+    return result;
 }

@@ -85,6 +85,7 @@ private:
     QList<Contract> m_contracts;
     QList<Entidad> m_entidades;
     int m_currentRow;
+    int m_intentosFallidos;  // Contador de intentos fallidos de login
     
     // Variables de paginación para entidades
     int m_paginaActual;

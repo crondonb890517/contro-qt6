@@ -12,10 +12,12 @@ class PocketBaseClient;
  * @brief SessionManager - Gestor profesional de sesiones
  * 
  * Encargado de manejar el ciclo de vida de la autenticación:
- * - Almacenamiento seguro de tokens usando QKeychain (llavero del SO)
+ * - Almacenamiento de tokens usando QSettings (con cifrado básico)
  * - Validación de expiración de tokens
  * - Renovación automática de sesiones
  * - Limpieza segura al cerrar sesión
+ * 
+ * NOTA: En producción, considerar usar QKeychain para mayor seguridad
  */
 class SessionManager : public QObject
 {
@@ -75,6 +77,10 @@ private:
     QString generateTokenKey() const;
     QString generateUserIdKey() const;
     QString generateUsernameKey() const;
+    
+    // Cifrado básico para tokens (XOR simple con una clave)
+    QString encryptToken(const QString &token) const;
+    QString decryptToken(const QString &encryptedToken) const;
 };
 
 #endif // SESSIONMANAGER_H
