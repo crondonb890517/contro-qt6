@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_pocketBase(nullptr)
     , m_sessionManager(nullptr)
     , m_currentRow(-1)
+    , m_intentosFallidos(0)  // Inicializar contador de intentos fallidos
     , m_paginaActual(1)
     , m_registrosPorPagina(10)
     , m_totalRegistros(0)
@@ -266,9 +268,21 @@ void MainWindow::showLoginDialog()
                 settings.endGroup();
             }
             
+            // Intentar login con PocketBase
             m_pocketBase->login(email, password);
         } else {
             QMessageBox::warning(this, "Advertencia", "Email y contraseña son requeridos");
+            // No contar como intento fallido si los campos están vacíos
+            showLoginDialog();  // Volver a mostrar el diálogo
+        }
+    } else {
+        // El usuario canceló el diálogo
+        // Si hay intentos fallidos previos y cancela, cerrar la aplicación
+        if (m_intentosFallidos > 0) {
+            QMessageBox::information(this, "Inicio de Sesión Cancelado",
+                "Ha cancelado el proceso de inicio de sesión.\n"
+                "La aplicación se cerrará por seguridad.");
+            qApp->quit();
         }
     }
 }
@@ -466,6 +480,9 @@ void MainWindow::onLoginSuccess(const QString &token, const QString &userId)
 {
     ui->statusbar->showMessage("Autenticado correctamente");
     
+    // Resetear contador de intentos fallidos
+    m_intentosFallidos = 0;
+    
     // Guardar sesión usando SessionManager
     m_sessionManager->setToken(token, userId);
     m_pocketBase->setAuthToken(token);
@@ -478,8 +495,21 @@ void MainWindow::onLoginSuccess(const QString &token, const QString &userId)
 
 void MainWindow::onLoginError(const QString &error)
 {
+    // Incrementar contador de intentos fallidos
+    m_intentosFallidos++;
+    
+    // Mostrar mensaje de error
     showMessage("Error de Autenticación", error, false);
     ui->statusbar->showMessage("Error de autenticación");
+    
+    // Verificar si se alcanzó el límite de intentos
+    if (m_intentosFallidos >= 3) {
+        QMessageBox::critical(this, "Límite de Intentos Alcanzado",
+            "Ha excedido el número máximo de intentos de inicio de sesión (3).\n"
+            "La aplicación se cerrará por seguridad.");
+        qApp->quit();
+        return;
+    }
     
     // Volver a mostrar el diálogo de login para reintentar
     showLoginDialog();
